@@ -39,12 +39,8 @@ export default function Team() {
             <h2 className="text-xl font-bold text-blue-400 mb-6 pl-2 border-l-4 border-blue-500">Investigators</h2>
             <ul className="space-y-4">
               <li className="flex flex-col">
-                <span className="font-semibold text-slate-100 text-lg">Edoardo Ponti</span>
-                <span className="text-slate-400">University of Edinburgh, Nvidia</span>
-              </li>
-              <li className="flex flex-col">
-                <span className="font-semibold text-slate-100 text-lg">Nick Brown</span>
-                <span className="text-slate-400">EPCC - University of Edinburgh</span>
+                <span className="font-semibold text-slate-100 text-lg">Aaron Zhao</span>
+                <span className="text-slate-400">Imperial College London</span>
               </li>
               <li className="flex flex-col">
                 <span className="font-semibold text-slate-100 text-lg">Adrian Jackson</span>
@@ -55,16 +51,20 @@ export default function Team() {
                 <span className="text-slate-400">University of Edinburgh</span>
               </li>
               <li className="flex flex-col">
-                <span className="font-semibold text-slate-100 text-lg">Wenda Li</span>
-                <span className="text-slate-400">University of Edinburgh</span>
+                <span className="font-semibold text-slate-100 text-lg">Edoardo Ponti</span>
+                <span className="text-slate-400">University of Edinburgh, Nvidia</span>
               </li>
               <li className="flex flex-col">
                 <span className="font-semibold text-slate-100 text-lg">Luo Mai</span>
                 <span className="text-slate-400">University of Edinburgh, Microsoft Research</span>
               </li>
               <li className="flex flex-col">
-                <span className="font-semibold text-slate-100 text-lg">Aaron Zhao</span>
-                <span className="text-slate-400">Imperial College London</span>
+                <span className="font-semibold text-slate-100 text-lg">Nick Brown</span>
+                <span className="text-slate-400">EPCC - University of Edinburgh</span>
+              </li>
+              <li className="flex flex-col">
+                <span className="font-semibold text-slate-100 text-lg">Wenda Li</span>
+                <span className="text-slate-400">University of Edinburgh</span>
               </li>
             </ul>
           </div>
@@ -74,7 +74,15 @@ export default function Team() {
             <h2 className="text-xl font-bold text-purple-400 mb-6 pl-2 border-l-4 border-purple-500">Project Team</h2>
             <ul className="space-y-4">
               <li className="flex flex-col">
+                <span className="font-semibold text-slate-100 text-lg">Arno Proeme</span>
+                <span className="text-slate-400">EPCC - University of Edinburgh</span>
+              </li>
+              <li className="flex flex-col">
                 <span className="font-semibold text-slate-100 text-lg">James Richings</span>
+                <span className="text-slate-400">EPCC - University of Edinburgh</span>
+              </li>
+              <li className="flex flex-col">
+                <span className="font-semibold text-slate-100 text-lg">Mark Klaisoongnoen</span>
                 <span className="text-slate-400">EPCC - University of Edinburgh</span>
               </li>
               <li className="flex flex-col">
@@ -84,14 +92,6 @@ export default function Team() {
               <li className="flex flex-col">
                 <span className="font-semibold text-slate-100 text-lg">Yufan Zhao</span>
                 <span className="text-slate-400">University of Edinburgh</span>
-              </li>
-              <li className="flex flex-col">
-                <span className="font-semibold text-slate-100 text-lg">Mark Klaisoongnoen</span>
-                <span className="text-slate-400">EPCC - University of Edinburgh</span>
-              </li>
-              <li className="flex flex-col">
-                <span className="font-semibold text-slate-100 text-lg">Arno Proeme</span>
-                <span className="text-slate-400">EPCC - University of Edinburgh</span>
               </li>
             </ul>
           </div>

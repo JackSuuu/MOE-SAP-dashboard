@@ -818,62 +818,62 @@ export default function App() {
     // Peak Bandwidth = HBM/GDDR memory bandwidth (blue circles)
     const peakDevices = [
       // Data Center Systems (Multi-GPU)
-      { name: 'DGX-H100', bandwidth: 26800, power: 10200, category: 'datacenter-system', type: 'peak' },
-      { name: 'DGX-A100', bandwidth: 16296, power: 6500, category: 'datacenter-system', type: 'peak' },
+      { name: 'NVIDIA DGX-H100', bandwidth: 26800, power: 10200, category: 'datacenter-system', type: 'peak', showLabel: true },
+      { name: 'NVIDIA DGX-A100', bandwidth: 16296, power: 6500, category: 'datacenter-system', type: 'peak', showLabel: false },
       // Data Center Cards
-      { name: 'AMD MI300X', bandwidth: 5300, power: 750, category: 'datacenter-card', type: 'peak' },
-      { name: 'H100-SXM', bandwidth: 3350, power: 700, category: 'datacenter-card', type: 'peak' },
-      { name: 'AWS Trainium 2', bandwidth: 2900, power: 480, category: 'datacenter-card', type: 'peak' },
-      { name: 'A100-80G-SXM4', bandwidth: 2037, power: 400, category: 'datacenter-card', type: 'peak' },
-      { name: 'H100-PCIe', bandwidth: 2000, power: 350, category: 'datacenter-card', type: 'peak' },
-      { name: 'A100-80G-PCIe', bandwidth: 1935, power: 300, category: 'datacenter-card', type: 'peak' },
-      { name: 'A6000', bandwidth: 768, power: 300, category: 'datacenter-card', type: 'peak' },
-      { name: 'A5000', bandwidth: 768, power: 230, category: 'datacenter-card', type: 'peak' },
+      { name: 'AMD MI300X', bandwidth: 5300, power: 750, category: 'datacenter-card', type: 'peak', showLabel: true },
+      { name: 'NVIDIA H100-SXM', bandwidth: 3350, power: 700, category: 'datacenter-card', type: 'peak', showLabel: true },
+      { name: 'AWS Trainium 2', bandwidth: 2900, power: 480, category: 'datacenter-card', type: 'peak', showLabel: false },
+      { name: 'NVIDIA A100-80G-SXM4', bandwidth: 2037, power: 400, category: 'datacenter-card', type: 'peak', showLabel: false },
+      { name: 'NVIDIA H100-PCIe', bandwidth: 2000, power: 350, category: 'datacenter-card', type: 'peak', showLabel: false },
+      { name: 'NVIDIA A100-80G-PCIe', bandwidth: 1935, power: 300, category: 'datacenter-card', type: 'peak', showLabel: false },
+      { name: 'NVIDIA A6000', bandwidth: 768, power: 300, category: 'datacenter-card', type: 'peak', showLabel: false },
+      { name: 'NVIDIA A5000', bandwidth: 768, power: 230, category: 'datacenter-card', type: 'peak', showLabel: false },
       // Personal (Consumer GPUs) - 调整power避免重叠
-      { name: '5090', bandwidth: 1790, power: 575, category: 'personal', type: 'peak' },
-      { name: '4090', bandwidth: 1010, power: 450, category: 'personal', type: 'peak' },
-      { name: '3090Ti', bandwidth: 1010, power: 400, category: 'personal', type: 'peak' },
-      { name: '5080', bandwidth: 960, power: 360, category: 'personal', type: 'peak' },
-      { name: '3080Ti', bandwidth: 912.4, power: 350, category: 'personal', type: 'peak' },
-      { name: '4080', bandwidth: 716.8, power: 320, category: 'personal', type: 'peak' },
+      { name: 'NVIDIA RTX 5090', bandwidth: 1790, power: 575, category: 'personal', type: 'peak', showLabel: true },
+      { name: 'NVIDIA RTX 4090', bandwidth: 1010, power: 450, category: 'personal', type: 'peak', showLabel: true },
+      { name: 'NVIDIA RTX 3090Ti', bandwidth: 1010, power: 400, category: 'personal', type: 'peak', showLabel: false },
+      { name: 'NVIDIA RTX 5080', bandwidth: 960, power: 360, category: 'personal', type: 'peak', showLabel: false },
+      { name: 'NVIDIA RTX 3080Ti', bandwidth: 912.4, power: 350, category: 'personal', type: 'peak', showLabel: false },
+      { name: 'NVIDIA RTX 4080', bandwidth: 716.8, power: 320, category: 'personal', type: 'peak', showLabel: false },
       // SoC (Apple Silicon) - Unified Memory - 调整power避免重叠
-      { name: 'Apple M4 max', bandwidth: 546, power: 90, category: 'soc', type: 'peak' },
-      { name: 'Apple M3 max', bandwidth: 400, power: 70, category: 'soc', type: 'peak' },
-      { name: 'Apple M2 max', bandwidth: 400, power: 50, category: 'soc', type: 'peak' },
-      { name: 'Apple M1 max', bandwidth: 400, power: 35, category: 'soc', type: 'peak' },
+      { name: 'Apple M4 max', bandwidth: 546, power: 90, category: 'soc', type: 'peak', showLabel: true },
+      { name: 'Apple M3 max', bandwidth: 400, power: 70, category: 'soc', type: 'peak', showLabel: false },
+      { name: 'Apple M2 max', bandwidth: 400, power: 50, category: 'soc', type: 'peak', showLabel: false },
+      { name: 'Apple M1 max', bandwidth: 400, power: 35, category: 'soc', type: 'peak', showLabel: false },
       // Autonomous (NVIDIA Jetson)
-      { name: 'Orin AGX', bandwidth: 204.8, power: 60, category: 'autonomous', type: 'peak' },
-      { name: 'Xavier AGX', bandwidth: 136.5, power: 30, category: 'autonomous', type: 'peak' },
-      { name: 'Orin NX', bandwidth: 102.4, power: 25, category: 'autonomous', type: 'peak' },
-      { name: 'Jetson Nano', bandwidth: 25.6, power: 10, category: 'autonomous', type: 'peak' },
+      { name: 'NVIDIA Orin AGX', bandwidth: 204.8, power: 60, category: 'autonomous', type: 'peak', showLabel: true },
+      { name: 'NVIDIA Xavier AGX', bandwidth: 136.5, power: 30, category: 'autonomous', type: 'peak', showLabel: false },
+      { name: 'NVIDIA Orin NX', bandwidth: 102.4, power: 25, category: 'autonomous', type: 'peak', showLabel: false },
+      { name: 'NVIDIA Jetson Nano', bandwidth: 25.6, power: 10, category: 'autonomous', type: 'peak', showLabel: true },
     ];
     
     // Offloading Bandwidth = PCIe/ethernet bandwidth (orange squares)
     const offloadDevices = [
       // Data Center Systems (Multi-GPU with NVLink)
-      { name: 'DGX-H100', bandwidth: 1280, power: 10200, category: 'datacenter-system', type: 'pcie' },
-      { name: 'DGX-A100', bandwidth: 512, power: 6500, category: 'datacenter-system', type: 'pcie' },
+      { name: 'NVIDIA DGX-H100', bandwidth: 1280, power: 10200, category: 'datacenter-system', type: 'pcie', showLabel: true },
+      { name: 'NVIDIA DGX-A100', bandwidth: 512, power: 6500, category: 'datacenter-system', type: 'pcie', showLabel: false },
       // Data Center Cards (PCIe) - 调整power避免与peak重叠
-      { name: 'AMD MI300X', bandwidth: 128, power: 850, category: 'datacenter-card', type: 'pcie' },
-      { name: 'H100-SXM', bandwidth: 128, power: 780, category: 'datacenter-card', type: 'pcie' },
-      { name: 'AWS Trainium 2', bandwidth: 128, power: 520, category: 'datacenter-card', type: 'pcie' },
-      { name: 'H100-PCIe', bandwidth: 128, power: 380, category: 'datacenter-card', type: 'pcie' },
-      { name: 'A100-80G-SXM4', bandwidth: 64, power: 440, category: 'datacenter-card', type: 'pcie' },
-      { name: 'A100-80G-PCIe', bandwidth: 64, power: 340, category: 'datacenter-card', type: 'pcie' },
-      { name: 'A6000', bandwidth: 64, power: 300, category: 'datacenter-card', type: 'pcie' },
-      { name: 'A5000', bandwidth: 64, power: 230, category: 'datacenter-card', type: 'pcie' },
+      { name: 'AMD MI300X', bandwidth: 128, power: 850, category: 'datacenter-card', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA H100-SXM', bandwidth: 128, power: 780, category: 'datacenter-card', type: 'pcie', showLabel: true },
+      { name: 'AWS Trainium 2', bandwidth: 128, power: 520, category: 'datacenter-card', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA H100-PCIe', bandwidth: 128, power: 380, category: 'datacenter-card', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA A100-80G-SXM4', bandwidth: 64, power: 440, category: 'datacenter-card', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA A100-80G-PCIe', bandwidth: 64, power: 340, category: 'datacenter-card', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA A6000', bandwidth: 64, power: 300, category: 'datacenter-card', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA A5000', bandwidth: 64, power: 230, category: 'datacenter-card', type: 'pcie', showLabel: false },
       // Personal (Consumer GPUs - PCIe) - 调整power避免重叠
-      { name: '5090', bandwidth: 128, power: 620, category: 'personal', type: 'pcie' },
-      { name: '5080', bandwidth: 128, power: 400, category: 'personal', type: 'pcie' },
-      { name: '4090', bandwidth: 64, power: 500, category: 'personal', type: 'pcie' },
-      { name: '4080', bandwidth: 64, power: 350, category: 'personal', type: 'pcie' },
-      { name: '3090Ti', bandwidth: 64, power: 420, category: 'personal', type: 'pcie' },
-      { name: '3080Ti', bandwidth: 64, power: 380, category: 'personal', type: 'pcie' },
+      { name: 'NVIDIA RTX 5090', bandwidth: 128, power: 620, category: 'personal', type: 'pcie', showLabel: true },
+      { name: 'NVIDIA RTX 5080', bandwidth: 128, power: 400, category: 'personal', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA RTX 4090', bandwidth: 64, power: 500, category: 'personal', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA RTX 4080', bandwidth: 64, power: 350, category: 'personal', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA RTX 3090Ti', bandwidth: 64, power: 420, category: 'personal', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA RTX 3080Ti', bandwidth: 64, power: 380, category: 'personal', type: 'pcie', showLabel: false },
       // Autonomous (NVIDIA Jetson)
-      { name: 'Orin AGX', bandwidth: 16, power: 65, category: 'autonomous', type: 'pcie' },
-      { name: 'Xavier AGX', bandwidth: 16, power: 35, category: 'autonomous', type: 'pcie' },
-      { name: 'Orin NX', bandwidth: 16, power: 28, category: 'autonomous', type: 'pcie' },
-      { name: 'Jetson Nano', bandwidth: 4, power: 12, category: 'autonomous', type: 'pcie' },
+      { name: 'NVIDIA Orin AGX', bandwidth: 16, power: 65, category: 'autonomous', type: 'pcie', showLabel: true },
+      { name: 'NVIDIA Xavier AGX', bandwidth: 16, power: 35, category: 'autonomous', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA Orin NX', bandwidth: 16, power: 28, category: 'autonomous', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA Jetson Nano', bandwidth: 4, power: 12, category: 'autonomous', type: 'pcie', showLabel: true },
     ];
 
     return { peakDevices, offloadDevices, bwBS1, currentBw, fullyActivatedBw, actualBw };
@@ -1106,12 +1106,12 @@ export default function App() {
           <div className="flex flex-wrap items-center gap-2 sm:gap-4 mb-2 pl-2 text-xs">
             <div className="flex items-center gap-2">
               <div className="w-8 border-t-2 border-dashed border-blue-500"></div>
-              <span className="text-xs text-slate-300">BS=1: <span className="text-blue-400 font-semibold">{chartData.bwBS1?.toFixed(0)} GB/s</span></span>
+              <span className="text-xs text-slate-300">Batch Size=1: <span className="text-blue-400 font-semibold">{chartData.bwBS1?.toFixed(0)} GB/s</span></span>
             </div>
             {batchSize > 1 && (
               <div className="flex items-center gap-2">
                 <div className="w-8 border-t-2 border-dashed border-green-500"></div>
-                <span className="text-xs text-slate-300">BS={batchSize}: <span className="text-green-400 font-semibold">{chartData.currentBw?.toFixed(0)} GB/s</span></span>
+                <span className="text-xs text-slate-300">Batch Size={batchSize}: <span className="text-green-400 font-semibold">{chartData.currentBw?.toFixed(0)} GB/s</span></span>
               </div>
             )}
             <div className="flex items-center gap-2">
@@ -1194,7 +1194,7 @@ export default function App() {
               />
               
               {/* Horizontal reference lines for model bandwidth requirements */}
-              {/* BS=1 line - always shown */}
+              {/* Batch Size=1 line - always shown */}
               <ReferenceLine 
                 y={chartData.bwBS1} 
                 stroke="#3b82f6" 
@@ -1202,7 +1202,7 @@ export default function App() {
                 strokeDasharray="8 4"
                 ifOverflow="extendDomain"
               />
-              {/* Current batch size line - only shown when BS > 1 */}
+              {/* Current batch size line - only shown when Batch Size > 1 */}
               {batchSize > 1 && (
                 <ReferenceLine 
                   y={chartData.currentBw} 
@@ -1227,7 +1227,57 @@ export default function App() {
                 name="Peak Bandwidth"
                 fill="#3b82f6"
                 isAnimationActive={false}
-              />
+              >
+                <LabelList
+                  content={(props) => {
+                    const { x, y, index } = props;
+                    const device = chartData.peakDevices[index];
+                    if (!device || !device.showLabel) return null;
+                    
+                    // Smart positioning based on device
+                    let dy = -15;
+                    let dx = 0;
+                    const name = device.name;
+                    if (name.includes('DGX-H100')) dy = -20;
+                    if (name.includes('MI300X')) { dy = -5; dx = 45; }
+                    if (name.includes('H100-SXM')) { dy = -5; dx = 20; }
+                    if (name.includes('5090')) { dy = -7; dx = 30; }
+                    if (name.includes('4090')) { dy = 25; dx = 30; }
+                    if (name.includes('M4')) { dy = -10; dx = -5; }
+                    
+                    // Calculate line start position from circle edge (radius ~4)
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const radius = 4;
+                    const startOffsetX = distance > 0 ? (dx / distance) * radius : 0;
+                    const startOffsetY = distance > 0 ? (dy / distance) * radius : 0;
+                    
+                    return (
+                      <>
+                        {/* Connecting line from point edge to label */}
+                        <line
+                          x1={x + startOffsetX}
+                          y1={y + startOffsetY}
+                          x2={x + dx}
+                          y2={y + dy}
+                          stroke="#3b82f6"
+                          strokeWidth={1}
+                          strokeOpacity={0.5}
+                        />
+                        <text
+                          x={x + dx}
+                          y={y + dy}
+                          fill="#3b82f6"
+                          fontSize={10}
+                          fontWeight={600}
+                          textAnchor="middle"
+                        >
+                          {name}
+                        </text>
+                      </>
+                    );
+                  }}
+                />
+              </Scatter>
               
               {/* Device scatter points - orange circles for Offloading Bandwidth (PCIe) */}
               <Scatter 
@@ -1235,7 +1285,54 @@ export default function App() {
                 name="Offloading Bandwidth"
                 fill="#f97316"
                 isAnimationActive={false}
-              />
+              >
+                <LabelList
+                  content={(props) => {
+                    const { x, y, index } = props;
+                    const device = chartData.offloadDevices[index];
+                    if (!device || !device.showLabel) return null;
+                    
+                    // Smart positioning based on device
+                    let dy = -15;
+                    let dx = 0;
+                    const name = device.name;
+                    if (name.includes('DGX-H100')) dy = 25;
+                    if (name.includes('H100-SXM')) { dy = 25; dx = 10; }
+                    if (name.includes('5090')) { dy = -10; dx = 5; }
+                    
+                    // Calculate line start position from circle edge (radius ~4)
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const radius = 4;
+                    const startOffsetX = distance > 0 ? (dx / distance) * radius : 0;
+                    const startOffsetY = distance > 0 ? (dy / distance) * radius : 0;
+                    
+                    return (
+                      <>
+                        {/* Connecting line from point edge to label */}
+                        <line
+                          x1={x + startOffsetX}
+                          y1={y + startOffsetY}
+                          x2={x + dx}
+                          y2={y + dy}
+                          stroke="#f97316"
+                          strokeWidth={1}
+                          strokeOpacity={0.5}
+                        />
+                        <text
+                          x={x + dx}
+                          y={y + dy}
+                          fill="#f97316"
+                          fontSize={10}
+                          fontWeight={600}
+                          textAnchor="middle"
+                        >
+                          {name}
+                        </text>
+                      </>
+                    );
+                  }}
+                />
+              </Scatter>
               
             </ScatterChart>
           </ResponsiveContainer>
@@ -1352,7 +1449,7 @@ export default function App() {
                       stroke={config.color}
                       fill={config.color}
                       fillOpacity={0.2}
-                      strokeWidth={2}
+                      strokeWidth={20}
                     />
                   );
                 })}

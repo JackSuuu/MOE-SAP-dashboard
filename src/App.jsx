@@ -520,7 +520,7 @@ export default function App() {
       refBwBS32: 486.96, // 121.74 * 4
       refBwBS64: 565.48, // 141.37 * 4
       refBwBS128: 628.68, // 157.17 * 4
-      denseRefBw: 325.53, // 16B dense + KV cache (5000 tokens) at TPOT=0.1s
+      denseRefBw: 651.06, // 16B dense + KV cache (5000 tokens) at TPOT=0.1s
     },
     'qwen3': {
       name: 'Qwen3-30B-A3B',
@@ -1116,7 +1116,7 @@ export default function App() {
             )}
             <div className="flex items-center gap-2">
               <div className="w-8 border-t-2 border-dashed border-red-500"></div>
-              <span className="text-xs text-slate-300">All Experts: <span className="text-red-400 font-semibold">{chartData.fullyActivatedBw?.toFixed(0)} GB/s</span></span>
+              <span className="text-xs text-slate-300">All expert activated: <span className="text-red-400 font-semibold">{chartData.fullyActivatedBw?.toFixed(0)} GB/s</span></span>
             </div>
           </div>
           
@@ -1449,7 +1449,7 @@ export default function App() {
                       stroke={config.color}
                       fill={config.color}
                       fillOpacity={0.2}
-                      strokeWidth={20}
+                      strokeWidth={2}
                     />
                   );
                 })}

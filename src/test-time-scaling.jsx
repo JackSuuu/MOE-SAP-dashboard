@@ -61,7 +61,7 @@ const NAV_BAR = (
 );
 
 const EXPLANATION_CARD = (
-  <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 sm:p-6 md:p-8">
+  <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 sm:p-6 md:p-8 mb-8 mt-6">
     <p className="text-slate-300 leading-relaxed mb-6">
       Test-time scaling improves solution quality by spending more compute at inference time.
       The main knobs trade off{" "}
@@ -158,9 +158,9 @@ const DATASET_OPTIONS = [
 
 const TTS_ENGINE_OPTIONS = [
   { value: "vllm", label: "vLLM" },
-  { value: "sglang", label: "SGLang" },
+  // { value: "sglang", label: "SGLang" },
   // { value: "tgi", label: "Text Generation Inference (TGI)" },
-  { value: "tensorrt-llm", label: "TensorRT-LLM" },
+  // { value: "tensorrt-llm", label: "TensorRT-LLM" },
 ];
 
 
@@ -237,16 +237,15 @@ function AccuracyVsQphChartCard({ chartData }) {
   const hasData = chartData && chartData.length > 0;
 
   return (
-    <Card className="mb-6">
+    <Card className="mb-8">
       <div className="flex justify-between items-start mb-4">
         <h2 className="text-lg font-semibold pl-2 border-l-4 border-blue-500">
           Test-time Scaling — Accuracy vs Questions per Hour
         </h2>
-        <span className="text-xs text-slate-500 italic">Selected config</span>
       </div>
 
       {hasData ? (
-        <div className="h-[300px] sm:h-[360px]">
+        <div className="h-[400px] sm:h-[500px] md:h-[600px]">
           <ResponsiveContainer width="100%" height="100%">
             <ScatterChart margin={{ top: 10, right: 20, left: 30, bottom: 40 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
@@ -340,7 +339,7 @@ const PageContent = ({
   setDataset,
   selectionLabel,
 }) => (
-  <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+  <div className="py-6 sm:py-8">
     <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-sky-400 to-cyan-400">
       Test Time Scaling
     </h1>
@@ -396,7 +395,7 @@ const PageContent = ({
 /** --- Component --- */
 
 export default function Test_Time_Scaling() {
-  const [ttsModel, setTtsModel] = useState("gpt-oss-20b-high");
+  const [ttsModel, setTtsModel] = useState("gpt-oss-120b-high");
   const [ttsQuant, setTtsQuant] = useState("mxfp4");
   const [dataset, setDataset] = useState("aime25");
   const [ttsEngine, setTtsEngine] = useState("vllm");
@@ -422,26 +421,25 @@ export default function Test_Time_Scaling() {
     <div className="min-h-screen bg-slate-900 text-slate-100">
       {NAV_BAR}
 
-      <PageContent
-        ttsModel={ttsModel}
-        setTtsModel={setTtsModel}
-        ttsEngine={ttsEngine}
-        setTtsEngine={setTtsEngine}
-        ttsQuant={ttsQuant}
-        setTtsQuant={setTtsQuant}
-        dataset={dataset}
-        setDataset={setDataset}
-        selectionLabel={selectionLabel}
-      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8">
+        {EXPLANATION_CARD}
+        <PageContent
+          ttsModel={ttsModel}
+          setTtsModel={setTtsModel}
+          ttsEngine={ttsEngine}
+          setTtsEngine={setTtsEngine}
+          ttsQuant={ttsQuant}
+          setTtsQuant={setTtsQuant}
+          dataset={dataset}
+          setDataset={setDataset}
+          selectionLabel={selectionLabel}
+        />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <ChartSection
         selection={selection}
         selectionLabel={selectionLabel}
         selectedRows={selectedRows}
         />
-
-        {EXPLANATION_CARD}
       </div>
     </div>
   );

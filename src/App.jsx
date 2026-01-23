@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ComposedChart, Line, Scatter, XAxis, YAxis, CartesianGrid,
@@ -48,7 +48,7 @@ const ScenarioButton = ({ active, onClick, label, desc }) => (
 const LONGBENCH_CONFIGS = {
   // Qwen3-235B-A22B - Accuracy: 50.1%
   'qwen3-235b-ep-tp-16h20': {
-    label: 'Qwen3-235B-A22B / BF16 / 16xH20 (EP+TP)',
+    label: 'Qwen3-235B-A22B / BF16 / 16xH20 / SGLang (EP+TP)',
     model: 'Qwen3-235B-A22B',
     precision: 'BF16',
     gpu: '16xH20',
@@ -61,7 +61,7 @@ const LONGBENCH_CONFIGS = {
     color: '#3b82f6'  // Blue
   },
   'qwen3-235b-ep-tp-8h20': {
-    label: 'Qwen3-235B-A22B / BF16 / 8xH20 (EP+TP)',
+    label: 'Qwen3-235B-A22B / BF16 / 8xH20 / SGLang (EP+TP)',
     model: 'Qwen3-235B-A22B',
     precision: 'BF16',
     gpu: '8xH20',
@@ -74,7 +74,7 @@ const LONGBENCH_CONFIGS = {
     color: '#22c55e'  // Green
   },
   'qwen3-235b-tp-16h20': {
-    label: 'Qwen3-235B-A22B / BF16 / 16xH20 (TP)',
+    label: 'Qwen3-235B-A22B / BF16 / 16xH20 / SGLang (TP)',
     model: 'Qwen3-235B-A22B',
     precision: 'BF16',
     gpu: '16xH20',
@@ -87,7 +87,7 @@ const LONGBENCH_CONFIGS = {
     color: '#f97316'  // Orange
   },
   'qwen3-235b-tp-8h20': {
-    label: 'Qwen3-235B-A22B / BF16 / 8xH20 (TP)',
+    label: 'Qwen3-235B-A22B / BF16 / 8xH20 / SGLang (TP)',
     model: 'Qwen3-235B-A22B',
     precision: 'BF16',
     gpu: '8xH20',
@@ -101,7 +101,7 @@ const LONGBENCH_CONFIGS = {
   },
   // Qwen3-30B-A3B - Accuracy: 42.5%
   'qwen3-30b-ep-tp-8h20': {
-    label: 'Qwen3-30B-A3B / BF16 / 8xH20 (EP+TP)',
+    label: 'Qwen3-30B-A3B / BF16 / 8xH20 / SGLang (EP+TP)',
     model: 'Qwen3-30B-A3B',
     precision: 'BF16',
     gpu: '8xH20',
@@ -114,7 +114,7 @@ const LONGBENCH_CONFIGS = {
     color: '#ef4444'  // Red
   },
   'qwen3-30b-ep-tp-4h20': {
-    label: 'Qwen3-30B-A3B / BF16 / 4xH20 (EP+TP)',
+    label: 'Qwen3-30B-A3B / BF16 / 4xH20 / SGLang (EP+TP)',
     model: 'Qwen3-30B-A3B',
     precision: 'BF16',
     gpu: '4xH20',
@@ -127,7 +127,7 @@ const LONGBENCH_CONFIGS = {
     color: '#06b6d4'  // Cyan
   },
   'qwen3-30b-ep-tp-2h20': {
-    label: 'Qwen3-30B-A3B / BF16 / 2xH20 (EP+TP)',
+    label: 'Qwen3-30B-A3B / BF16 / 2xH20 / SGLang (EP+TP)',
     model: 'Qwen3-30B-A3B',
     precision: 'BF16',
     gpu: '2xH20',
@@ -140,7 +140,7 @@ const LONGBENCH_CONFIGS = {
     color: '#eab308'  // Yellow
   },
   'qwen3-30b-tp-8h20': {
-    label: 'Qwen3-30B-A3B / BF16 / 8xH20 (TP)',
+    label: 'Qwen3-30B-A3B / BF16 / 8xH20 / SGLang (TP)',
     model: 'Qwen3-30B-A3B',
     precision: 'BF16',
     gpu: '8xH20',
@@ -153,7 +153,7 @@ const LONGBENCH_CONFIGS = {
     color: '#ec4899'  // Pink
   },
   'qwen3-30b-tp-4h20': {
-    label: 'Qwen3-30B-A3B / BF16 / 4xH20 (TP)',
+    label: 'Qwen3-30B-A3B / BF16 / 4xH20 / SGLang (TP)',
     model: 'Qwen3-30B-A3B',
     precision: 'BF16',
     gpu: '4xH20',
@@ -166,7 +166,7 @@ const LONGBENCH_CONFIGS = {
     color: '#14b8a6'  // Teal
   },
   'qwen3-30b-tp-2h20': {
-    label: 'Qwen3-30B-A3B / BF16 / 2xH20 (TP)',
+    label: 'Qwen3-30B-A3B / BF16 / 2xH20 / SGLang (TP)',
     model: 'Qwen3-30B-A3B',
     precision: 'BF16',
     gpu: '2xH20',
@@ -180,7 +180,7 @@ const LONGBENCH_CONFIGS = {
   },
   // DeepSeek-V2.5 - Accuracy: 53.7%
   'deepseek-v2.5-ep-tp-16h20': {
-    label: 'DeepSeek-V2.5 / BF16 / 16xH20 (EP+TP)',
+    label: 'DeepSeek-V2.5 / BF16 / 16xH20 / SGLang (EP+TP)',
     model: 'DeepSeek-V2.5',
     precision: 'BF16',
     gpu: '16xH20',
@@ -193,7 +193,7 @@ const LONGBENCH_CONFIGS = {
     color: '#f43f5e'  // Rose
   },
   'deepseek-v2.5-ep-tp-8h20': {
-    label: 'DeepSeek-V2.5 / BF16 / 8xH20 (EP+TP)',
+    label: 'DeepSeek-V2.5 / BF16 / 8xH20 / SGLang (EP+TP)',
     model: 'DeepSeek-V2.5',
     precision: 'BF16',
     gpu: '8xH20',
@@ -206,7 +206,7 @@ const LONGBENCH_CONFIGS = {
     color: '#84cc16'  // Lime
   },
   'deepseek-v2.5-tp-16h20': {
-    label: 'DeepSeek-V2.5 / BF16 / 16xH20 (TP)',
+    label: 'DeepSeek-V2.5 / BF16 / 16xH20 / SGLang (TP)',
     model: 'DeepSeek-V2.5',
     precision: 'BF16',
     gpu: '16xH20',
@@ -219,7 +219,7 @@ const LONGBENCH_CONFIGS = {
     color: '#0ea5e9'  // Sky
   },
   'deepseek-v2.5-tp-8h20': {
-    label: 'DeepSeek-V2.5 / BF16 / 8xH20 (TP)',
+    label: 'DeepSeek-V2.5 / BF16 / 8xH20 / SGLang (TP)',
     model: 'DeepSeek-V2.5',
     precision: 'BF16',
     gpu: '8xH20',
@@ -232,7 +232,7 @@ const LONGBENCH_CONFIGS = {
     color: '#d946ef'  // Fuchsia
   },
   'deepseek-v2.5-dp-ep-16h20': {
-    label: 'DeepSeek-V2.5 / BF16 / 16xH20 (DP+EP)',
+    label: 'DeepSeek-V2.5 / BF16 / 16xH20 / SGLang (DP+EP)',
     model: 'DeepSeek-V2.5',
     precision: 'BF16',
     gpu: '16xH20',
@@ -245,7 +245,7 @@ const LONGBENCH_CONFIGS = {
     color: '#64748b'  // Slate
   },
   'deepseek-v2.5-dp-ep-8h20': {
-    label: 'DeepSeek-V2.5 / BF16 / 8xH20 (DP+EP)',
+    label: 'DeepSeek-V2.5 / BF16 / 8xH20 / SGLang (DP+EP)',
     model: 'DeepSeek-V2.5',
     precision: 'BF16',
     gpu: '8xH20',
@@ -259,7 +259,7 @@ const LONGBENCH_CONFIGS = {
   },
   // DeepSeek-R1 - Accuracy: 58.3%
   'deepseek-r1-dp-ep-16h20': {
-    label: 'DeepSeek-R1 / BF16 / 16xH20 (DP+EP)',
+    label: 'DeepSeek-R1 / BF16 / 16xH20 / SGLang (DP+EP)',
     model: 'DeepSeek-R1',
     precision: 'BF16',
     gpu: '16xH20',
@@ -272,7 +272,7 @@ const LONGBENCH_CONFIGS = {
     color: '#10b981'  // Emerald
   },
   'deepseek-r1-tp-ep-16h20': {
-    label: 'DeepSeek-R1 / BF16 / 16xH20 (TP+EP)',
+    label: 'DeepSeek-R1 / BF16 / 16xH20 / SGLang (TP+EP)',
     model: 'DeepSeek-R1',
     precision: 'BF16',
     gpu: '16xH20',
@@ -289,10 +289,11 @@ const LONGBENCH_CONFIGS = {
 // GSM8K benchmark data - defined outside component for stability
 const GSM8K_CONFIGS = {
   'qwen3-30b-a3b-5xa5000': {
-    label: 'Qwen3-30B-A3B / BF16 / 5xRTX A5000',
+    label: 'Qwen3-30B-A3B / BF16 / 5xRTX A5000 / SGLang',
     model: 'Qwen3-30B-A3B',
     precision: 'BF16',
     gpu: '5xRTX A5000',
+    system: 'SGLang',
     accuracy: 81.12,
     cost: 15342.20,
     tpot: 0.05,
@@ -300,10 +301,11 @@ const GSM8K_CONFIGS = {
     color: '#3b82f6'
   },
   'qwen1.5-moe-1xa6000': {
-    label: 'Qwen1.5-MoE-A2.7B-Chat / BF16 / 1xRTX A6000',
+    label: 'Qwen1.5-MoE-A2.7B-Chat / BF16 / 1xRTX A6000 / SGLang',
     model: 'Qwen1.5-MoE-A2.7B-Chat',
     precision: 'BF16',
     gpu: '1xRTX A6000',
+    system: 'SGLang',
     accuracy: 45.72,
     cost: 7158.92,
     tpot: 0.03,
@@ -311,10 +313,11 @@ const GSM8K_CONFIGS = {
     color: '#22c55e'
   },
   'qwen3-235b-fp8-2xh200': {
-    label: 'Qwen3-235B-A22B-Thinking / FP8 / 2xH200',
+    label: 'Qwen3-235B-A22B-Thinking / FP8 / 2xH200 / SGLang',
     model: 'Qwen3-235B-A22B-Thinking-2507-FP8',
     precision: 'FP8',
     gpu: '2xH200',
+    system: 'SGLang',
     accuracy: 68.84,
     cost: 104052.07,
     tpot: 0.02,
@@ -322,10 +325,11 @@ const GSM8K_CONFIGS = {
     color: '#f97316'
   },
   'qwen3-235b-bf16-4xh200': {
-    label: 'Qwen3-235B-A22B-Thinking / BF16 / 4xH200',
+    label: 'Qwen3-235B-A22B-Thinking / BF16 / 4xH200 / SGLang',
     model: 'Qwen3-235B-A22B-Thinking-2507',
     precision: 'BF16',
     gpu: '4xH200',
+    system: 'SGLang',
     accuracy: 70.28,
     cost: 195252.11,
     tpot: 0.02,
@@ -333,10 +337,11 @@ const GSM8K_CONFIGS = {
     color: '#a855f7'
   },
   'qwen3-235b-bf16-8xh100': {
-    label: 'Qwen3-235B-A22B / BF16 / 8xH100',
+    label: 'Qwen3-235B-A22B / BF16 / 8xH100 / SGLang',
     model: 'Qwen3-235B-A22B',
     precision: 'BF16',
     gpu: '8xH100',
+    system: 'SGLang',
     accuracy: 71.19,
     cost: 344657.14,
     tpot: 0.03,
@@ -344,10 +349,11 @@ const GSM8K_CONFIGS = {
     color: '#ef4444'
   },
   'qwen3-30b-instruct-4xa6000': {
-    label: 'Qwen3-30B-A3B-Instruct / BF16 / 4xRTX A6000',
+    label: 'Qwen3-30B-A3B-Instruct / BF16 / 4xRTX A6000 / SGLang',
     model: 'Qwen3-30B-A3B-Instruct-2507',
     precision: 'BF16',
     gpu: '4xRTX A6000',
+    system: 'SGLang',
     accuracy: 53.30,
     cost: 21600.27,
     tpot: 0.02,
@@ -355,10 +361,11 @@ const GSM8K_CONFIGS = {
     color: '#60a5fa'
   },
   'qwen3-30b-thinking-4xa6000': {
-    label: 'Qwen3-30B-A3B-Thinking / BF16 / 4xRTX A6000',
+    label: 'Qwen3-30B-A3B-Thinking / BF16 / 4xRTX A6000 / SGLang',
     model: 'Qwen3-30B-A3B-Thinking-2507',
     precision: 'BF16',
     gpu: '4xRTX A6000',
+    system: 'SGLang',
     accuracy: 69.29,
     cost: 21600.54,
     tpot: 0.04,
@@ -366,10 +373,11 @@ const GSM8K_CONFIGS = {
     color: '#4ade80'
   },
   'qwen3-30b-4xa6000': {
-    label: 'Qwen3-30B-A3B / BF16 / 4xRTX A6000',
+    label: 'Qwen3-30B-A3B / BF16 / 4xRTX A6000 / SGLang',
     model: 'Qwen3-30B-A3B',
     precision: 'BF16',
     gpu: '4xRTX A6000',
+    system: 'SGLang',
     accuracy: 80.67,
     cost: 21600.69,
     tpot: 0.03,
@@ -377,15 +385,53 @@ const GSM8K_CONFIGS = {
     color: '#9333ea'
   },
   'qwen3-30b-2xa100': {
-    label: 'Qwen3-30B-A3B / BF16 / 2xA100',
+    label: 'Qwen3-30B-A3B / BF16 / 2xA100 / SGLang',
     model: 'Qwen3-30B-A3B',
     precision: 'BF16',
     gpu: '2xA100',
+    system: 'SGLang',
     accuracy: 80.97,
     cost: 54380.91,
     tpot: 0.01,
     throughput: 1806.09,
     color: '#f87171'
+  },
+  // Qwen3-30B-A3B with different systems
+  'qwen3-30b-sglang-4xa5000': {
+    label: 'Qwen3-30B-A3B / BF16 / 4 x A5000 / SGLang',
+    model: 'Qwen3-30B-A3B',
+    precision: 'BF16',
+    gpu: '4 x A5000',
+    system: 'SGLang',
+    accuracy: 91.1,
+    cost: 8920,  // Cost in $
+    tpot: 0.058,
+    throughput: 2206.896,
+    color: '#8b5cf6'  // Violet
+  },
+  'qwen3-30b-ktransformers-1xa5000': {
+    label: 'Qwen3-30B-A3B / BF16 / 1 x A5000 + AMD 7453 / K-Transformers',
+    model: 'Qwen3-30B-A3B',
+    precision: 'BF16',
+    gpu: '1 x A5000 + AMD 7453',
+    system: 'K-Transformers',
+    accuracy: 80.0,
+    cost: 3800,  // Cost in $
+    tpot: 0.073,
+    throughput: 1753.42466,
+    color: '#f59e0b'  // Amber
+  },
+  'qwen3-30b-moe-infinity-1xa5000': {
+    label: 'Qwen3-30B-A3B / BF16 / 1 x A5000 + AMD 7454 / MoE-Infinity',
+    model: 'Qwen3-30B-A3B',
+    precision: 'BF16',
+    gpu: '1 x A5000 + AMD 7454',
+    system: 'MoE-Infinity',
+    accuracy: 91.1,
+    cost: 3800,  // Cost in $
+    tpot: 0.15,
+    throughput: 853.3,
+    color: '#06b6d4'  // Cyan
   },
 };
 
@@ -546,7 +592,7 @@ export default function App() {
   const [scenario, setScenario] = useState('5k-ref');
   
   // Inputs - default to 5k reference (4750 + 250 = 5000)
-  const [batchSize, setBatchSize] = useState(1);
+  const [batchSize, setBatchSize] = useState(33);
   const [inputLen, setInputLen] = useState(4750);
   const [outputLen, setOutputLen] = useState(250);
   const [sloMs, setSloMs] = useState(100); // Target Time Per Output Token (ms) - default 100ms = 0.1s
@@ -555,21 +601,25 @@ export default function App() {
   const [numGpus, setNumGpus] = useState(1); // Supply side GPU count
 
   // CAP Radar Chart selections (3 configs)
-  const [capConfig1, setCapConfig1] = useState('qwen3-30b-a3b-5xa5000');
-  const [capConfig2, setCapConfig2] = useState('qwen1.5-moe-1xa6000');
-  const [capConfig3, setCapConfig3] = useState('qwen3-235b-fp8-2xh200');
+  const [capConfig1, setCapConfig1] = useState('qwen3-30b-sglang-4xa5000');
+  const [capConfig2, setCapConfig2] = useState('qwen3-30b-ktransformers-1xa5000');
+  const [capConfig3, setCapConfig3] = useState('qwen3-30b-moe-infinity-1xa5000');
   const [capDataset, setCapDataset] = useState('gsm8k');
 
   // Select configs based on dataset
   const CAP_CONFIGS = capDataset === 'longbench-v2' ? LONGBENCH_CONFIGS : GSM8K_CONFIGS;
 
-  // Reset config selections when dataset changes
+  // Track previous dataset to only reset when it actually changes (not on initial load)
+  const prevDatasetRef = useRef(capDataset);
   useEffect(() => {
-    const configs = capDataset === 'longbench-v2' ? LONGBENCH_CONFIGS : GSM8K_CONFIGS;
-    const keys = Object.keys(configs);
-    setCapConfig1(keys[0] || '');
-    setCapConfig2(keys[1] || '');
-    setCapConfig3(keys[2] || '');
+    if (prevDatasetRef.current !== capDataset) {
+      const configs = capDataset === 'longbench-v2' ? LONGBENCH_CONFIGS : GSM8K_CONFIGS;
+      const keys = Object.keys(configs);
+      setCapConfig1(keys[0] || '');
+      setCapConfig2(keys[1] || '');
+      setCapConfig3(keys[2] || '');
+      prevDatasetRef.current = capDataset;
+    }
   }, [capDataset]);
 
   const MODEL_CONFIG = MODEL_CONFIGS[selectedModel];
@@ -870,7 +920,7 @@ export default function App() {
       { name: 'NVIDIA RTX 3090Ti', bandwidth: 64, power: 420, category: 'personal', type: 'pcie', showLabel: false },
       { name: 'NVIDIA RTX 3080Ti', bandwidth: 64, power: 380, category: 'personal', type: 'pcie', showLabel: false },
       // Autonomous (NVIDIA Jetson)
-      { name: 'NVIDIA Orin AGX', bandwidth: 16, power: 65, category: 'autonomous', type: 'pcie', showLabel: true },
+      { name: 'NVIDIA Orin AGX', bandwidth: 16, power: 60, category: 'autonomous', type: 'pcie', showLabel: true },
       { name: 'NVIDIA Xavier AGX', bandwidth: 16, power: 35, category: 'autonomous', type: 'pcie', showLabel: false },
       { name: 'NVIDIA Orin NX', bandwidth: 16, power: 28, category: 'autonomous', type: 'pcie', showLabel: false },
       { name: 'NVIDIA Jetson Nano', bandwidth: 4, power: 12, category: 'autonomous', type: 'pcie', showLabel: true },
@@ -898,6 +948,49 @@ export default function App() {
     }
     return data;
   }, [hardwareBw, numGpus, smbu, sloMs, selectedModel]);
+
+  // Find closest batch size to fully activated bandwidth
+  const closestBatchSize = useMemo(() => {
+    // Hardcode for specific case: 5K, Mixtral-8x22B
+    if (scenario === '5k-ref' && selectedModel === 'mixtral-8x22b') {
+      return 33;
+    }
+
+    if (scenario === '5k-ref' && selectedModel === 'mixtral-8x7b') {
+      return 33;
+    }
+    
+    const fullyActivatedBw = calculateDenseBandwidth();
+    let closest = 1;
+    let minDiff = Infinity;
+    
+    for (let b = 1; b <= 256; b += (b < 32 ? 1 : (b < 64 ? 2 : 4))) {
+      const stats = calculateDemand(b);
+      const diff = Math.abs(stats.reqBwGBs - fullyActivatedBw);
+      if (diff < minDiff) {
+        minDiff = diff;
+        closest = b;
+      }
+    }
+    
+    // Find nearest device bandwidth to determine offset direction
+    const { peakDevices, offloadDevices } = chartData;
+    const allDevices = [...peakDevices, ...offloadDevices];
+    let nearestDeviceBw = null;
+    let minDeviceDiff = Infinity;
+    
+    allDevices.forEach(device => {
+      const diff = Math.abs(device.bandwidth - fullyActivatedBw);
+      if (diff < minDeviceDiff) {
+        minDeviceDiff = diff;
+        nearestDeviceBw = device.bandwidth;
+      }
+    });
+    
+    // If nearest device is above fullyActivatedBw, add 3; if below, subtract 3
+    const offset = nearestDeviceBw && nearestDeviceBw > fullyActivatedBw ? 3 : -4;
+    return closest + offset;
+  }, [sloMs, selectedModel, inputLen, outputLen, scenario, chartData]);
 
   // --- CAP Radar Chart Data ---
   const capRadarData = useMemo(() => {
@@ -1116,7 +1209,7 @@ export default function App() {
             )}
             <div className="flex items-center gap-2">
               <div className="w-8 border-t-2 border-dashed border-red-500"></div>
-              <span className="text-xs text-slate-300">All expert activated: <span className="text-red-400 font-semibold">{chartData.fullyActivatedBw?.toFixed(0)} GB/s</span></span>
+              <span className="text-xs text-slate-300">All expert activated (Batch Size≈{closestBatchSize}): <span className="text-red-400 font-semibold">{chartData.fullyActivatedBw?.toFixed(0)} GB/s</span></span>
             </div>
           </div>
           
@@ -1243,20 +1336,16 @@ export default function App() {
                     if (name.includes('H100-SXM')) { dy = -5; dx = 20; }
                     if (name.includes('5090')) { dy = -7; dx = 30; }
                     if (name.includes('4090')) { dy = 25; dx = 30; }
-                    if (name.includes('M4')) { dy = -10; dx = -5; }
-                    
-                    // Calculate line start position from circle edge (radius ~4)
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    const radius = 4;
-                    const startOffsetX = distance > 0 ? (dx / distance) * radius : 0;
-                    const startOffsetY = distance > 0 ? (dy / distance) * radius : 0;
+                    if (name.includes('M4')) { dy = -15; dx = 0; }
+                    if (name.includes('Orin AGX')) { dy = -15; dx = 0; }
+                    if (name.includes('Jetson Nano')) { dy = -15; dx = 0; }
                     
                     return (
                       <>
-                        {/* Connecting line from point edge to label */}
+                        {/* Connecting line from point center to label */}
                         <line
-                          x1={x + startOffsetX}
-                          y1={y + startOffsetY}
+                          x1={x}
+                          y1={y}
                           x2={x + dx}
                           y2={y + dy}
                           stroke="#3b82f6"
@@ -1300,18 +1389,12 @@ export default function App() {
                     if (name.includes('H100-SXM')) { dy = 25; dx = 10; }
                     if (name.includes('5090')) { dy = -10; dx = 5; }
                     
-                    // Calculate line start position from circle edge (radius ~4)
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    const radius = 4;
-                    const startOffsetX = distance > 0 ? (dx / distance) * radius : 0;
-                    const startOffsetY = distance > 0 ? (dy / distance) * radius : 0;
-                    
                     return (
                       <>
-                        {/* Connecting line from point edge to label */}
+                        {/* Connecting line from point center to label */}
                         <line
-                          x1={x + startOffsetX}
-                          y1={y + startOffsetY}
+                          x1={x}
+                          y1={y}
                           x2={x + dx}
                           y2={y + dy}
                           stroke="#f97316"
@@ -1349,10 +1432,10 @@ export default function App() {
           <div className="mb-4 p-3 bg-slate-800/50 rounded border border-slate-700">
             <p className="text-xs text-slate-400">
               <span className="text-slate-300 font-medium">Config Format:</span>{' '}
-              <span className="text-blue-400">Model</span> / <span className="text-green-400">Data Type</span> / <span className="text-orange-400">Hardware</span>
+              <span className="text-blue-400">Model</span> / <span className="text-green-400">Data Type</span> / <span className="text-orange-400">Hardware</span> / <span className="text-purple-400">System</span>
             </p>
             <p className="text-xs text-slate-500 mt-1">
-              Example: Qwen3-30B-A3B / BF16 / 5xRTX A5000
+              Example: Qwen3-30B-A3B / BF16 / 5xRTX A5000 / SGLang
             </p>
           </div>
             
@@ -1466,7 +1549,10 @@ export default function App() {
                             const rawValue = metricData[`${entry.dataKey}_raw`];
                             let displayValue = rawValue;
                             if (metricType === 'cost') {
-                              displayValue = `$${rawValue?.toLocaleString()}`;
+                              // Show 'W' for LongBench v2 (Power), '$' for GSM8K (Cost)
+                              displayValue = capDataset === 'longbench-v2' 
+                                ? `${rawValue?.toLocaleString()}W` 
+                                : `$${rawValue?.toLocaleString()}`;
                             } else if (metricType === 'accuracy') {
                               displayValue = `${rawValue}%`;
                             } else if (metricType === 'tpot') {

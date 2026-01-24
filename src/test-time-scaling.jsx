@@ -113,7 +113,7 @@ const EXPLANATION_CARD = (
 
       <div>
         <h2 className="text-lg font-semibold text-slate-100 mb-1">
-          KV-cache eviction policy (Inference Engine)
+          Inference Engine (KV-cache eviction policy)
         </h2>
         <p className="text-slate-300 leading-relaxed">
           Different inference engines have different kv-cache eviction policies. When context is long or memory is constrained, inference engines may evict parts of the KV cache
@@ -326,16 +326,12 @@ function AccuracyVsQphChartCard({ chartData }) {
                     const p = chartData[index];
                     if (!p) return null;
 
-                    // TEMP: show labels for all points to verify it works
-                    // Later you can change to: if (!p.showLabel) return null;
-                    const s = p?.meta?.sequential;
-                    const par = p?.meta?.parallel;
-                    const n = p?.meta?.samples;
+                    // ✅ only label selected points (Pareto frontier)
+                    if (!p.showLabel) return null;
 
-                    const text = `S=${s ?? "-"} P=${par ?? "-"} N=${n ?? "-"}`;
-
-                    const dx = 10;
-                    const dy = -12;
+                    const text = p.labelText ?? "";
+                    const dx = p.labelDx ?? 10;
+                    const dy = p.labelDy ?? -12;
 
                     return (
                       <g>
@@ -350,8 +346,8 @@ function AccuracyVsQphChartCard({ chartData }) {
                         />
                         <rect
                           x={x + dx - 2}
-                          y={y + dy - 10}
-                          width={Math.max(40, text.length * 6.2)}
+                          y={y + dy - 15}
+                          width={Math.max(40, text.length * 7)}
                           height={16}
                           rx={3}
                           fill="#0f172a"
@@ -399,26 +395,48 @@ function ChartSection({ selection, selectionLabel, selectedRows }) {
   const chartData = useMemo(() => {
     if (!selectedRows?.length) return [];
 
-    // Example heuristic: label top-accuracy and top-QPH points
-    const maxAcc = Math.max(...selectedRows.map(r => r.accuracy));
-    const maxQph = Math.max(...selectedRows.map(r => r.questionsPerHour));
+    // --- Pareto frontier (maximize both QPH and Accuracy) ---
+    // A point is dominated if another point is >= in both dims and > in at least one.
+    const paretoIdx = new Set(
+      selectedRows
+        .map((r, i) => ({ r, i }))
+        .filter(({ r }, i) => {
+          return !selectedRows.some((other, j) => {
+            if (j === i) return false;
+            const noWorse =
+              other.questionsPerHour >= r.questionsPerHour &&
+              other.accuracy >= r.accuracy;
+            const strictlyBetter =
+              other.questionsPerHour > r.questionsPerHour ||
+              other.accuracy > r.accuracy;
+            return noWorse && strictlyBetter;
+          });
+        })
+        .map((x) => x.i)
+    );
+
+    // Helpful extrema for slight offset tweaks
+    const maxQph = Math.max(...selectedRows.map((r) => r.questionsPerHour));
+    const maxAcc = Math.max(...selectedRows.map((r) => r.accuracy));
 
     return selectedRows.map((row, idx) => {
       const s = row?.meta?.sequential;
       const p = row?.meta?.parallel;
       const n = row?.meta?.samples;
 
-      // your existing label format
       const labelText = `S${s ?? "-"} P${p ?? "-"} N${n ?? "-"}`;
 
-      // choose which ones to label
-      const showLabel =
-        row.accuracy === maxAcc ||
-        row.questionsPerHour === maxQph;
+      const showLabel = paretoIdx.has(idx);
 
-      // simple offset rule (you can tune or hardcode per-point)
-      const labelDx = row.questionsPerHour === maxQph ? 14 : 10;
-      const labelDy = row.accuracy === maxAcc ? -18 : -10;
+      // Offsets: default top-right; tweak for extreme points to reduce clipping
+      let labelDx = 12;
+      let labelDy = -14;
+
+      // If it's the fastest point, nudge left so it doesn't clip on the right edge
+      if (row.questionsPerHour === maxQph) labelDx = -90;
+
+      // If it's the highest-accuracy point, nudge down a bit to avoid top clipping
+      if (row.accuracy === maxAcc) labelDy = 18;
 
       return {
         questionsPerHour: row.questionsPerHour,
@@ -426,17 +444,18 @@ function ChartSection({ selection, selectionLabel, selectedRows }) {
         meta: row.meta,
         color: row.color,
 
-        // NEW:
+        // label fields used by your LabelList renderer
         labelText,
         showLabel,
         labelDx,
         labelDy,
       };
     });
-  }, [selectedRows, selectionLabel]);
+  }, [selectedRows]);
 
   return <AccuracyVsQphChartCard chartData={chartData} />;
 }
+
 /** -------------------------
  *  3) PageContent no longer owns charts
  *  ------------------------- */

@@ -385,18 +385,6 @@ const GSM8K_CONFIGS = {
     color: '#f87171'
   },
   // Qwen3-30B-A3B with different systems
-  'qwen3-30b-sglang-4xa5000': {
-    label: 'Qwen3-30B-A3B / BF16 / 4 x A5000 / SGLang',
-    model: 'Qwen3-30B-A3B',
-    precision: 'BF16',
-    gpu: '4 x A5000',
-    system: 'SGLang',
-    accuracy: 91.1,
-    cost: 8920,  // Cost in $
-    tpot: 0.058,
-    throughput: 2206.896,
-    color: '#8b5cf6'  // Violet
-  },
   'qwen3-30b-ktransformers-1xa5000': {
     label: 'Qwen3-30B-A3B / BF16 / 1 x A5000 + AMD 7453 / K-Transformers',
     model: 'Qwen3-30B-A3B',
@@ -589,7 +577,7 @@ export default function App() {
   const [numGpus, setNumGpus] = useState(1); // Supply side GPU count
 
   // CAP Radar Chart selections (3 configs)
-  const [capConfig1, setCapConfig1] = useState('qwen3-30b-sglang-4xa5000');
+  const [capConfig1, setCapConfig1] = useState('qwen3-30b-4xa6000');
   const [capConfig2, setCapConfig2] = useState('qwen3-30b-ktransformers-1xa5000');
   const [capConfig3, setCapConfig3] = useState('qwen3-30b-moe-infinity-1xa5000');
   const [capDataset, setCapDataset] = useState('gsm8k');

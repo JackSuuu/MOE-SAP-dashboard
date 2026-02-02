@@ -670,7 +670,7 @@ export default function App() {
         batchSize: 1,
         power: 700,
         tpot: 6.9, // ms
-        color: '#f97316', // orange for vLLM
+        color: '#ef4444', // red for vLLM
         showLabel: true,
       },
       {
@@ -683,7 +683,7 @@ export default function App() {
         batchSize: 32,
         power: 700,
         tpot: 14.3, // ms
-        color: '#f97316', // orange for vLLM
+        color: '#ef4444', // red for vLLM
         showLabel: true,
       },
       {
@@ -696,7 +696,7 @@ export default function App() {
         batchSize: 1,
         power: 700,
         tpot: 7.4, // ms
-        color: '#f97316', // orange for vLLM
+        color: '#ef4444', // red for vLLM
         showLabel: true,
       },
       {
@@ -709,7 +709,7 @@ export default function App() {
         batchSize: 1,
         power: 700,
         tpot: 4.7, // ms
-        color: '#f97316', // orange for vLLM
+        color: '#ef4444', // red for vLLM
         showLabel: true,
       },
       {
@@ -722,7 +722,7 @@ export default function App() {
         batchSize: 32,
         power: 700,
         tpot: 15.5, // ms
-        color: '#f97316', // orange for vLLM
+        color: '#ef4444', // red for vLLM
         showLabel: true,
       },
       {
@@ -735,7 +735,7 @@ export default function App() {
         batchSize: 1,
         power: 700,
         tpot: 5.3, // ms
-        color: '#f97316', // orange for vLLM
+        color: '#ef4444', // red for vLLM
         showLabel: true,
       },
     ],
@@ -830,7 +830,7 @@ export default function App() {
         batchSize: 1,
         power: 700,
         ttft: 89.8, // ms
-        color: '#f97316', // orange for vLLM
+        color: '#ef4444', // red for vLLM
         showLabel: true,
       },
       {
@@ -843,7 +843,7 @@ export default function App() {
         batchSize: 32,
         power: 700,
         ttft: 881.6, // ms
-        color: '#f97316', // orange for vLLM
+        color: '#ef4444', // red for vLLM
         showLabel: true,
       },
       {
@@ -856,7 +856,7 @@ export default function App() {
         batchSize: 1,
         power: 700,
         ttft: 241.5, // ms
-        color: '#f97316', // orange for vLLM
+        color: '#ef4444', // red for vLLM
         showLabel: true,
       },
       {
@@ -869,7 +869,7 @@ export default function App() {
         batchSize: 1,
         power: 700,
         ttft: 70.6, // ms
-        color: '#f97316', // orange for vLLM
+        color: '#ef4444', // red for vLLM
         showLabel: true,
       },
       {
@@ -882,7 +882,7 @@ export default function App() {
         batchSize: 32,
         power: 700,
         ttft: 733.56, // ms
-        color: '#f97316', // orange for vLLM
+        color: '#ef4444', // red for vLLM
         showLabel: true,
       },
       {
@@ -895,7 +895,7 @@ export default function App() {
         batchSize: 1,
         power: 700,
         ttft: 190.8, // ms
-        color: '#f97316', // orange for vLLM
+        color: '#ef4444', // red for vLLM
         showLabel: true,
       },
     ],

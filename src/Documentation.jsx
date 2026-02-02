@@ -89,9 +89,9 @@ export default function Documentation() {
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <span className="text-red-500 text-xl">▲</span>
+                    <span className="text-indigo-500 text-xl">▲</span>
                     <div>
-                      <span className="text-slate-200 font-medium">Red Triangle (vLLM):</span>
+                      <span className="text-slate-200 font-medium">Indigo Triangle (vLLM):</span>
                       <span className="text-slate-400 ml-2">Measured TPOT/TTFT from vLLM v0.11.0 benchmarks</span>
                     </div>
                   </div>

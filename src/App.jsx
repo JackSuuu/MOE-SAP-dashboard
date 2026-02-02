@@ -1490,13 +1490,24 @@ export default function App() {
         <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 sm:p-6 md:p-8 mb-8 sm:mb-12">
           <h2 className="text-2xl font-bold text-slate-100 mb-4">Our Goal</h2>
           <p className="text-slate-300 leading-relaxed">
-            We aim to create a suite of next-generation benchmarks that track the fast-evolving landscape of AI, 
-            and measure the complex trade-offs across costs, accuracy, and performance on a range of state-of-the-art hardware. 
-            Our approach is informed by two selection maps (one for models and the other for systems), with a broad team 
-            with extensive expertise in AI based at the{' '}
+            We aim to create a next-generation benchmark that tracks the fast-evolving landscape of AI by:
+            <ul className="list-disc list-inside pl-4 space-y-1 text-slate-300">
+              <li>
+                Focusing on frontier AI inference including <strong>sparse</strong>, <strong>reasoning</strong>, and <strong>agentic models</strong>.
+                  These pose unique challenges for benchmarking as they involve sparse activations, memory-bound generation, heterogeneous hardware, and dynamic workflows.
+              </li>
+              <li>
+                Measuring not only <strong>performance</strong>, but also <strong>costs</strong> and <strong>accuracy</strong>, to study their complex trade-offs.
+              </li>
+              <li>
+                Providing analytical models to <strong>forecast performance</strong> in new hardware.
+              </li>
+            </ul>
+            This is facilitated by a broad team with extensive expertise in AI based at the{' '}
             <a href="https://www.ed.ac.uk/" className="text-blue-400 hover:underline">University of Edinburgh</a>,{' '}
             <a href="https://www.epcc.ed.ac.uk/" className="text-blue-400 hover:underline">EPCC</a>, and{' '}
             <a href="https://www.imperial.ac.uk/" className="text-blue-400 hover:underline">Imperial College London</a>. 
+            <br />
             Our project is funded by{' '}
             <a href="https://www.aria.org.uk" className="text-blue-400 hover:underline">ARIA</a> as part of the "
             <a href="https://www.aria.org.uk/opportunity-spaces/nature-computes-better/scaling-compute/" className="text-blue-400 hover:underline">Scaling compute</a>" programme.

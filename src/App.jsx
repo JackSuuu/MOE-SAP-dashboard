@@ -659,6 +659,85 @@ export default function App() {
         color: '#ef4444', // red for real data
         showLabel: true,
       },
+      // vLLM v0.11.0 data points
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H100-SXM',
+        engine: 'vLLM v0.11.0',
+        batchSize: 1,
+        power: 700,
+        tpot: 6.9, // ms
+        color: '#f97316', // orange for vLLM
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H100-SXM',
+        engine: 'vLLM v0.11.0',
+        batchSize: 32,
+        power: 700,
+        tpot: 14.3, // ms
+        color: '#f97316', // orange for vLLM
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H100-SXM',
+        engine: 'vLLM v0.11.0',
+        batchSize: 1,
+        power: 700,
+        tpot: 7.4, // ms
+        color: '#f97316', // orange for vLLM
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H100-SXM',
+        engine: 'vLLM v0.11.0',
+        batchSize: 1,
+        power: 700,
+        tpot: 4.7, // ms
+        color: '#f97316', // orange for vLLM
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H100-SXM',
+        engine: 'vLLM v0.11.0',
+        batchSize: 32,
+        power: 700,
+        tpot: 15.5, // ms
+        color: '#f97316', // orange for vLLM
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H100-SXM',
+        engine: 'vLLM v0.11.0',
+        batchSize: 1,
+        power: 700,
+        tpot: 5.3, // ms
+        color: '#f97316', // orange for vLLM
+        showLabel: true,
+      },
     ],
     // TTFT real data points
     ttft: [
@@ -738,6 +817,85 @@ export default function App() {
         power: 700,
         ttft: 153.0, // ms
         color: '#ef4444', // red for real data
+        showLabel: true,
+      },
+      // vLLM v0.11.0 TTFT data points
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H100-SXM',
+        engine: 'vLLM v0.11.0',
+        batchSize: 1,
+        power: 700,
+        ttft: 89.8, // ms
+        color: '#f97316', // orange for vLLM
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H100-SXM',
+        engine: 'vLLM v0.11.0',
+        batchSize: 32,
+        power: 700,
+        ttft: 881.6, // ms
+        color: '#f97316', // orange for vLLM
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H100-SXM',
+        engine: 'vLLM v0.11.0',
+        batchSize: 1,
+        power: 700,
+        ttft: 241.5, // ms
+        color: '#f97316', // orange for vLLM
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H100-SXM',
+        engine: 'vLLM v0.11.0',
+        batchSize: 1,
+        power: 700,
+        ttft: 70.6, // ms
+        color: '#f97316', // orange for vLLM
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H100-SXM',
+        engine: 'vLLM v0.11.0',
+        batchSize: 32,
+        power: 700,
+        ttft: 733.56, // ms
+        color: '#f97316', // orange for vLLM
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H100-SXM',
+        engine: 'vLLM v0.11.0',
+        batchSize: 1,
+        power: 700,
+        ttft: 190.8, // ms
+        color: '#f97316', // orange for vLLM
         showLabel: true,
       },
     ],
@@ -1796,7 +1954,7 @@ export default function App() {
                 />
               </Scatter>
 
-              {/* Real benchmark data points - red triangles for actual measured data */}
+              {/* Real benchmark data points - triangles for actual measured data */}
               {(yAxisType === 'tpot' || yAxisType === 'ttft') && (
               <Scatter 
                 data={(yAxisType === 'tpot' ? REAL_BENCHMARK_DATA.tpot : REAL_BENCHMARK_DATA.ttft).filter(d => 
@@ -1805,9 +1963,19 @@ export default function App() {
                   ((scenario === '5k-ref' && d.context === '4k-1k') || (scenario === '14k-ref' && d.context === '13k-1k'))
                 )}
                 name="Measured (Real Benchmark)"
-                fill="#ef4444"
-                shape="triangle"
                 isAnimationActive={false}
+                shape={(props) => {
+                  const { cx, cy, payload } = props;
+                  const color = payload.color || '#ef4444';
+                  return (
+                    <polygon 
+                      points={`${cx},${cy-8} ${cx-7},${cy+6} ${cx+7},${cy+6}`}
+                      fill={color}
+                      stroke={color}
+                      strokeWidth={1}
+                    />
+                  );
+                }}
               />
               )}
               

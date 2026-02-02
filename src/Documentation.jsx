@@ -84,8 +84,15 @@ export default function Documentation() {
                   <div className="flex items-start gap-3">
                     <span className="text-red-500 text-xl">▲</span>
                     <div>
-                      <span className="text-slate-200 font-medium">Triangle dots (Measured):</span>
-                      <span className="text-slate-400 ml-2">Real TPOT/TTFT from actual system benchmarks with various model configurations</span>
+                      <span className="text-slate-200 font-medium">Red Triangle (SGLang):</span>
+                      <span className="text-slate-400 ml-2">Measured TPOT/TTFT from SGLang v0.5.8 benchmarks</span>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <span className="text-orange-500 text-xl">▲</span>
+                    <div>
+                      <span className="text-slate-200 font-medium">Orange Triangle (vLLM):</span>
+                      <span className="text-slate-400 ml-2">Measured TPOT/TTFT from vLLM v0.11.0 benchmarks</span>
                     </div>
                   </div>
                 </div>

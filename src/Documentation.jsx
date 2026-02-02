@@ -161,9 +161,65 @@ export default function Documentation() {
         {/* Test Time Scaling Section */}
         <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 sm:p-8 mb-8">
           <h2 className="text-2xl font-bold text-slate-100 mb-6 pl-3 border-l-4 border-purple-500">Test Time Scaling</h2>
-          <p className="text-slate-400 leading-relaxed">
-            Documentation for Test Time Scaling benchmarks coming soon.
+          <p className="text-slate-400 leading-relaxed mb-6">
+            Test-time scaling improves solution quality by spending more compute at inference time.
+            The main knobs trade off <span className="text-slate-200 font-medium">latency</span>,{" "}
+            <span className="text-slate-200 font-medium">throughput</span>,{" "}
+            <span className="text-slate-200 font-medium">cost</span>, and{" "}
+            <span className="text-slate-200 font-medium">accuracy</span>.
           </p>
+
+          <div className="space-y-6 pl-4 border-l-2 border-slate-700">
+            <div>
+              <h3 className="text-xl font-semibold text-slate-200 mb-2">Parallel scaling</h3>
+              <p className="leading-relaxed text-slate-400">
+                Run multiple independent samples/attempts in parallel (e.g., self-consistency / majority vote).
+                Typically increases accuracy and robustness, but increases compute cost linearly with the number
+                of samples and may require higher serving throughput to keep latency bounded.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold text-slate-200 mb-2">Sequential scaling</h3>
+              <p className="leading-relaxed text-slate-400">
+                Spend more steps per query (e.g., iterative refinement, tool-augmented loops, reflection, or
+                verifier-guided retries). Can improve hard problems with fewer parallel samples, but increases
+                end-to-end latency and may be sensitive to stop criteria and time budgets.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold text-slate-200 mb-2">Hybrid parallel + sequential scaling</h3>
+              <p className="leading-relaxed text-slate-400 mb-4">
+                Combine both: run a small number of parallel candidates, then refine or verify the most promising
+                ones over multiple rounds. Often gives a better accuracy–cost frontier, but requires careful
+                scheduling (when to stop, how to allocate budget across rounds, and how to handle early exits).
+              </p>
+              <p className="leading-relaxed text-slate-400">
+                Note: For datapoints with Sequential S = 1, there is no value for N (number of samples), as this
+                is equivalent to full parallel scaling with majority voting. There is no subsequent sampling and aggregation.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold text-slate-200 mb-2">Quantization</h3>
+              <p className="leading-relaxed text-slate-400">
+                Use lower-precision weights/activations (e.g., FP8/INT8) to reduce memory bandwidth and increase
+                throughput. This can enable larger batch sizes or more parallel attempts under the same hardware
+                budget, but may slightly reduce accuracy or change numerical behavior depending on the scheme and model.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-semibold text-slate-200 mb-2">Inference Engine (KV-cache eviction policy)</h3>
+              <p className="leading-relaxed text-slate-400">
+                Different inference engines have different kv-cache eviction policies. When context is long or memory is constrained, inference engines may evict parts of the KV cache
+                (e.g., sliding window, chunk-based eviction, or attention sinks). Eviction improves capacity and
+                throughput, but can reduce quality if important tokens are dropped—especially for long-context
+                reasoning and retrieval-heavy tasks.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Agentic AI Workflow Section */}

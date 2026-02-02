@@ -1302,13 +1302,13 @@ export default function App() {
     const peakDevicesWithTpot = peakDevices.map(d => ({
       ...d,
       tpot: (refSloSeconds * reqBwAt100ms / d.bandwidth) * 1000 / tpotCorrectionFactor, // Convert to ms
-      ttft: calculateTTFT(d)
+      ttft: calculateTTFT(d) // Peak bandwidth (HBM) - calculate TTFT
     }));
     
     const offloadDevicesWithTpot = offloadDevices.map(d => ({
       ...d,
       tpot: (refSloSeconds * reqBwAt100ms / d.bandwidth) * 1000 / tpotCorrectionFactor, // Convert to ms
-      ttft: calculateTTFT(d)
+      ttft: null // Offloading bandwidth (PCIe) - no TTFT calculation
     }));
     
     // Separate DGX devices (multi-GPU systems) for different color
@@ -1688,11 +1688,11 @@ export default function App() {
                 stroke="#94a3b8"
                 scale="log"
                 domain={yAxisType === 'tpot' || yAxisType === 'ttft'
-                  ? [1, 10000]  // TPOT/TTFT range in ms
+                  ? [0.1, 10000]  // TPOT/TTFT range in ms (from 0.1ms to 10s)
                   : [10, Math.max(30000, chartData.fullyActivatedBw * 1.5)]}
                 tick={{ fill: '#94a3b8', fontSize: 9 }}
                 ticks={yAxisType === 'tpot' || yAxisType === 'ttft'
-                  ? [1, 5, 10, 50, 100, 500, 1000, 5000]
+                  ? [0.1, 0.5, 1, 5, 10, 50, 100, 500, 1000, 5000]
                   : [10, 50, 100, 500, 1000, 5000, 10000, 30000]}
                 tickFormatter={(value) => yAxisType === 'tpot' || yAxisType === 'ttft'
                   ? (value >= 1000 ? `${(value/1000).toFixed(0)}s` : `${value}ms`)
@@ -1828,7 +1828,7 @@ export default function App() {
                     if (name.includes('MI300X')) { dy = -5; dx = 45; }
                     if (name.includes('H100-SXM')) { dy = -5; dx = 20; }
                     if (name.includes('5090')) { dy = -7; dx = 30; }
-                    if (name.includes('4090')) { dy = 25; dx = 30; }
+                    if (name.includes('4090')) { dy = -15; dx = 30; }
                     if (name.includes('M4')) { dy = -15; dx = 0; }
                     if (name.includes('Orin AGX')) { dy = -15; dx = 0; }
                     if (name.includes('Jetson Nano')) { dy = -15; dx = 0; }
@@ -1862,6 +1862,8 @@ export default function App() {
               </Scatter>
               
               {/* Device scatter points - orange circles for Offloading Bandwidth (PCIe) */}
+              {/* Only show in bandwidth/tpot mode, hide in TTFT mode */}
+              {yAxisType !== 'ttft' && (
               <Scatter 
                 data={chartData.offloadDevices}
                 name="Offloading Bandwidth"
@@ -1917,6 +1919,7 @@ export default function App() {
                   }}
                 />
               </Scatter>
+              )}
 
               {/* DGX systems - green circles for Peak Bandwidth (Multi-GPU) */}
               <Scatter 
@@ -1965,6 +1968,8 @@ export default function App() {
               </Scatter>
 
               {/* DGX systems - lime/light green circles for Offloading Bandwidth */}
+              {/* Only show in bandwidth/tpot mode, hide in TTFT mode */}
+              {yAxisType !== 'ttft' && (
               <Scatter 
                 data={chartData.dgxOffloadDevices}
                 name="DGX Offloading Bandwidth"
@@ -2008,6 +2013,7 @@ export default function App() {
                   }}
                 />
               </Scatter>
+              )}
 
               {/* Real benchmark data points - triangles for actual measured data */}
               {(yAxisType === 'tpot' || yAxisType === 'ttft') && (

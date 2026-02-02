@@ -1500,9 +1500,9 @@ export default function App() {
           </div>
           
           {/* Controls Row - Context Size and Parameters inline */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mb-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-11 gap-2 sm:gap-3 md:gap-4 mb-4">
             {/* Context Size */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-xs font-medium text-slate-400 mb-1">Context Size</label>
               <select 
                 value={scenario}
@@ -1515,7 +1515,7 @@ export default function App() {
             </div>
             
             {/* Model */}
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-xs font-medium text-slate-400 mb-1">Model</label>
               <select 
                 value={selectedModel}
@@ -1530,23 +1530,25 @@ export default function App() {
               </select>
             </div>
             
-            {/* Batch Size */}
-            <div className="w-1/2">
+            {/* Batch Size - separate cell, field at half width */}
+            <div className="lg:col-span-1">
               <label className="block text-xs font-medium text-slate-400 mb-1">Batch Size</label>
-              <select 
-                value={batchSize}
-                onChange={(e) => setBatchSize(parseInt(e.target.value))}
-                className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
-              >
-                <option value={1}>1</option>
-                <option value={32}>32</option>
-                <option value={64}>64</option>
-                <option value={128}>128</option>
-              </select>
+              <div className="w-1/2">
+                <select 
+                  value={batchSize}
+                  onChange={(e) => setBatchSize(parseInt(e.target.value))}
+                  className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
+                >
+                  <option value={1}>1</option>
+                  <option value={32}>32</option>
+                  <option value={64}>64</option>
+                  <option value={128}>128</option>
+                </select>
+              </div>
             </div>
             
-            {/* Y-Axis Type */}
-            <div>
+            {/* Y-Axis - separate cell, next to Batch Size */}
+            <div className="lg:col-span-1">
               <label className="block text-xs font-medium text-slate-400 mb-1">Y-Axis</label>
               <select 
                 value={yAxisType}
@@ -1561,7 +1563,7 @@ export default function App() {
             
             {/* Target SLO (decode) - only show when bandwidth is selected */}
             {yAxisType === 'bandwidth' && (
-            <div>
+            <div className="lg:col-span-2">
               <label className="block text-xs font-medium text-slate-400 mb-1">Target SLO (decode)</label>
               <select 
                 value={sloMs}
@@ -1578,8 +1580,8 @@ export default function App() {
             </div>
             )}
             
-            {/* Point Legend - in grid */}
-            <div className="flex flex-col justify-center bg-slate-900 border border-slate-700 rounded px-2 py-1.5">
+            {/* Point Legend - 1.5x width (spans 3 of 11 columns on lg) */}
+            <div className="lg:col-span-3 flex flex-col justify-center bg-slate-900 border border-slate-700 rounded px-2 py-1.5">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-3 h-3 rounded-full bg-blue-500"></div>
                 <span className="text-xs text-slate-300">Peak Bandwidth (Memory) Estimate</span>

@@ -61,76 +61,6 @@ const NAV_BAR = (
   </nav>
 );
 
-const EXPLANATION_CARD = (
-  <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 sm:p-6 md:p-8 mb-8 mt-6">
-    <p className="text-slate-300 leading-relaxed mb-6">
-      Test-time scaling improves solution quality by spending more compute at inference time.
-      The main knobs trade off{" "}
-      <span className="text-slate-200 font-medium">latency</span>,{" "}
-      <span className="text-slate-200 font-medium">throughput</span>,{" "}
-      <span className="text-slate-200 font-medium">cost</span>, and{" "}
-      <span className="text-slate-200 font-medium">accuracy</span>.
-    </p>
-
-    <div className="space-y-5">
-      <div>
-        <h2 className="text-lg font-semibold text-slate-100 mb-1">Parallel scaling</h2>
-        <p className="text-slate-300 leading-relaxed">
-          Run multiple independent samples/attempts in parallel (e.g., self-consistency / majority vote).
-          Typically increases accuracy and robustness, but increases compute cost linearly with the number
-          of samples and may require higher serving throughput to keep latency bounded.
-        </p>
-      </div>
-
-      <div>
-        <h2 className="text-lg font-semibold text-slate-100 mb-1">Sequential scaling</h2>
-        <p className="text-slate-300 leading-relaxed">
-          Spend more steps per query (e.g., iterative refinement, tool-augmented loops, reflection, or
-          verifier-guided retries). Can improve hard problems with fewer parallel samples, but increases
-          end-to-end latency and may be sensitive to stop criteria and time budgets.
-        </p>
-      </div>
-
-      <div>
-        <h2 className="text-lg font-semibold text-slate-100 mb-1">
-          Hybrid parallel + sequential scaling
-        </h2>
-        <p className="text-slate-300 leading-relaxed">
-          Combine both: run a small number of parallel candidates, then refine or verify the most promising
-          ones over multiple rounds. Often gives a better accuracy–cost frontier, but requires careful
-          scheduling (when to stop, how to allocate budget across rounds, and how to handle early exits).
-        </p>
-        <br />
-        <p className="text-slate-300 leading-relaxed">
-          Note: For datapoints with Sequential S = 1, there is no value for N (number of samples), as this
-          is equivalent to full parallel scaling with majority voting. There is no subsequent sampling and aggregation.
-        </p>
-      </div>
-
-      <div>
-        <h2 className="text-lg font-semibold text-slate-100 mb-1">Quantization</h2>
-        <p className="text-slate-300 leading-relaxed">
-          Use lower-precision weights/activations (e.g., FP8/INT8) to reduce memory bandwidth and increase
-          throughput. This can enable larger batch sizes or more parallel attempts under the same hardware
-          budget, but may slightly reduce accuracy or change numerical behavior depending on the scheme and model.
-        </p>
-      </div>
-
-      <div>
-        <h2 className="text-lg font-semibold text-slate-100 mb-1">
-          Inference Engine (KV-cache eviction policy)
-        </h2>
-        <p className="text-slate-300 leading-relaxed">
-          Different inference engines have different kv-cache eviction policies. When context is long or memory is constrained, inference engines may evict parts of the KV cache
-          (e.g., sliding window, chunk-based eviction, or attention sinks). Eviction improves capacity and
-          throughput, but can reduce quality if important tokens are dropped—especially for long-context
-          reasoning and retrieval-heavy tasks.
-        </p>
-      </div>
-    </div>
-  </div>
-);
-
 // --- dropdown options (outside component) ---
 const TTS_MODEL_OPTIONS = [
   { value: "gpt-oss-120b-high", label: "GPT-OSS-120B (HIGH)" },
@@ -529,7 +459,75 @@ const PageContent = ({
 
 
 
-/** --- Component --- */
+/** --- Section for embedding on main page (controls + chart only) --- */
+
+export function TestTimeScalingSection() {
+  const [ttsModel, setTtsModel] = useState("gpt-oss-120b-high");
+  const [ttsQuant, setTtsQuant] = useState("mxfp4");
+  const [dataset, setDataset] = useState("aime25");
+  const [ttsEngine, setTtsEngine] = useState("vllm");
+
+  const selectionLabel = useMemo(() => {
+    const m = TTS_MODEL_OPTIONS.find((o) => o.value === ttsModel)?.label ?? ttsModel;
+    const e = TTS_ENGINE_OPTIONS.find((o) => o.value === ttsEngine)?.label ?? ttsEngine;
+    const q = TTS_QUANT_OPTIONS.find((o) => o.value === ttsQuant)?.label ?? ttsQuant;
+    const d = DATASET_OPTIONS.find((o) => o.value === dataset)?.label ?? dataset;
+    return `${m} / ${q} / ${d} / ${e}`;
+  }, [ttsModel, ttsEngine, ttsQuant, dataset]);
+
+  const selection = useMemo(
+    () => ({ model: ttsModel, quant: ttsQuant, dataset, engine: ttsEngine }),
+    [ttsModel, ttsQuant, dataset, ttsEngine]
+  );
+
+  const selectedRows = useMemo(() => filterBenchmarkRows(selection), [selection]);
+
+  return (
+    <>
+      <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 sm:p-6 md:p-8 mb-6">
+        <h2 className="text-lg font-semibold pl-2 border-l-4 border-cyan-500 mb-4">
+          Configuration
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <SelectControl
+            label="Model"
+            value={ttsModel}
+            onChange={setTtsModel}
+            options={TTS_MODEL_OPTIONS}
+          />
+          <SelectControl
+            label="Quantization"
+            value={ttsQuant}
+            onChange={setTtsQuant}
+            options={TTS_QUANT_OPTIONS}
+          />
+          <SelectControl
+            label="Dataset"
+            value={dataset}
+            onChange={setDataset}
+            options={DATASET_OPTIONS}
+          />
+          <SelectControl
+            label="Inference engine"
+            value={ttsEngine}
+            onChange={setTtsEngine}
+            options={TTS_ENGINE_OPTIONS}
+          />
+        </div>
+        <div className="inline-flex items-center px-2 py-1 mt-3 bg-slate-800 border border-slate-700 rounded text-xs text-slate-300">
+          {selectionLabel}
+        </div>
+      </div>
+      <ChartSection
+        selection={selection}
+        selectionLabel={selectionLabel}
+        selectedRows={selectedRows}
+      />
+    </>
+  );
+}
+
+/** --- Full page component --- */
 
 export default function Test_Time_Scaling() {
   const [ttsModel, setTtsModel] = useState("gpt-oss-120b-high");
@@ -545,13 +543,11 @@ export default function Test_Time_Scaling() {
     return `${m} / ${q} / ${d} / ${e}`;
   }, [ttsModel, ttsEngine, ttsQuant, dataset]);
 
-  // ✅ ADD THIS
   const selection = useMemo(
     () => ({ model: ttsModel, quant: ttsQuant, dataset, engine: ttsEngine }),
     [ttsModel, ttsQuant, dataset, ttsEngine]
   );
 
-  // ✅ Use selection directly (cleaner)
   const selectedRows = useMemo(() => filterBenchmarkRows(selection), [selection]);
 
   return (
@@ -559,7 +555,6 @@ export default function Test_Time_Scaling() {
       {NAV_BAR}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8">
-        {EXPLANATION_CARD}
         <PageContent
           ttsModel={ttsModel}
           setTtsModel={setTtsModel}
@@ -573,9 +568,9 @@ export default function Test_Time_Scaling() {
         />
 
         <ChartSection
-        selection={selection}
-        selectionLabel={selectionLabel}
-        selectedRows={selectedRows}
+          selection={selection}
+          selectionLabel={selectionLabel}
+          selectedRows={selectedRows}
         />
       </div>
     </div>

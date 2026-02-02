@@ -9,6 +9,7 @@ import {
 import {
   Activity, Server, Settings, Cpu, Info, Zap, Percent, Github
 } from 'lucide-react';
+import { TestTimeScalingSection } from './test-time-scaling.jsx';
 
 const Card = ({ children, className = "" }) => (
   <div className={`bg-slate-800 border border-slate-700 rounded-lg p-3 sm:p-4 ${className}`}>
@@ -1465,7 +1466,7 @@ export default function App() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 lg:gap-6 text-xs sm:text-sm">
             <a href="#moe" className="text-slate-300 hover:text-blue-400 transition-colors">Mixture-of-Experts</a>
-            <Link to="/test-time-scaling" className="text-slate-300 hover:text-blue-400 transition-colors">Test Time Scaling</Link>
+            <a href="#test-time-scaling" className="text-slate-300 hover:text-blue-400 transition-colors">Test Time Scaling</a>
             <span className="text-slate-500 cursor-not-allowed hidden md:inline">Agentic AI Workflow <span className="text-xs text-slate-600">(Coming Soon)</span></span>
             <Link to="/documentation" className="text-slate-300 hover:text-blue-400 transition-colors">Documentation</Link>
             <Link to="/team" className="text-slate-300 hover:text-blue-400 transition-colors">Team</Link>
@@ -1490,13 +1491,24 @@ export default function App() {
         <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 sm:p-6 md:p-8 mb-8 sm:mb-12">
           <h2 className="text-2xl font-bold text-slate-100 mb-4">Our Goal</h2>
           <p className="text-slate-300 leading-relaxed">
-            We aim to create a suite of next-generation benchmarks that track the fast-evolving landscape of AI, 
-            and measure the complex trade-offs across costs, accuracy, and performance on a range of state-of-the-art hardware. 
-            Our approach is informed by two selection maps (one for models and the other for systems), with a broad team 
-            with extensive expertise in AI based at the{' '}
+            We aim to create a next-generation benchmark that tracks the fast-evolving landscape of AI by:
+            <ul className="list-disc list-inside pl-4 space-y-1 text-slate-300">
+              <li>
+                Focusing on frontier AI inference including <strong>sparse</strong>, <strong>reasoning</strong>, and <strong>agentic models</strong>.
+                  These pose unique challenges for benchmarking as they involve sparse activations, memory-bound generation, heterogeneous hardware, and dynamic workflows.
+              </li>
+              <li>
+                Measuring not only <strong>performance</strong>, but also <strong>costs</strong> and <strong>accuracy</strong>, to study their complex trade-offs.
+              </li>
+              <li>
+                Providing analytical models to <strong>forecast performance</strong> in new hardware.
+              </li>
+            </ul>
+            This is facilitated by a broad team with extensive expertise in AI based at the{' '}
             <a href="https://www.ed.ac.uk/" className="text-blue-400 hover:underline">University of Edinburgh</a>,{' '}
             <a href="https://www.epcc.ed.ac.uk/" className="text-blue-400 hover:underline">EPCC</a>, and{' '}
             <a href="https://www.imperial.ac.uk/" className="text-blue-400 hover:underline">Imperial College London</a>. 
+            <br />
             Our project is funded by{' '}
             <a href="https://www.aria.org.uk" className="text-blue-400 hover:underline">ARIA</a> as part of the "
             <a href="https://www.aria.org.uk/opportunity-spaces/nature-computes-better/scaling-compute/" className="text-blue-400 hover:underline">Scaling compute</a>" programme.
@@ -2229,6 +2241,18 @@ export default function App() {
               </table>
             </div>
           </Card>
+
+        {/* Test Time Scaling Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-6" id="test-time-scaling">
+          <header className="mb-6 sm:mb-8">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+              <h1 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-sky-400">
+                Test Time Scaling
+              </h1>
+            </div>
+          </header>
+          <TestTimeScalingSection />
+        </div>
 
       </main>
       </div>

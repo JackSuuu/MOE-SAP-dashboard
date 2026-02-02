@@ -1582,19 +1582,19 @@ export default function App() {
             <div className="flex flex-col justify-center bg-slate-900 border border-slate-700 rounded px-2 py-1.5">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                <span className="text-xs text-slate-300">Peak Bandwidth (Memory)</span>
+                <span className="text-xs text-slate-300">Peak Bandwidth (Memory) Estimate</span>
               </div>
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                <span className="text-xs text-slate-300">PCIe Bandwidth (Offloading)</span>
+                <span className="text-xs text-slate-300">PCIe Bandwidth (Offloading) Estimate</span>
               </div>
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                <span className="text-xs text-slate-300">Multi-GPU Systems (Peak)</span>
+                <span className="text-xs text-slate-300">Multi-GPU Systems (Peak) Estimate</span>
               </div>
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-3 h-3 rounded-full bg-lime-400"></div>
-                <span className="text-xs text-slate-300">Multi-GPU Systems (PCIe)</span>
+                <span className="text-xs text-slate-300">Multi-GPU Systems (PCIe) Estimate</span>
               </div>
               {(yAxisType === 'tpot' || yAxisType === 'ttft') && (
               <div className="flex items-center gap-2">

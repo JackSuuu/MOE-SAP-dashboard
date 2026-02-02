@@ -1500,9 +1500,9 @@ export default function App() {
           </div>
           
           {/* Controls Row - Context Size and Parameters inline */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-[repeat(13,minmax(0,1fr))] gap-2 sm:gap-3 md:gap-4 mb-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mb-4">
             {/* Context Size */}
-            <div className="lg:col-span-2">
+            <div>
               <label className="block text-xs font-medium text-slate-400 mb-1">Context Size</label>
               <select 
                 value={scenario}
@@ -1515,7 +1515,7 @@ export default function App() {
             </div>
             
             {/* Model */}
-            <div className="lg:col-span-2">
+            <div>
               <label className="block text-xs font-medium text-slate-400 mb-1">Model</label>
               <select 
                 value={selectedModel}
@@ -1530,42 +1530,38 @@ export default function App() {
               </select>
             </div>
             
-            {/* Batch Size - same cell size as others, field at half width */}
-            <div className="lg:col-span-2">
+            {/* Batch Size */}
+            <div>
               <label className="block text-xs font-medium text-slate-400 mb-1">Batch Size</label>
-              <div className="w-1/2">
-                <select 
-                  value={batchSize}
-                  onChange={(e) => setBatchSize(parseInt(e.target.value))}
-                  className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
-                >
-                  <option value={1}>1</option>
-                  <option value={32}>32</option>
-                  <option value={64}>64</option>
-                  <option value={128}>128</option>
-                </select>
-              </div>
+              <select 
+                value={batchSize}
+                onChange={(e) => setBatchSize(parseInt(e.target.value))}
+                className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
+              >
+                <option value={1}>1</option>
+                <option value={32}>32</option>
+                <option value={64}>64</option>
+                <option value={128}>128</option>
+              </select>
             </div>
             
-            {/* Y-Axis - same cell size as others, field at half width */}
-            <div className="lg:col-span-2">
+            {/* Y-Axis Type */}
+            <div>
               <label className="block text-xs font-medium text-slate-400 mb-1">Y-Axis</label>
-              <div className="w-1/2">
-                <select 
-                  value={yAxisType}
-                  onChange={(e) => setYAxisType(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
-                >
-                  <option value="bandwidth">Bandwidth (GB/s)</option>
-                  <option value="tpot">TPOT (ms)</option>
-                  <option value="ttft">TTFT (ms)</option>
-                </select>
-              </div>
+              <select 
+                value={yAxisType}
+                onChange={(e) => setYAxisType(e.target.value)}
+                className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
+              >
+                <option value="bandwidth">Bandwidth (GB/s)</option>
+                <option value="tpot">TPOT (ms)</option>
+                <option value="ttft">TTFT (ms)</option>
+              </select>
             </div>
             
             {/* Target SLO (decode) - only show when bandwidth is selected */}
             {yAxisType === 'bandwidth' && (
-            <div className="lg:col-span-2">
+            <div>
               <label className="block text-xs font-medium text-slate-400 mb-1">Target SLO (decode)</label>
               <select 
                 value={sloMs}
@@ -1581,32 +1577,32 @@ export default function App() {
               </select>
             </div>
             )}
-            
-            {/* Point Legend - 1.5x width (spans 3 of 13 columns on lg) */}
-            <div className="lg:col-span-3 flex flex-col justify-center bg-slate-900 border border-slate-700 rounded px-2 py-1.5">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                <span className="text-xs text-slate-300">Peak Bandwidth (Memory) Estimate</span>
-              </div>
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                <span className="text-xs text-slate-300">PCIe Bandwidth (Offloading) Estimate</span>
-              </div>
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                <span className="text-xs text-slate-300">Multi-GPU Systems (Peak) Estimate</span>
-              </div>
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-3 h-3 rounded-full bg-lime-400"></div>
-                <span className="text-xs text-slate-300">Multi-GPU Systems (PCIe) Estimate</span>
-              </div>
-              {(yAxisType === 'tpot' || yAxisType === 'ttft') && (
-              <div className="flex items-center gap-2">
-                <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-b-[10px] border-l-transparent border-r-transparent border-b-red-500"></div>
-                <span className="text-xs text-slate-300">Measured (Real Benchmark)</span>
-              </div>
-              )}
+          </div>
+          
+          {/* Point Legend - own row, full width, horizontal so entries stay on one line */}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 bg-slate-900 border border-slate-700 rounded px-3 py-2 mb-4">
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="w-3 h-3 rounded-full bg-blue-500 shrink-0"></div>
+              <span className="text-xs text-slate-300 whitespace-nowrap">Peak Bandwidth (Memory) Estimate</span>
             </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="w-3 h-3 rounded-full bg-orange-500 shrink-0"></div>
+              <span className="text-xs text-slate-300 whitespace-nowrap">PCIe Bandwidth (Offloading) Estimate</span>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="w-3 h-3 rounded-full bg-green-500 shrink-0"></div>
+              <span className="text-xs text-slate-300 whitespace-nowrap">Multi-GPU Systems (Peak) Estimate</span>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="w-3 h-3 rounded-full bg-lime-400 shrink-0"></div>
+              <span className="text-xs text-slate-300 whitespace-nowrap">Multi-GPU Systems (PCIe) Estimate</span>
+            </div>
+            {(yAxisType === 'tpot' || yAxisType === 'ttft') && (
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="w-0 h-0 border-l-[6px] border-r-[6px] border-b-[10px] border-l-transparent border-r-transparent border-b-red-500 shrink-0"></div>
+              <span className="text-xs text-slate-300 whitespace-nowrap">Measured (Real Benchmark)</span>
+            </div>
+            )}
           </div>
           
           {/* Line Legend - below controls (only show for bandwidth mode) */}

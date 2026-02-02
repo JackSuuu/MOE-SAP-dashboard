@@ -529,7 +529,75 @@ const PageContent = ({
 
 
 
-/** --- Component --- */
+/** --- Section for embedding on main page (controls + chart only) --- */
+
+export function TestTimeScalingSection() {
+  const [ttsModel, setTtsModel] = useState("gpt-oss-120b-high");
+  const [ttsQuant, setTtsQuant] = useState("mxfp4");
+  const [dataset, setDataset] = useState("aime25");
+  const [ttsEngine, setTtsEngine] = useState("vllm");
+
+  const selectionLabel = useMemo(() => {
+    const m = TTS_MODEL_OPTIONS.find((o) => o.value === ttsModel)?.label ?? ttsModel;
+    const e = TTS_ENGINE_OPTIONS.find((o) => o.value === ttsEngine)?.label ?? ttsEngine;
+    const q = TTS_QUANT_OPTIONS.find((o) => o.value === ttsQuant)?.label ?? ttsQuant;
+    const d = DATASET_OPTIONS.find((o) => o.value === dataset)?.label ?? dataset;
+    return `${m} / ${q} / ${d} / ${e}`;
+  }, [ttsModel, ttsEngine, ttsQuant, dataset]);
+
+  const selection = useMemo(
+    () => ({ model: ttsModel, quant: ttsQuant, dataset, engine: ttsEngine }),
+    [ttsModel, ttsQuant, dataset, ttsEngine]
+  );
+
+  const selectedRows = useMemo(() => filterBenchmarkRows(selection), [selection]);
+
+  return (
+    <>
+      <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 sm:p-6 md:p-8 mb-6">
+        <h2 className="text-lg font-semibold pl-2 border-l-4 border-cyan-500 mb-4">
+          Configuration
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          <SelectControl
+            label="Model"
+            value={ttsModel}
+            onChange={setTtsModel}
+            options={TTS_MODEL_OPTIONS}
+          />
+          <SelectControl
+            label="Quantization"
+            value={ttsQuant}
+            onChange={setTtsQuant}
+            options={TTS_QUANT_OPTIONS}
+          />
+          <SelectControl
+            label="Dataset"
+            value={dataset}
+            onChange={setDataset}
+            options={DATASET_OPTIONS}
+          />
+          <SelectControl
+            label="Inference engine"
+            value={ttsEngine}
+            onChange={setTtsEngine}
+            options={TTS_ENGINE_OPTIONS}
+          />
+        </div>
+        <div className="inline-flex items-center px-2 py-1 mt-3 bg-slate-800 border border-slate-700 rounded text-xs text-slate-300">
+          {selectionLabel}
+        </div>
+      </div>
+      <ChartSection
+        selection={selection}
+        selectionLabel={selectionLabel}
+        selectedRows={selectedRows}
+      />
+    </>
+  );
+}
+
+/** --- Full page component --- */
 
 export default function Test_Time_Scaling() {
   const [ttsModel, setTtsModel] = useState("gpt-oss-120b-high");
@@ -545,13 +613,11 @@ export default function Test_Time_Scaling() {
     return `${m} / ${q} / ${d} / ${e}`;
   }, [ttsModel, ttsEngine, ttsQuant, dataset]);
 
-  // ✅ ADD THIS
   const selection = useMemo(
     () => ({ model: ttsModel, quant: ttsQuant, dataset, engine: ttsEngine }),
     [ttsModel, ttsQuant, dataset, ttsEngine]
   );
 
-  // ✅ Use selection directly (cleaner)
   const selectedRows = useMemo(() => filterBenchmarkRows(selection), [selection]);
 
   return (
@@ -573,9 +639,9 @@ export default function Test_Time_Scaling() {
         />
 
         <ChartSection
-        selection={selection}
-        selectionLabel={selectionLabel}
-        selectedRows={selectedRows}
+          selection={selection}
+          selectionLabel={selectionLabel}
+          selectedRows={selectedRows}
         />
       </div>
     </div>

@@ -9,6 +9,7 @@ import {
 import {
   Activity, Server, Settings, Cpu, Info, Zap, Percent, Github
 } from 'lucide-react';
+import { TestTimeScalingSection } from './test-time-scaling.jsx';
 
 const Card = ({ children, className = "" }) => (
   <div className={`bg-slate-800 border border-slate-700 rounded-lg p-3 sm:p-4 ${className}`}>
@@ -1465,7 +1466,7 @@ export default function App() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 lg:gap-6 text-xs sm:text-sm">
             <a href="#moe" className="text-slate-300 hover:text-blue-400 transition-colors">Mixture-of-Experts</a>
-            <Link to="/test-time-scaling" className="text-slate-300 hover:text-blue-400 transition-colors">Test Time Scaling</Link>
+            <a href="#test-time-scaling" className="text-slate-300 hover:text-blue-400 transition-colors">Test Time Scaling</a>
             <span className="text-slate-500 cursor-not-allowed hidden md:inline">Agentic AI Workflow <span className="text-xs text-slate-600">(Coming Soon)</span></span>
             <Link to="/documentation" className="text-slate-300 hover:text-blue-400 transition-colors">Documentation</Link>
             <Link to="/team" className="text-slate-300 hover:text-blue-400 transition-colors">Team</Link>
@@ -2234,6 +2235,18 @@ export default function App() {
               </table>
             </div>
           </Card>
+
+        {/* Test Time Scaling Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-6" id="test-time-scaling">
+          <header className="mb-6 sm:mb-8">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+              <h1 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-sky-400">
+                Test Time Scaling
+              </h1>
+            </div>
+          </header>
+          <TestTimeScalingSection />
+        </div>
 
       </main>
       </div>

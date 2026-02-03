@@ -271,7 +271,7 @@ function AccuracyVsQphChartCard({ chartData }) {
             4- The final output is a single, final aggregated response at the end of the final stage.
           </span>
         </h2>
-        
+        <Link to="/documentation" className="text-xs text-blue-400 hover:text-blue-300 transition-colors underline shrink-0">View Documentation</Link>
       </div>
 
       {hasData ? (

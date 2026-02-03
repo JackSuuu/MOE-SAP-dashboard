@@ -2144,10 +2144,15 @@ export default function App() {
 
         {/* Chart 2: CAP Radar Plot */}
         <Card className="mb-8">
-          <h3 className="text-lg font-semibold mb-2 pl-2 border-l-4 border-purple-500">
-            CAP Radar Plot - Cost, Accuracy, Performance
-          </h3>
-          <p className="text-xs text-slate-400 mb-4 pl-2">Empirical evaluation across diverse model and system configurations to reveal Cost, Accuracy, and Performance trade-offs.</p>
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <h3 className="text-lg font-semibold mb-2 pl-2 border-l-4 border-purple-500">
+                CAP Radar Plot - Cost, Accuracy, Performance
+              </h3>
+              <p className="text-xs text-slate-400 pl-2">Empirical evaluation across diverse model and system configurations to reveal Cost, Accuracy, and Performance trade-offs.</p>
+            </div>
+            <Link to="/documentation" className="text-xs text-blue-400 hover:text-blue-300 transition-colors underline shrink-0">View Documentation</Link>
+          </div>
           
           {/* Config Format Explanation */}
           <div className="mb-4 p-3 bg-slate-800/50 rounded border border-slate-700">

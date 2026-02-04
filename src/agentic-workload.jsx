@@ -60,7 +60,8 @@ const CustomTooltip = ({ active, payload }) => {
       <div className="text-slate-300">Run: {data.date}/{data.run}</div>
       <div className="text-slate-300 mt-1">Accuracy: {data.accuracy.toFixed(2)}%</div>
       <div className="text-slate-300">Mean Latency: {data.meanTime.toFixed(2)}s</div>
-      <div className="text-slate-300">Mean Output Tokens: {(data.meanTotalDecode / data.totalQuestions).toFixed(0)}</div>
+      <div className="text-slate-300">Mean Prefill Tokens / Request: {data.meanTotalPrefill.toFixed(0)}</div>
+      <div className="text-slate-300">Mean Decode Tokens / Request: {data.meanTotalDecode.toFixed(0)}</div>
       <div className="text-slate-300">Questions: {data.correctQuestions}/{data.totalQuestions}</div>
     </div>
   );
@@ -71,7 +72,7 @@ export function AgenticWorkflowSection() {
   const [selectedDataset, setSelectedDataset] = useState('all');
   const [selectedModel, setSelectedModel] = useState('all');
   const [selectedToolMode, setSelectedToolMode] = useState('all');
-  const [yAxisMetric, setYAxisMetric] = useState('latency'); // 'latency' or 'output'
+  const [yAxisMetric, setYAxisMetric] = useState('latency'); // 'latency', 'input', or 'output'
 
   const datasets = useMemo(() => getUniqueDatasets(), []);
   const models = useMemo(() => getUniqueModels(), []);
@@ -80,18 +81,27 @@ export function AgenticWorkflowSection() {
   // Filter data
   const filteredData = useMemo(() => {
     return AGENTIC_BENCHMARK_DATA.filter(d => {
+      if (d.totalQuestions !== 100) return false; // Only show complete runs
       if (selectedDataset !== 'all' && d.dataset !== selectedDataset) return false;
       if (selectedModel !== 'all' && d.modelShort !== selectedModel) return false;
       if (selectedToolMode !== 'all' && d.toolMode !== selectedToolMode) return false;
       return true;
-    }).map(d => ({
-      ...d,
-      x: d.accuracy,
-      y: yAxisMetric === 'latency' 
-        ? d.meanTime 
-        : d.meanTotalDecode / d.totalQuestions,
-      color: DATASET_COLORS[d.dataset] || '#888',
-    }));
+    }).map(d => {
+      let yValue;
+      if (yAxisMetric === 'latency') {
+        yValue = d.meanTime;
+      } else if (yAxisMetric === 'input') {
+        yValue = d.meanTotalPrefill;
+      } else {
+        yValue = d.meanTotalDecode;
+      }
+      return {
+        ...d,
+        x: d.accuracy,
+        y: yValue,
+        color: DATASET_COLORS[d.dataset] || '#888',
+      };
+    });
   }, [selectedDataset, selectedModel, selectedToolMode, yAxisMetric]);
 
   // Group by dataset for legend
@@ -117,7 +127,6 @@ export function AgenticWorkflowSection() {
       correct_questions: d.correctQuestions,
       accuracy_percent: d.accuracy,
       mean_latency_s: d.meanTime,
-      mean_output_tokens: (d.meanTotalDecode / d.totalQuestions).toFixed(2),
       mean_total_prefill: d.meanTotalPrefill,
       mean_total_decode: d.meanTotalDecode,
     }));
@@ -127,7 +136,9 @@ export function AgenticWorkflowSection() {
 
   const yAxisLabel = yAxisMetric === 'latency' 
     ? 'Mean Latency per Question (s)' 
-    : 'Mean Output Tokens per Question';
+    : yAxisMetric === 'input'
+    ? 'Mean Prefill Tokens / Request'
+    : 'Mean Decode Tokens / Request';
 
   return (
     <div className="space-y-4">
@@ -195,7 +206,8 @@ export function AgenticWorkflowSection() {
               className="w-full bg-slate-700 border border-slate-600 rounded px-2 py-1.5 text-sm text-white"
             >
               <option value="latency">Mean Latency (s)</option>
-              <option value="output">Mean Output Tokens</option>
+              <option value="input">Mean Prefill Tokens / Request</option>
+              <option value="output">Mean Decode Tokens / Request</option>
             </select>
           </div>
         </div>
@@ -263,6 +275,8 @@ export function AgenticWorkflowSection() {
           {Object.entries(dataByDataset).map(([dataset, data]) => {
             const avgAccuracy = data.reduce((s, d) => s + d.accuracy, 0) / data.length;
             const avgLatency = data.reduce((s, d) => s + d.meanTime, 0) / data.length;
+            const models = [...new Set(data.map(d => d.modelShort))].join(', ');
+            const toolModes = [...new Set(data.map(d => d.toolMode))].join(', ');
             return (
               <div key={dataset} className="bg-slate-700/50 rounded p-3">
                 <div className="flex items-center gap-2 mb-2">
@@ -273,6 +287,8 @@ export function AgenticWorkflowSection() {
                   <span className="font-medium text-white text-xs">{dataset}</span>
                 </div>
                 <div className="text-slate-400 text-xs">
+                  <div>Model: {models}</div>
+                  <div>Tool Mode: {toolModes || 'N/A'}</div>
                   <div>Runs: {data.length}</div>
                   <div>Avg Accuracy: {avgAccuracy.toFixed(1)}%</div>
                   <div>Avg Latency: {avgLatency.toFixed(1)}s</div>

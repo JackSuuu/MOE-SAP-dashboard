@@ -37,9 +37,9 @@ export default function Documentation() {
       {/* Documentation Content */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         
-        {/* Mixture-of-Experts Section */}
+        {/* LLM Inference with MoE Section */}
         <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 sm:p-8 mb-8">
-          <h2 className="text-2xl font-bold text-slate-100 mb-6 pl-3 border-l-4 border-blue-500">Mixture-of-Experts (MoE)</h2>
+          <h2 className="text-2xl font-bold text-slate-100 mb-6 pl-3 border-l-4 border-blue-500">LLM Inference with MoE</h2>
           
           {/* Hardware Map Subsection */}
           <div className="mb-8">

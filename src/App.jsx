@@ -1712,9 +1712,10 @@ export default function App() {
             <span className="text-xs text-slate-400 hidden md:inline">Tracking Evolving AI and Systems</span>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 lg:gap-6 text-xs sm:text-sm">
-            <a href="#moe" className="text-slate-300 hover:text-blue-400 transition-colors">Mixture-of-Experts</a>
+            <a href="#moe" className="text-slate-300 hover:text-blue-400 transition-colors">LLM Inference with MoE</a>
             <a href="#test-time-scaling" className="text-slate-300 hover:text-blue-400 transition-colors">Test Time Scaling</a>
             <a href="#agentic-workflow" className="text-slate-300 hover:text-blue-400 transition-colors">Agentic Workflow</a>
+            <Link to="/detail-results" className="text-slate-300 hover:text-blue-400 transition-colors">Detail Results</Link>
             <Link to="/documentation" className="text-slate-300 hover:text-blue-400 transition-colors">Documentation</Link>
             <Link to="/team" className="text-slate-300 hover:text-blue-400 transition-colors">Team</Link>
           </div>
@@ -1769,7 +1770,7 @@ export default function App() {
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
             <Activity className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
             <h1 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">
-              Mixture-of-Experts
+              LLM Inference with MoE
             </h1>
             <a 
               href="https://github.com/Auto-CAP/MoE-CAP" 
@@ -1788,6 +1789,12 @@ export default function App() {
               <Download className="w-3 h-3 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Download CSV</span>
             </button>
+            <Link
+              to="/detail-results"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 bg-purple-700 hover:bg-purple-600 border border-purple-600 rounded-full text-xs sm:text-sm text-white transition-colors"
+            >
+              <span>CAP Radar</span>
+            </Link>
             <span className="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-xs text-slate-400 hidden sm:inline">
               {MODEL_CONFIG.name}
             </span>
@@ -2312,195 +2319,6 @@ export default function App() {
           </div>
         </Card>
 
-        {/* Chart 2: CAP Radar Plot */}
-        <Card className="mb-8">
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <h3 className="text-lg font-semibold mb-2 pl-2 border-l-4 border-purple-500">
-                CAP Radar Plot - Cost, Accuracy, Performance
-              </h3>
-              <p className="text-xs text-slate-400 pl-2">Empirical evaluation across diverse model and system configurations to reveal Cost, Accuracy, and Performance trade-offs.</p>
-            </div>
-            <Link to="/documentation" className="text-xs text-blue-400 hover:text-blue-300 transition-colors underline shrink-0">View Documentation</Link>
-          </div>
-          
-          {/* Config Format Explanation */}
-          <div className="mb-4 p-3 bg-slate-800/50 rounded border border-slate-700">
-            <p className="text-xs text-slate-400">
-              <span className="text-slate-300 font-medium">Config Format:</span>{' '}
-              <span className="text-blue-400">Model</span> / <span className="text-green-400">Data Type</span> / <span className="text-orange-400">Hardware</span> / <span className="text-purple-400">System</span>
-            </p>
-            <p className="text-xs text-slate-500 mt-1">
-              Example: Qwen3-30B-A3B / BF16 / 4xRTX A6000 / SGLang
-            </p>
-          </div>
-            
-            {/* Dataset Selector */}
-            <div className="mb-4">
-              <label className="block text-xs font-medium text-slate-400 mb-1">Dataset</label>
-              <select 
-                value={capDataset}
-                onChange={(e) => setCapDataset(e.target.value)}
-                className="w-48 bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
-              >
-                <option value="longbench-v2">LongBench v2</option>
-                <option value="gsm8k">GSM8K</option>
-              </select>
-            </div>
-            
-            {/* Config Selectors */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Config 1</label>
-                <select 
-                  value={capConfig1}
-                  onChange={(e) => setCapConfig1(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
-                >
-                  <option value="">-- Select --</option>
-                  {getAvailableOptions(capConfig1, [capConfig2, capConfig3]).map(key => (
-                    <option key={key} value={key}>{CAP_CONFIGS[key].label}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Config 2</label>
-                <select 
-                  value={capConfig2}
-                  onChange={(e) => setCapConfig2(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
-                >
-                  <option value="">-- Select --</option>
-                  {getAvailableOptions(capConfig2, [capConfig1, capConfig3]).map(key => (
-                    <option key={key} value={key}>{CAP_CONFIGS[key].label}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Config 3</label>
-                <select 
-                  value={capConfig3}
-                  onChange={(e) => setCapConfig3(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
-                >
-                  <option value="">-- Select --</option>
-                  {getAvailableOptions(capConfig3, [capConfig1, capConfig2]).map(key => (
-                    <option key={key} value={key}>{CAP_CONFIGS[key].label}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Legend for selected configs */}
-            <div className="flex flex-wrap gap-2 sm:gap-4 mb-4 px-2">
-              {capRadarData.selectedConfigs.map(configKey => {
-                const config = CAP_CONFIGS[configKey];
-                return (
-                  <div key={configKey} className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: config.color }}></div>
-                    <span className="text-xs text-slate-300">{config.label}</span>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="h-[280px] sm:h-[350px] md:h-[400px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart data={capRadarData.radarData} margin={{ top: 10, right: 20, bottom: 10, left: 20 }}>
-                <PolarGrid stroke="#475569" />
-                <PolarAngleAxis 
-                  dataKey="metric" 
-                  tick={{ fill: '#94a3b8', fontSize: 12 }}
-                />
-                <PolarRadiusAxis 
-                  angle={30} 
-                  domain={[0, 100]} 
-                  tick={{ fill: '#64748b', fontSize: 10 }}
-                  tickCount={5}
-                />
-                {capRadarData.selectedConfigs.map(configKey => {
-                  const config = CAP_CONFIGS[configKey];
-                  return (
-                    <Radar 
-                      key={configKey}
-                      name={config.label}
-                      dataKey={configKey}
-                      stroke={config.color}
-                      fill={config.color}
-                      fillOpacity={0.2}
-                      strokeWidth={2}
-                    />
-                  );
-                })}
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#f8fafc' }}
-                  content={({ active, payload, label }) => {
-                    if (active && payload && payload.length > 0) {
-                      const metricData = payload[0]?.payload;
-                      const metricType = metricData?.metricType;
-                      return (
-                        <div style={{ backgroundColor: '#1e293b', border: '1px solid #334155', padding: '10px', borderRadius: '4px' }}>
-                          <div style={{ color: '#f8fafc', fontWeight: 600, marginBottom: '6px' }}>{metricData?.metric}</div>
-                          {payload.map((entry, index) => {
-                            const rawValue = metricData[`${entry.dataKey}_raw`];
-                            let displayValue = rawValue;
-                            if (metricType === 'cost') {
-                              // Show 'W' for LongBench v2 (Power), '$' for GSM8K (Cost)
-                              displayValue = capDataset === 'longbench-v2' 
-                                ? `${rawValue?.toLocaleString()}W` 
-                                : `$${rawValue?.toLocaleString()}`;
-                            } else if (metricType === 'accuracy') {
-                              displayValue = `${rawValue}%`;
-                            } else if (metricType === 'tpot') {
-                              displayValue = `${rawValue}s`;
-                            } else if (metricType === 'throughput') {
-                              displayValue = `${rawValue} T/s`;
-                            }
-                            return (
-                              <div key={index} style={{ color: entry.color, fontSize: '12px', marginTop: '4px' }}>
-                                {CAP_CONFIGS[entry.dataKey]?.label || entry.dataKey}: {displayValue}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      );
-                    }
-                    return null;
-                  }}
-                />
-              </RadarChart>
-            </ResponsiveContainer>
-            </div>
-
-            {/* Raw Values Table */}
-            <div className="mt-8 sm:mt-20 md:mt-12 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-              <table className="w-full text-xs min-w-[500px] sm:min-w-0">
-                <thead>
-                  <tr className="border-b border-slate-700">
-                    <th className="text-left py-2 px-2 text-slate-400">Config</th>
-                    <th className="text-right py-2 px-2 text-slate-400">Accuracy</th>
-                    <th className="text-right py-2 px-2 text-slate-400">{capDataset === 'longbench-v2' ? 'Power (W)' : 'Cost ($)'}</th>
-                    <th className="text-right py-2 px-2 text-slate-400">TPOT (s)</th>
-                    <th className="text-right py-2 px-2 text-slate-400">Throughput</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {capRadarData.selectedConfigs.map(configKey => {
-                    const config = CAP_CONFIGS[configKey];
-                    return (
-                      <tr key={configKey} className="border-b border-slate-800">
-                        <td className="py-2 px-2" style={{ color: config.color }}>{config.label}</td>
-                        <td className="text-right py-2 px-2 text-slate-300">{config.accuracy}%</td>
-                        <td className="text-right py-2 px-2 text-slate-300">{capDataset === 'longbench-v2' ? `${config.cost.toLocaleString()}W` : `$${config.cost.toLocaleString()}`}</td>
-                        <td className="text-right py-2 px-2 text-slate-300">{config.tpot}s</td>
-                        <td className="text-right py-2 px-2 text-slate-300">{config.throughput} T/s</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </Card>
         </main>
       </div>
 
@@ -2519,6 +2337,12 @@ export default function App() {
                 <Download className="w-3 h-3 sm:w-4 sm:h-4" />
                 <span className="hidden sm:inline">Download CSV</span>
               </button>
+              <Link
+                to="/detail-results"
+                className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 bg-purple-700 hover:bg-purple-600 border border-purple-600 rounded-full text-xs sm:text-sm text-white transition-colors shrink-0"
+              >
+                <span>Trade-off Plot</span>
+              </Link>
             </div>
           </header>
           <TestTimeScalingSection />

@@ -1072,26 +1072,6 @@
 
     return (
       <>
-        <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 sm:p-6 md:p-8 mb-6">
-          <h2 className="text-lg font-semibold pl-2 border-l-4 border-cyan-500 mb-4">
-            Configuration
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            <SelectControl label="Model" value={ttsModel} onChange={setTtsModel} options={TTS_MODEL_OPTIONS} />
-            <SelectControl label="Quantization" value={ttsQuant} onChange={setTtsQuant} options={quantOptions} />
-            <SelectControl label="Dataset" value={dataset} onChange={setDataset} options={TTS_DATASET_OPTIONS} />
-            <SelectControl label="Inference engine" value={ttsEngine} onChange={setTtsEngine} options={TTS_ENGINE_OPTIONS} />
-
-          </div>
-          <div className="inline-flex items-center px-2 py-1 mt-3 bg-slate-800 border border-slate-700 rounded text-xs text-slate-300">
-            {selectionLabel}
-          </div>
-        </div>
-        <ChartSection
-          selection={selection}
-          selectionLabel={selectionLabel}
-          selectedRows={selectedRows}
-        />
         <RuntimeVsRoundsSection />
       </>
     );

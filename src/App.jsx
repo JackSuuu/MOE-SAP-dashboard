@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { BENCHMARK_ROWS } from './data/tts-benchmarks/index.js';
 import { TestTimeScalingSection } from './test-time-scaling.jsx';
+import { AgenticWorkflowSection } from './agentic-workload.jsx';
 
 const Card = ({ children, className = "" }) => (
   <div className={`bg-slate-800 border border-slate-700 rounded-lg p-3 sm:p-4 ${className}`}>
@@ -83,7 +84,7 @@ const getCurrentDateStr = () => {
 };
 
 // Export all MoE benchmark data (Hardware Map + CAP Radar) in one CSV
-const exportAllMoEData = (chartData, modelName, scenario, batchSize, capConfigs, capDataset) => {
+const exportAllMoEData = (chartData, modelName, scenario, batchSize, capConfigs, capDataset, realBenchmarkData) => {
   const dateStr = getCurrentDateStr();
   
   // Hardware Map data
@@ -94,80 +95,143 @@ const exportAllMoEData = (chartData, modelName, scenario, batchSize, capConfigs,
     ...chartData.dgxOffloadDevices.map(d => ({ ...d, bandwidth_type: 'Offload (PCIe)' })),
   ];
   
-  const hardwareData = allDevices.map(device => ({
+  // Hardware Map - Bandwidth Mode (all devices have bandwidth data - these are estimated/analytical)
+  const bandwidthModeData = allDevices.map(device => ({
     date: dateStr,
     section: 'Hardware-Map',
-    dataset: scenario === '14k-ref' ? 'LongBench-v2' : 'GSM8K',
-    model: modelName,
-    precision: 'N/A',
+    mode: 'Bandwidth',
+    data_type: 'Estimated',
     hardware: device.name,
-    inference_system: 'N/A',
     category: device.category,
     bandwidth_type: device.bandwidth_type,
+    model: modelName,
     context_size: scenario === '14k-ref' ? '14K' : '5K',
     batch_size: batchSize,
-    accuracy_percent: 'N/A',
-    cost: device.power,
-    cost_unit: 'Watts',
     bandwidth_gbs: device.bandwidth,
+    power_watts: device.power,
     gflops: device.gflops || 'N/A',
-    tpot_ms: device.tpot ? device.tpot.toFixed(2) : 'N/A',
-    ttft_ms: device.ttft ? device.ttft.toFixed(2) : 'N/A',
+    tpot_ms: 'N/A',
+    ttft_ms: 'N/A',
+    accuracy_percent: 'N/A',
     throughput_tokens_per_sec: 'N/A',
+    precision: 'BF16',
+    inference_system: 'Analytical Model',
   }));
   
-  // CAP Radar data
+  // Hardware Map - TPOT Mode Measured (real benchmark data)
+  const tpotMeasuredData = (realBenchmarkData?.tpot || []).map(point => {
+    const tpotMs = point.tpot;
+    const throughput = tpotMs > 0 ? (point.batchSize / (tpotMs / 1000)).toFixed(2) : 'N/A';
+    return {
+      date: dateStr,
+      section: 'Hardware-Map',
+      mode: 'TPOT',
+      data_type: 'Measured',
+      hardware: point.gpu,
+      category: 'benchmark',
+      bandwidth_type: 'N/A',
+      model: point.name,
+      context_size: point.context,
+      batch_size: point.batchSize,
+      bandwidth_gbs: 'N/A',
+      power_watts: point.power,
+      gflops: 'N/A',
+      tpot_ms: tpotMs,
+      ttft_ms: 'N/A',
+      accuracy_percent: 'N/A',
+      throughput_tokens_per_sec: throughput,
+      precision: 'BF16',
+      inference_system: point.engine,
+    };
+  });
+  
+  // Hardware Map - TTFT Mode Measured (real benchmark data)
+  const ttftMeasuredData = (realBenchmarkData?.ttft || []).map(point => ({
+    date: dateStr,
+    section: 'Hardware-Map',
+    mode: 'TTFT',
+    data_type: 'Measured',
+    hardware: point.gpu,
+    category: 'benchmark',
+    bandwidth_type: 'N/A',
+    model: point.name,
+    context_size: point.context,
+    batch_size: point.batchSize,
+    bandwidth_gbs: 'N/A',
+    power_watts: point.power,
+    gflops: 'N/A',
+    tpot_ms: 'N/A',
+    ttft_ms: point.ttft,
+    accuracy_percent: 'N/A',
+    throughput_tokens_per_sec: 'N/A',
+    precision: 'BF16',
+    inference_system: point.engine,
+  }));
+  
+  // CAP Radar data - actual benchmark measurements
   const capData = Object.entries(capConfigs).map(([key, config]) => ({
     date: dateStr,
     section: 'CAP-Radar',
-    dataset: capDataset === 'longbench-v2' ? 'LongBench-v2' : 'GSM8K',
-    model: config.model,
-    precision: config.precision,
+    mode: 'Benchmark',
+    data_type: 'Measured',
     hardware: config.gpu,
-    inference_system: config.system,
     category: 'benchmark',
     bandwidth_type: 'N/A',
+    model: config.model,
     context_size: capDataset === 'longbench-v2' ? '14K' : '5K',
     batch_size: config.batchSize || 'N/A',
-    accuracy_percent: config.accuracy,
-    cost: config.cost,
-    cost_unit: capDataset === 'longbench-v2' ? 'Watts' : 'USD',
     bandwidth_gbs: 'N/A',
+    power_watts: capDataset === 'longbench-v2' ? config.cost : 'N/A',
     gflops: 'N/A',
     tpot_ms: config.tpot ? (config.tpot * 1000).toFixed(2) : 'N/A',
     ttft_ms: 'N/A',
+    accuracy_percent: config.accuracy,
     throughput_tokens_per_sec: config.throughput,
+    precision: config.precision,
+    inference_system: config.system,
   }));
   
-  const allData = [...hardwareData, ...capData];
+  const allData = [
+    ...bandwidthModeData,
+    ...tpotMeasuredData,
+    ...ttftMeasuredData,
+    ...capData
+  ];
   downloadCSV(allData, `moe-benchmark-all-${dateStr}.csv`);
 };
 
 // Export all Test Time Scaling benchmark rows in one CSV
 const exportAllTTSData = () => {
   const dateStr = getCurrentDateStr();
-  
-  const rows = BENCHMARK_ROWS.map(row => {
+
+  const rows = BENCHMARK_ROWS.map((row) => {
     const meta = row.meta || {};
     return {
       date: dateStr,
-      section: 'Test-Time-Scaling',
+      section: "Test-Time-Scaling",
+
+      // ✅ add this column
+      data_source: meta.source ?? "measured", // "projected" or "measured"
+
       dataset: row.dataset,
       model: row.model,
       quantization: row.quant,
       inference_engine: row.engine,
       questions_per_hour: row.questionsPerHour,
-      accuracy_percent: row.accuracy,
-      gpu: meta.gpu || 'N/A',
-      gpu_count: meta.gpuCount ?? 'N/A',
-      sequential: meta.sequential ?? 'N/A',
-      parallel: meta.parallel ?? 'N/A',
-      samples: meta.samples ?? 'N/A',
-      max_tokens: meta.maxTokens ?? 'N/A',
-      tools: meta.tools ?? 'N/A',
+
+      // ✅ optional: avoid blank cells for projected rows
+      accuracy_percent: row.accuracy ?? "N/A",
+
+      gpu: meta.gpu || "N/A",
+      gpu_count: meta.gpuCount ?? "N/A",
+      sequential: meta.sequential ?? "N/A",
+      parallel: meta.parallel ?? "N/A",
+      samples: meta.samples ?? "N/A",
+      max_tokens: meta.maxTokens ?? "N/A",
+      tools: meta.tools ?? "N/A",
     };
   });
-  
+
   downloadCSV(rows, `test-time-scaling-all-${dateStr}.csv`);
 };
 
@@ -880,6 +944,59 @@ export default function App() {
         color: '#6366f1', // indigo for vLLM
         showLabel: true,
       },
+      // NVIDIA A6000 data points (SGLang v0.5.8)
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        tpot: 10.06, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        tpot: 12.53, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        tpot: 11.18, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        tpot: 15.64, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
     ],
     // TTFT real data points
     ttft: [
@@ -906,7 +1023,7 @@ export default function App() {
         engine: 'SGLang v0.5.8',
         batchSize: 1,
         power: 700,
-        ttft: 25.5, // ms (97.0 / 3.8)
+        ttft: 40.4, // ms
         color: '#ef4444', // red for real data
         showLabel: true,
       },
@@ -987,6 +1104,59 @@ export default function App() {
         power: 700,
         ttft: 125.5, // ms (477.0 / 3.8)
         color: '#6366f1', // indigo for vLLM
+        showLabel: true,
+      },
+      // NVIDIA A6000 TTFT data points (SGLang v0.5.8)
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        ttft: 278.9, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        ttft: 266.1, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        ttft: 560.9, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        ttft: 1016.1, // ms
+        color: '#ef4444',
         showLabel: true,
       },
     ],
@@ -1542,9 +1712,10 @@ export default function App() {
             <span className="text-xs text-slate-400 hidden md:inline">Tracking Evolving AI and Systems</span>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 lg:gap-6 text-xs sm:text-sm">
-            <a href="#moe" className="text-slate-300 hover:text-blue-400 transition-colors">Mixture-of-Experts</a>
+            <a href="#moe" className="text-slate-300 hover:text-blue-400 transition-colors">LLM Inference with MoE</a>
             <a href="#test-time-scaling" className="text-slate-300 hover:text-blue-400 transition-colors">Test Time Scaling</a>
-            <span className="text-slate-500 cursor-not-allowed hidden md:inline">Agentic AI Workflow <span className="text-xs text-slate-600">(Coming Soon)</span></span>
+            <a href="#agentic-workflow" className="text-slate-300 hover:text-blue-400 transition-colors">Agentic Workflow</a>
+            <Link to="/detail-results" className="text-slate-300 hover:text-blue-400 transition-colors">Detail Results</Link>
             <Link to="/documentation" className="text-slate-300 hover:text-blue-400 transition-colors">Documentation</Link>
             <Link to="/team" className="text-slate-300 hover:text-blue-400 transition-colors">Team</Link>
           </div>
@@ -1599,7 +1770,7 @@ export default function App() {
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
             <Activity className="w-6 h-6 sm:w-8 sm:h-8 text-blue-500" />
             <h1 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">
-              Mixture-of-Experts
+              LLM Inference with MoE
             </h1>
             <a 
               href="https://github.com/Auto-CAP/MoE-CAP" 
@@ -1611,13 +1782,19 @@ export default function App() {
               <span>GitHub</span>
             </a>
             <button
-              onClick={() => exportAllMoEData(chartData, MODEL_CONFIG.name, scenario, batchSize, CAP_CONFIGS, capDataset)}
+              onClick={() => exportAllMoEData(chartData, MODEL_CONFIG.name, scenario, batchSize, CAP_CONFIGS, capDataset, REAL_BENCHMARK_DATA)}
               className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 bg-emerald-700 hover:bg-emerald-600 border border-emerald-600 rounded-full text-xs sm:text-sm text-white transition-colors"
               title="Download all benchmark data as CSV"
             >
               <Download className="w-3 h-3 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Download CSV</span>
             </button>
+            <Link
+              to="/detail-results"
+              className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 bg-purple-700 hover:bg-purple-600 border border-purple-600 rounded-full text-xs sm:text-sm text-white transition-colors"
+            >
+              <span>CAP Radar</span>
+            </Link>
             <span className="px-2 py-1 bg-slate-800 border border-slate-700 rounded text-xs text-slate-400 hidden sm:inline">
               {MODEL_CONFIG.name}
             </span>
@@ -2164,190 +2341,8 @@ export default function App() {
           </div>
         </Card>
 
-        {/* Chart 2: CAP Radar Plot */}
-        <Card className="mb-8">
-          <h3 className="text-lg font-semibold mb-2 pl-2 border-l-4 border-purple-500">
-            CAP Radar Plot - Cost, Accuracy, Performance
-          </h3>
-          <p className="text-xs text-slate-400 mb-4 pl-2">Empirical evaluation across diverse model and system configurations to reveal Cost, Accuracy, and Performance trade-offs.</p>
-          
-          {/* Config Format Explanation */}
-          <div className="mb-4 p-3 bg-slate-800/50 rounded border border-slate-700">
-            <p className="text-xs text-slate-400">
-              <span className="text-slate-300 font-medium">Config Format:</span>{' '}
-              <span className="text-blue-400">Model</span> / <span className="text-green-400">Data Type</span> / <span className="text-orange-400">Hardware</span> / <span className="text-purple-400">System</span>
-            </p>
-            <p className="text-xs text-slate-500 mt-1">
-              Example: Qwen3-30B-A3B / BF16 / 4xRTX A6000 / SGLang
-            </p>
-          </div>
-            
-            {/* Dataset Selector */}
-            <div className="mb-4">
-              <label className="block text-xs font-medium text-slate-400 mb-1">Dataset</label>
-              <select 
-                value={capDataset}
-                onChange={(e) => setCapDataset(e.target.value)}
-                className="w-48 bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
-              >
-                <option value="longbench-v2">LongBench v2</option>
-                <option value="gsm8k">GSM8K</option>
-              </select>
-            </div>
-            
-            {/* Config Selectors */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-4">
-              <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Config 1</label>
-                <select 
-                  value={capConfig1}
-                  onChange={(e) => setCapConfig1(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
-                >
-                  <option value="">-- Select --</option>
-                  {getAvailableOptions(capConfig1, [capConfig2, capConfig3]).map(key => (
-                    <option key={key} value={key}>{CAP_CONFIGS[key].label}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Config 2</label>
-                <select 
-                  value={capConfig2}
-                  onChange={(e) => setCapConfig2(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
-                >
-                  <option value="">-- Select --</option>
-                  {getAvailableOptions(capConfig2, [capConfig1, capConfig3]).map(key => (
-                    <option key={key} value={key}>{CAP_CONFIGS[key].label}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-medium text-slate-400 mb-1">Config 3</label>
-                <select 
-                  value={capConfig3}
-                  onChange={(e) => setCapConfig3(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1.5 text-xs focus:border-blue-500 outline-none"
-                >
-                  <option value="">-- Select --</option>
-                  {getAvailableOptions(capConfig3, [capConfig1, capConfig2]).map(key => (
-                    <option key={key} value={key}>{CAP_CONFIGS[key].label}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Legend for selected configs */}
-            <div className="flex flex-wrap gap-2 sm:gap-4 mb-4 px-2">
-              {capRadarData.selectedConfigs.map(configKey => {
-                const config = CAP_CONFIGS[configKey];
-                return (
-                  <div key={configKey} className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full" style={{ backgroundColor: config.color }}></div>
-                    <span className="text-xs text-slate-300">{config.label}</span>
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="h-[280px] sm:h-[350px] md:h-[400px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart data={capRadarData.radarData} margin={{ top: 10, right: 20, bottom: 10, left: 20 }}>
-                <PolarGrid stroke="#475569" />
-                <PolarAngleAxis 
-                  dataKey="metric" 
-                  tick={{ fill: '#94a3b8', fontSize: 12 }}
-                />
-                <PolarRadiusAxis 
-                  angle={30} 
-                  domain={[0, 100]} 
-                  tick={{ fill: '#64748b', fontSize: 10 }}
-                  tickCount={5}
-                />
-                {capRadarData.selectedConfigs.map(configKey => {
-                  const config = CAP_CONFIGS[configKey];
-                  return (
-                    <Radar 
-                      key={configKey}
-                      name={config.label}
-                      dataKey={configKey}
-                      stroke={config.color}
-                      fill={config.color}
-                      fillOpacity={0.2}
-                      strokeWidth={2}
-                    />
-                  );
-                })}
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#f8fafc' }}
-                  content={({ active, payload, label }) => {
-                    if (active && payload && payload.length > 0) {
-                      const metricData = payload[0]?.payload;
-                      const metricType = metricData?.metricType;
-                      return (
-                        <div style={{ backgroundColor: '#1e293b', border: '1px solid #334155', padding: '10px', borderRadius: '4px' }}>
-                          <div style={{ color: '#f8fafc', fontWeight: 600, marginBottom: '6px' }}>{metricData?.metric}</div>
-                          {payload.map((entry, index) => {
-                            const rawValue = metricData[`${entry.dataKey}_raw`];
-                            let displayValue = rawValue;
-                            if (metricType === 'cost') {
-                              // Show 'W' for LongBench v2 (Power), '$' for GSM8K (Cost)
-                              displayValue = capDataset === 'longbench-v2' 
-                                ? `${rawValue?.toLocaleString()}W` 
-                                : `$${rawValue?.toLocaleString()}`;
-                            } else if (metricType === 'accuracy') {
-                              displayValue = `${rawValue}%`;
-                            } else if (metricType === 'tpot') {
-                              displayValue = `${rawValue}s`;
-                            } else if (metricType === 'throughput') {
-                              displayValue = `${rawValue} T/s`;
-                            }
-                            return (
-                              <div key={index} style={{ color: entry.color, fontSize: '12px', marginTop: '4px' }}>
-                                {CAP_CONFIGS[entry.dataKey]?.label || entry.dataKey}: {displayValue}
-                              </div>
-                            );
-                          })}
-                        </div>
-                      );
-                    }
-                    return null;
-                  }}
-                />
-              </RadarChart>
-            </ResponsiveContainer>
-            </div>
-
-            {/* Raw Values Table */}
-            <div className="mt-8 sm:mt-20 md:mt-12 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
-              <table className="w-full text-xs min-w-[500px] sm:min-w-0">
-                <thead>
-                  <tr className="border-b border-slate-700">
-                    <th className="text-left py-2 px-2 text-slate-400">Config</th>
-                    <th className="text-right py-2 px-2 text-slate-400">Accuracy</th>
-                    <th className="text-right py-2 px-2 text-slate-400">{capDataset === 'longbench-v2' ? 'Power (W)' : 'Cost ($)'}</th>
-                    <th className="text-right py-2 px-2 text-slate-400">TPOT (s)</th>
-                    <th className="text-right py-2 px-2 text-slate-400">Throughput</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {capRadarData.selectedConfigs.map(configKey => {
-                    const config = CAP_CONFIGS[configKey];
-                    return (
-                      <tr key={configKey} className="border-b border-slate-800">
-                        <td className="py-2 px-2" style={{ color: config.color }}>{config.label}</td>
-                        <td className="text-right py-2 px-2 text-slate-300">{config.accuracy}%</td>
-                        <td className="text-right py-2 px-2 text-slate-300">{capDataset === 'longbench-v2' ? `${config.cost.toLocaleString()}W` : `$${config.cost.toLocaleString()}`}</td>
-                        <td className="text-right py-2 px-2 text-slate-300">{config.tpot}s</td>
-                        <td className="text-right py-2 px-2 text-slate-300">{config.throughput} T/s</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </Card>
+        </main>
+      </div>
 
         {/* Test Time Scaling Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-6" id="test-time-scaling">
@@ -2364,13 +2359,37 @@ export default function App() {
                 <Download className="w-3 h-3 sm:w-4 sm:h-4" />
                 <span className="hidden sm:inline">Download CSV</span>
               </button>
+              <Link
+                to="/detail-results"
+                className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 bg-purple-700 hover:bg-purple-600 border border-purple-600 rounded-full text-xs sm:text-sm text-white transition-colors shrink-0"
+              >
+                <span>Trade-off Plot</span>
+              </Link>
             </div>
           </header>
           <TestTimeScalingSection />
         </div>
 
-      </main>
-      </div>
+        {/* Agentic Workflow Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-6" id="agentic-workflow">
+          <header className="mb-6 sm:mb-8">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+              <h1 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-orange-400">
+                Agentic Workflow
+              </h1>
+              <button
+                onClick={() => document.getElementById('agentic-download-btn').click()}
+                className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 bg-emerald-700 hover:bg-emerald-600 border border-emerald-600 rounded-full text-xs sm:text-sm text-white transition-colors shrink-0"
+                title="Download all agentic workflow benchmark data as CSV"
+              >
+                <Download className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">Download CSV</span>
+              </button>
+            </div>
+          </header>
+          <AgenticWorkflowSection />
+        </div>
+
     </div>
   );
 }

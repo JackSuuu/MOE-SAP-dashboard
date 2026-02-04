@@ -9,6 +9,7 @@ import {
 import {
   Activity, Server, Settings, Cpu, Info, Zap, Percent, Github, Download
 } from 'lucide-react';
+import { BENCHMARK_ROWS } from './data/tts-benchmarks/index.js';
 import { TestTimeScalingSection } from './test-time-scaling.jsx';
 
 const Card = ({ children, className = "" }) => (
@@ -196,6 +197,34 @@ const exportAllMoEData = (chartData, modelName, scenario, batchSize, capConfigs,
     ...capData
   ];
   downloadCSV(allData, `moe-benchmark-all-${dateStr}.csv`);
+};
+
+// Export all Test Time Scaling benchmark rows in one CSV
+const exportAllTTSData = () => {
+  const dateStr = getCurrentDateStr();
+  
+  const rows = BENCHMARK_ROWS.map(row => {
+    const meta = row.meta || {};
+    return {
+      date: dateStr,
+      section: 'Test-Time-Scaling',
+      dataset: row.dataset,
+      model: row.model,
+      quantization: row.quant,
+      inference_engine: row.engine,
+      questions_per_hour: row.questionsPerHour,
+      accuracy_percent: row.accuracy,
+      gpu: meta.gpu || 'N/A',
+      gpu_count: meta.gpuCount ?? 'N/A',
+      sequential: meta.sequential ?? 'N/A',
+      parallel: meta.parallel ?? 'N/A',
+      samples: meta.samples ?? 'N/A',
+      max_tokens: meta.maxTokens ?? 'N/A',
+      tools: meta.tools ?? 'N/A',
+    };
+  });
+  
+  downloadCSV(rows, `test-time-scaling-all-${dateStr}.csv`);
 };
 
 // LongBench v2 benchmark data (SGLang) - defined outside component for stability
@@ -733,7 +762,7 @@ export default function App() {
   };
 
   // --- State ---
-  const [selectedModel, setSelectedModel] = useState('deepseek-r1');
+  const [selectedModel, setSelectedModel] = useState('deepseek-v2-lite');
   const [scenario, setScenario] = useState('5k-ref');
   
   // Inputs - default to 5k reference (4750 + 250 = 5000)
@@ -963,6 +992,7 @@ export default function App() {
     ],
     // TTFT real data points
     ttft: [
+      // SGLang data points (BS=1 only, /3.8 adjustment)
       {
         name: 'Qwen1.5-MoE',
         model: 'qwen1.5-moe',
@@ -972,20 +1002,7 @@ export default function App() {
         engine: 'SGLang v0.5.8',
         batchSize: 1,
         power: 700,
-        ttft: 5.9, // ms
-        color: '#ef4444', // red for real data
-        showLabel: true,
-      },
-      {
-        name: 'Qwen1.5-MoE',
-        model: 'qwen1.5-moe',
-        context: '4k-1k',
-        tp: 1,
-        gpu: 'NVIDIA H100-SXM',
-        engine: 'SGLang v0.5.8',
-        batchSize: 32,
-        power: 700,
-        ttft: 107.2, // ms
+        ttft: 15.5, // ms (59.0 / 3.8)
         color: '#ef4444', // red for real data
         showLabel: true,
       },
@@ -998,7 +1015,7 @@ export default function App() {
         engine: 'SGLang v0.5.8',
         batchSize: 1,
         power: 700,
-        ttft: 9.7, // ms
+        ttft: 25.5, // ms (97.0 / 3.8)
         color: '#ef4444', // red for real data
         showLabel: true,
       },
@@ -1011,7 +1028,7 @@ export default function App() {
         engine: 'SGLang v0.5.8',
         batchSize: 1,
         power: 700,
-        ttft: 15.6, // ms
+        ttft: 41.1, // ms (156.0 / 3.8)
         color: '#ef4444', // red for real data
         showLabel: true,
       },
@@ -1024,24 +1041,11 @@ export default function App() {
         engine: 'SGLang v0.5.8',
         batchSize: 1,
         power: 700,
-        ttft: 9.4, // ms
+        ttft: 24.7, // ms (94.0 / 3.8)
         color: '#ef4444', // red for real data
         showLabel: true,
       },
-      {
-        name: 'DeepSeek-V2-Lite',
-        model: 'deepseek-v2-lite',
-        context: '4k-1k',
-        tp: 1,
-        gpu: 'NVIDIA H100-SXM',
-        engine: 'SGLang v0.5.8',
-        batchSize: 32,
-        power: 700,
-        ttft: 153.0, // ms
-        color: '#ef4444', // red for real data
-        showLabel: true,
-      },
-      // vLLM v0.11.0 TTFT data points
+      // vLLM v0.11.0 TTFT data points (BS=1 only, /3.8 adjustment)
       {
         name: 'DeepSeek-V2-Lite',
         model: 'deepseek-v2-lite',
@@ -1051,20 +1055,7 @@ export default function App() {
         engine: 'vLLM v0.11.0',
         batchSize: 1,
         power: 700,
-        ttft: 89.8, // ms
-        color: '#6366f1', // indigo for vLLM
-        showLabel: true,
-      },
-      {
-        name: 'DeepSeek-V2-Lite',
-        model: 'deepseek-v2-lite',
-        context: '4k-1k',
-        tp: 1,
-        gpu: 'NVIDIA H100-SXM',
-        engine: 'vLLM v0.11.0',
-        batchSize: 32,
-        power: 700,
-        ttft: 881.6, // ms
+        ttft: 59.1, // ms (224.5 / 3.8)
         color: '#6366f1', // indigo for vLLM
         showLabel: true,
       },
@@ -1077,7 +1068,7 @@ export default function App() {
         engine: 'vLLM v0.11.0',
         batchSize: 1,
         power: 700,
-        ttft: 241.5, // ms
+        ttft: 158.9, // ms (603.75 / 3.8)
         color: '#6366f1', // indigo for vLLM
         showLabel: true,
       },
@@ -1090,20 +1081,7 @@ export default function App() {
         engine: 'vLLM v0.11.0',
         batchSize: 1,
         power: 700,
-        ttft: 70.6, // ms
-        color: '#6366f1', // indigo for vLLM
-        showLabel: true,
-      },
-      {
-        name: 'Qwen1.5-MoE',
-        model: 'qwen1.5-moe',
-        context: '4k-1k',
-        tp: 1,
-        gpu: 'NVIDIA H100-SXM',
-        engine: 'vLLM v0.11.0',
-        batchSize: 32,
-        power: 700,
-        ttft: 733.56, // ms
+        ttft: 46.4, // ms (176.5 / 3.8)
         color: '#6366f1', // indigo for vLLM
         showLabel: true,
       },
@@ -1116,7 +1094,7 @@ export default function App() {
         engine: 'vLLM v0.11.0',
         batchSize: 1,
         power: 700,
-        ttft: 190.8, // ms
+        ttft: 125.5, // ms (477.0 / 3.8)
         color: '#6366f1', // indigo for vLLM
         showLabel: true,
       },
@@ -1443,24 +1421,25 @@ export default function App() {
     // Device points from benchmark data
     // Peak Bandwidth = HBM/GDDR memory bandwidth (blue circles)
     // GFLOPS values from spreadsheet for TTFT calculation
+    // GFLOPS values are BF16 Tensor Core performance (FP32 × 2)
     const peakDevices = [
       // Data Center Systems (Multi-GPU)
-      { name: 'NVIDIA DGX-H100', bandwidth: 26800, power: 10200, gflops: 7.92e6, category: 'datacenter-system', type: 'peak', showLabel: true },
-      { name: 'NVIDIA DGX-A100', bandwidth: 16296, power: 6500, gflops: 2.50e6, category: 'datacenter-system', type: 'peak', showLabel: false },
+      { name: 'NVIDIA DGX-H100', bandwidth: 26800, power: 10200, gflops: 1.584e7, category: 'datacenter-system', type: 'peak', showLabel: true },
+      { name: 'NVIDIA DGX-A100', bandwidth: 16296, power: 6500, gflops: 5.00e6, category: 'datacenter-system', type: 'peak', showLabel: false },
       // Data Center Cards
       { name: 'AMD MI300X', bandwidth: 5300, power: 750, gflops: null, category: 'datacenter-card', type: 'peak', showLabel: true },
-      { name: 'NVIDIA H100-SXM', bandwidth: 3350, power: 700, gflops: 9.90e5, category: 'datacenter-card', type: 'peak', showLabel: true },
+      { name: 'NVIDIA H100-SXM', bandwidth: 3350, power: 700, gflops: 1.98e6, category: 'datacenter-card', type: 'peak', showLabel: true },
       { name: 'AWS Trainium 2', bandwidth: 2900, power: 480, gflops: null, category: 'datacenter-card', type: 'peak', showLabel: false },
-      { name: 'NVIDIA A100-80G-SXM4', bandwidth: 2037, power: 400, gflops: 3.12e5, category: 'datacenter-card', type: 'peak', showLabel: false },
-      { name: 'NVIDIA H100-PCIe', bandwidth: 2000, power: 350, gflops: 7.57e5, category: 'datacenter-card', type: 'peak', showLabel: false },
-      { name: 'NVIDIA A100-80G-PCIe', bandwidth: 1935, power: 300, gflops: 3.12e5, category: 'datacenter-card', type: 'peak', showLabel: false },
-      { name: 'NVIDIA A6000', bandwidth: 768, power: 300, gflops: 1.55e5, category: 'datacenter-card', type: 'peak', showLabel: false },
-      { name: 'NVIDIA A5000', bandwidth: 768, power: 230, gflops: 1.11e5, category: 'datacenter-card', type: 'peak', showLabel: false },
+      { name: 'NVIDIA A100-80G-SXM4', bandwidth: 2037, power: 400, gflops: 6.24e5, category: 'datacenter-card', type: 'peak', showLabel: false },
+      { name: 'NVIDIA H100-PCIe', bandwidth: 2000, power: 350, gflops: 1.514e6, category: 'datacenter-card', type: 'peak', showLabel: false },
+      { name: 'NVIDIA A100-80G-PCIe', bandwidth: 1935, power: 300, gflops: 6.24e5, category: 'datacenter-card', type: 'peak', showLabel: false },
+      { name: 'NVIDIA A6000', bandwidth: 768, power: 300, gflops: 3.10e5, category: 'datacenter-card', type: 'peak', showLabel: false },
+      { name: 'NVIDIA A5000', bandwidth: 768, power: 230, gflops: 2.22e5, category: 'datacenter-card', type: 'peak', showLabel: false },
       // Personal (Consumer GPUs) - 调整power避免重叠
-      { name: 'NVIDIA RTX 5090', bandwidth: 1790, power: 575, gflops: 1.68e6, category: 'personal', type: 'peak', showLabel: true },
-      { name: 'NVIDIA RTX 4090', bandwidth: 1010, power: 450, gflops: 6.60e5, category: 'personal', type: 'peak', showLabel: true },
+      { name: 'NVIDIA RTX 5090', bandwidth: 1790, power: 575, gflops: 3.36e6, category: 'personal', type: 'peak', showLabel: true },
+      { name: 'NVIDIA RTX 4090', bandwidth: 1010, power: 450, gflops: 1.32e6, category: 'personal', type: 'peak', showLabel: true },
       { name: 'NVIDIA RTX 3090Ti', bandwidth: 1010, power: 400, gflops: null, category: 'personal', type: 'peak', showLabel: false },
-      { name: 'NVIDIA RTX 5080', bandwidth: 960, power: 360, gflops: 9.00e5, category: 'personal', type: 'peak', showLabel: false },
+      { name: 'NVIDIA RTX 5080', bandwidth: 960, power: 360, gflops: 1.80e6, category: 'personal', type: 'peak', showLabel: false },
       { name: 'NVIDIA RTX 3080Ti', bandwidth: 912.4, power: 350, gflops: null, category: 'personal', type: 'peak', showLabel: false },
       { name: 'NVIDIA RTX 4080', bandwidth: 716.8, power: 320, gflops: null, category: 'personal', type: 'peak', showLabel: false },
       // SoC (Apple Silicon) - Unified Memory - 调整power避免重叠
@@ -1476,23 +1455,24 @@ export default function App() {
     ];
     
     // Offloading Bandwidth = PCIe/ethernet bandwidth (orange squares)
+    // GFLOPS values are BF16 Tensor Core performance (FP32 × 2)
     const offloadDevices = [
       // Data Center Systems (Multi-GPU with NVLink)
-      { name: 'NVIDIA DGX-H100', bandwidth: 1280, power: 10200, gflops: 7.92e6, category: 'datacenter-system', type: 'pcie', showLabel: true },
-      { name: 'NVIDIA DGX-A100', bandwidth: 512, power: 6500, gflops: 2.50e6, category: 'datacenter-system', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA DGX-H100', bandwidth: 1280, power: 10200, gflops: 1.584e7, category: 'datacenter-system', type: 'pcie', showLabel: true },
+      { name: 'NVIDIA DGX-A100', bandwidth: 512, power: 6500, gflops: 5.00e6, category: 'datacenter-system', type: 'pcie', showLabel: false },
       // Data Center Cards (PCIe)
       { name: 'AMD MI300X', bandwidth: 128, power: 750, gflops: null, category: 'datacenter-card', type: 'pcie', showLabel: false },
-      { name: 'NVIDIA H100-SXM', bandwidth: 128, power: 700, gflops: 9.90e5, category: 'datacenter-card', type: 'pcie', showLabel: true },
+      { name: 'NVIDIA H100-SXM', bandwidth: 128, power: 700, gflops: 1.98e6, category: 'datacenter-card', type: 'pcie', showLabel: true },
       { name: 'AWS Trainium 2', bandwidth: 128, power: 480, gflops: null, category: 'datacenter-card', type: 'pcie', showLabel: false },
-      { name: 'NVIDIA H100-PCIe', bandwidth: 128, power: 350, gflops: 7.57e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
-      { name: 'NVIDIA A100-80G-SXM4', bandwidth: 64, power: 400, gflops: 3.12e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
-      { name: 'NVIDIA A100-80G-PCIe', bandwidth: 64, power: 300, gflops: 3.12e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
-      { name: 'NVIDIA A6000', bandwidth: 64, power: 300, gflops: 1.55e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
-      { name: 'NVIDIA A5000', bandwidth: 64, power: 230, gflops: 1.11e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA H100-PCIe', bandwidth: 128, power: 350, gflops: 1.514e6, category: 'datacenter-card', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA A100-80G-SXM4', bandwidth: 64, power: 400, gflops: 6.24e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA A100-80G-PCIe', bandwidth: 64, power: 300, gflops: 6.24e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA A6000', bandwidth: 64, power: 300, gflops: 3.10e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA A5000', bandwidth: 64, power: 230, gflops: 2.22e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
       // Personal (Consumer GPUs - PCIe)
-      { name: 'NVIDIA RTX 5090', bandwidth: 128, power: 575, gflops: 1.68e6, category: 'personal', type: 'pcie', showLabel: true },
-      { name: 'NVIDIA RTX 5080', bandwidth: 128, power: 360, gflops: 9.00e5, category: 'personal', type: 'pcie', showLabel: false },
-      { name: 'NVIDIA RTX 4090', bandwidth: 64, power: 450, gflops: 6.60e5, category: 'personal', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA RTX 5090', bandwidth: 128, power: 575, gflops: 3.36e6, category: 'personal', type: 'pcie', showLabel: true },
+      { name: 'NVIDIA RTX 5080', bandwidth: 128, power: 360, gflops: 1.80e6, category: 'personal', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA RTX 4090', bandwidth: 64, power: 450, gflops: 1.32e6, category: 'personal', type: 'pcie', showLabel: false },
       { name: 'NVIDIA RTX 4080', bandwidth: 64, power: 320, gflops: null, category: 'personal', type: 'pcie', showLabel: false },
       { name: 'NVIDIA RTX 3090Ti', bandwidth: 64, power: 400, gflops: null, category: 'personal', type: 'pcie', showLabel: false },
       { name: 'NVIDIA RTX 3080Ti', bandwidth: 64, power: 350, gflops: null, category: 'personal', type: 'pcie', showLabel: false },
@@ -2326,10 +2306,15 @@ export default function App() {
 
         {/* Chart 2: CAP Radar Plot */}
         <Card className="mb-8">
-          <h3 className="text-lg font-semibold mb-2 pl-2 border-l-4 border-purple-500">
-            CAP Radar Plot - Cost, Accuracy, Performance
-          </h3>
-          <p className="text-xs text-slate-400 mb-4 pl-2">Empirical evaluation across diverse model and system configurations to reveal Cost, Accuracy, and Performance trade-offs.</p>
+          <div className="flex justify-between items-start mb-4">
+            <div>
+              <h3 className="text-lg font-semibold mb-2 pl-2 border-l-4 border-purple-500">
+                CAP Radar Plot - Cost, Accuracy, Performance
+              </h3>
+              <p className="text-xs text-slate-400 pl-2">Empirical evaluation across diverse model and system configurations to reveal Cost, Accuracy, and Performance trade-offs.</p>
+            </div>
+            <Link to="/documentation" className="text-xs text-blue-400 hover:text-blue-300 transition-colors underline shrink-0">View Documentation</Link>
+          </div>
           
           {/* Config Format Explanation */}
           <div className="mb-4 p-3 bg-slate-800/50 rounded border border-slate-700">
@@ -2516,6 +2501,14 @@ export default function App() {
               <h1 className="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-sky-400">
                 Test Time Scaling
               </h1>
+              <button
+                onClick={exportAllTTSData}
+                className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 bg-emerald-700 hover:bg-emerald-600 border border-emerald-600 rounded-full text-xs sm:text-sm text-white transition-colors shrink-0"
+                title="Download all test time scaling benchmark data as CSV"
+              >
+                <Download className="w-3 h-3 sm:w-4 sm:h-4" />
+                <span className="hidden sm:inline">Download CSV</span>
+              </button>
             </div>
           </header>
           <TestTimeScalingSection />

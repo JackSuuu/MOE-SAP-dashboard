@@ -82,7 +82,7 @@ const getCurrentDateStr = () => {
 };
 
 // Export all MoE benchmark data (Hardware Map + CAP Radar) in one CSV
-const exportAllMoEData = (chartData, modelName, scenario, batchSize, capConfigs, capDataset) => {
+const exportAllMoEData = (chartData, modelName, scenario, batchSize, capConfigs, capDataset, realBenchmarkData) => {
   const dateStr = getCurrentDateStr();
   
   // Hardware Map data
@@ -93,52 +93,108 @@ const exportAllMoEData = (chartData, modelName, scenario, batchSize, capConfigs,
     ...chartData.dgxOffloadDevices.map(d => ({ ...d, bandwidth_type: 'Offload (PCIe)' })),
   ];
   
-  const hardwareData = allDevices.map(device => ({
+  // Hardware Map - Bandwidth Mode (all devices have bandwidth data - these are estimated/analytical)
+  const bandwidthModeData = allDevices.map(device => ({
     date: dateStr,
     section: 'Hardware-Map',
-    dataset: scenario === '14k-ref' ? 'LongBench-v2' : 'GSM8K',
-    model: modelName,
-    precision: 'N/A',
+    mode: 'Bandwidth',
+    data_type: 'Estimated',
     hardware: device.name,
-    inference_system: 'N/A',
     category: device.category,
     bandwidth_type: device.bandwidth_type,
+    model: modelName,
     context_size: scenario === '14k-ref' ? '14K' : '5K',
     batch_size: batchSize,
-    accuracy_percent: 'N/A',
-    cost: device.power,
-    cost_unit: 'Watts',
     bandwidth_gbs: device.bandwidth,
+    power_watts: device.power,
     gflops: device.gflops || 'N/A',
-    tpot_ms: device.tpot ? device.tpot.toFixed(2) : 'N/A',
-    ttft_ms: device.ttft ? device.ttft.toFixed(2) : 'N/A',
+    tpot_ms: 'N/A',
+    ttft_ms: 'N/A',
+    accuracy_percent: 'N/A',
     throughput_tokens_per_sec: 'N/A',
+    precision: 'BF16',
+    inference_system: 'Analytical Model',
   }));
   
-  // CAP Radar data
+  // Hardware Map - TPOT Mode Measured (real benchmark data)
+  const tpotMeasuredData = (realBenchmarkData?.tpot || []).map(point => {
+    const tpotMs = point.tpot;
+    const throughput = tpotMs > 0 ? (point.batchSize / (tpotMs / 1000)).toFixed(2) : 'N/A';
+    return {
+      date: dateStr,
+      section: 'Hardware-Map',
+      mode: 'TPOT',
+      data_type: 'Measured',
+      hardware: point.gpu,
+      category: 'benchmark',
+      bandwidth_type: 'N/A',
+      model: point.name,
+      context_size: point.context,
+      batch_size: point.batchSize,
+      bandwidth_gbs: 'N/A',
+      power_watts: point.power,
+      gflops: 'N/A',
+      tpot_ms: tpotMs,
+      ttft_ms: 'N/A',
+      accuracy_percent: 'N/A',
+      throughput_tokens_per_sec: throughput,
+      precision: 'BF16',
+      inference_system: point.engine,
+    };
+  });
+  
+  // Hardware Map - TTFT Mode Measured (real benchmark data)
+  const ttftMeasuredData = (realBenchmarkData?.ttft || []).map(point => ({
+    date: dateStr,
+    section: 'Hardware-Map',
+    mode: 'TTFT',
+    data_type: 'Measured',
+    hardware: point.gpu,
+    category: 'benchmark',
+    bandwidth_type: 'N/A',
+    model: point.name,
+    context_size: point.context,
+    batch_size: point.batchSize,
+    bandwidth_gbs: 'N/A',
+    power_watts: point.power,
+    gflops: 'N/A',
+    tpot_ms: 'N/A',
+    ttft_ms: point.ttft,
+    accuracy_percent: 'N/A',
+    throughput_tokens_per_sec: 'N/A',
+    precision: 'BF16',
+    inference_system: point.engine,
+  }));
+  
+  // CAP Radar data - actual benchmark measurements
   const capData = Object.entries(capConfigs).map(([key, config]) => ({
     date: dateStr,
     section: 'CAP-Radar',
-    dataset: capDataset === 'longbench-v2' ? 'LongBench-v2' : 'GSM8K',
-    model: config.model,
-    precision: config.precision,
+    mode: 'Benchmark',
+    data_type: 'Measured',
     hardware: config.gpu,
-    inference_system: config.system,
     category: 'benchmark',
     bandwidth_type: 'N/A',
+    model: config.model,
     context_size: capDataset === 'longbench-v2' ? '14K' : '5K',
     batch_size: config.batchSize || 'N/A',
-    accuracy_percent: config.accuracy,
-    cost: config.cost,
-    cost_unit: capDataset === 'longbench-v2' ? 'Watts' : 'USD',
     bandwidth_gbs: 'N/A',
+    power_watts: capDataset === 'longbench-v2' ? config.cost : 'N/A',
     gflops: 'N/A',
     tpot_ms: config.tpot ? (config.tpot * 1000).toFixed(2) : 'N/A',
     ttft_ms: 'N/A',
+    accuracy_percent: config.accuracy,
     throughput_tokens_per_sec: config.throughput,
+    precision: config.precision,
+    inference_system: config.system,
   }));
   
-  const allData = [...hardwareData, ...capData];
+  const allData = [
+    ...bandwidthModeData,
+    ...tpotMeasuredData,
+    ...ttftMeasuredData,
+    ...capData
+  ];
   downloadCSV(allData, `moe-benchmark-all-${dateStr}.csv`);
 };
 
@@ -851,6 +907,59 @@ export default function App() {
         color: '#6366f1', // indigo for vLLM
         showLabel: true,
       },
+      // NVIDIA A6000 data points (SGLang v0.5.8)
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        tpot: 10.06, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        tpot: 12.53, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        tpot: 11.18, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        tpot: 15.64, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
     ],
     // TTFT real data points
     ttft: [
@@ -1009,6 +1118,59 @@ export default function App() {
         power: 700,
         ttft: 190.8, // ms
         color: '#6366f1', // indigo for vLLM
+        showLabel: true,
+      },
+      // NVIDIA A6000 TTFT data points (SGLang v0.5.8)
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        ttft: 278.9, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        ttft: 266.1, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        ttft: 560.9, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A6000',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 300,
+        ttft: 1016.1, // ms
+        color: '#ef4444',
         showLabel: true,
       },
     ],
@@ -1631,7 +1793,7 @@ export default function App() {
               <span>GitHub</span>
             </a>
             <button
-              onClick={() => exportAllMoEData(chartData, MODEL_CONFIG.name, scenario, batchSize, CAP_CONFIGS, capDataset)}
+              onClick={() => exportAllMoEData(chartData, MODEL_CONFIG.name, scenario, batchSize, CAP_CONFIGS, capDataset, REAL_BENCHMARK_DATA)}
               className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 bg-emerald-700 hover:bg-emerald-600 border border-emerald-600 rounded-full text-xs sm:text-sm text-white transition-colors"
               title="Download all benchmark data as CSV"
             >

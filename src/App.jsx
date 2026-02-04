@@ -203,28 +203,35 @@ const exportAllMoEData = (chartData, modelName, scenario, batchSize, capConfigs,
 // Export all Test Time Scaling benchmark rows in one CSV
 const exportAllTTSData = () => {
   const dateStr = getCurrentDateStr();
-  
-  const rows = BENCHMARK_ROWS.map(row => {
+
+  const rows = BENCHMARK_ROWS.map((row) => {
     const meta = row.meta || {};
     return {
       date: dateStr,
-      section: 'Test-Time-Scaling',
+      section: "Test-Time-Scaling",
+
+      // ✅ add this column
+      data_source: meta.source ?? "measured", // "projected" or "measured"
+
       dataset: row.dataset,
       model: row.model,
       quantization: row.quant,
       inference_engine: row.engine,
       questions_per_hour: row.questionsPerHour,
-      accuracy_percent: row.accuracy,
-      gpu: meta.gpu || 'N/A',
-      gpu_count: meta.gpuCount ?? 'N/A',
-      sequential: meta.sequential ?? 'N/A',
-      parallel: meta.parallel ?? 'N/A',
-      samples: meta.samples ?? 'N/A',
-      max_tokens: meta.maxTokens ?? 'N/A',
-      tools: meta.tools ?? 'N/A',
+
+      // ✅ optional: avoid blank cells for projected rows
+      accuracy_percent: row.accuracy ?? "N/A",
+
+      gpu: meta.gpu || "N/A",
+      gpu_count: meta.gpuCount ?? "N/A",
+      sequential: meta.sequential ?? "N/A",
+      parallel: meta.parallel ?? "N/A",
+      samples: meta.samples ?? "N/A",
+      max_tokens: meta.maxTokens ?? "N/A",
+      tools: meta.tools ?? "N/A",
     };
   });
-  
+
   downloadCSV(rows, `test-time-scaling-all-${dateStr}.csv`);
 };
 

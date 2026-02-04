@@ -56,24 +56,29 @@
   // Export Test Time Scaling benchmark data
   const exportTTSBenchmarkData = (rows, selection) => {
     const dateStr = getCurrentDateStr();
+
     const data = rows.map((row) => ({
       date: dateStr,
-      benchmark: 'Test-Time-Scaling',
+      benchmark: "Test-Time-Scaling",
+
+      data_source: row.meta?.source ?? "measured", // "projected" or "measured"
+
       dataset: selection.dataset,
       model: selection.model,
       quantization: selection.quant,
       inference_engine: selection.engine,
-      hardware: row.meta?.gpu || 'N/A',
-      gpu_count: row.meta?.gpuCount || 'N/A',
+      hardware: row.meta?.gpu || "N/A",
+      gpu_count: row.meta?.gpuCount || "N/A",
       questions_per_hour: row.questionsPerHour,
-      accuracy_percent: row.accuracy || 'N/A',
-      sequential_steps: row.meta?.sequential || 'N/A',
-      parallel_branches: row.meta?.parallel || 'N/A',
-      samples_per_step: row.meta?.samples || 'N/A',
-      max_tokens: row.meta?.maxTokens || 'N/A',
-      tools: row.meta?.tools || 'N/A',
+      accuracy_percent: row.accuracy ?? "N/A",
+      sequential_steps: row.meta?.sequential || "N/A",
+      parallel_branches: row.meta?.parallel || "N/A",
+      samples_per_step: row.meta?.samples || "N/A",
+      max_tokens: row.meta?.maxTokens || "N/A",
+      tools: row.meta?.tools || "N/A",
     }));
-    
+
+
     downloadCSV(data, `tts-${selection.model}-${selection.dataset}-benchmark-${dateStr}.csv`);
   };
 
@@ -714,6 +719,7 @@
         </h1>
         <button
           onClick={() => exportTTSBenchmarkData(selectedRows, selection)}
+          // onClick={() => alert("DOWNLOAD BUTTON HIT")}
           className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 bg-emerald-700 hover:bg-emerald-600 border border-emerald-600 rounded-full text-xs sm:text-sm text-white transition-colors"
           title="Download benchmark data as CSV"
           disabled={selectedRows.length === 0}
@@ -919,15 +925,6 @@
     );
 
     const rsaRows = useMemo(() => filterBenchmarkRowsRSA(rsaSelection), [rsaSelection]);
-    console.log("rsaRows DEBUG", rsaRows.length, {
-      model,
-      quant,
-      dataset,
-      engine,
-      parallel,
-      samples,
-      maxTokens,
-    });
 
     const lineColor = useMemo(() => {
       const gpuName = rsaRows?.[0]?.meta?.gpu || rsaRows?.[0]?.meta?.gpuName || null;

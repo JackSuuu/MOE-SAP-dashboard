@@ -42,10 +42,10 @@ const downloadCSV = (data, filename) => {
   URL.revokeObjectURL(url);
 };
 
-// Color mapping for tool modes
-const TOOL_MODE_COLORS = {
-  'No Tool': '#22c55e',    // green
-  'Tool Call': '#3b82f6',  // blue
+// Color mapping for datasets
+const DATASET_COLORS = {
+  'imo_answerbench_full_nt': '#22c55e',     // green
+  'imo_answerbench_full_combi': '#3b82f6',  // blue
 };
 
 // Custom tooltip
@@ -90,16 +90,16 @@ export function AgenticWorkflowSection() {
       y: yAxisMetric === 'latency' 
         ? d.meanTime 
         : d.meanTotalDecode / d.totalQuestions,
-      color: TOOL_MODE_COLORS[d.toolMode] || '#888',
+      color: DATASET_COLORS[d.dataset] || '#888',
     }));
   }, [selectedDataset, selectedModel, selectedToolMode, yAxisMetric]);
 
-  // Group by tool mode for legend
-  const dataByToolMode = useMemo(() => {
+  // Group by dataset for legend
+  const dataByDataset = useMemo(() => {
     const grouped = {};
     filteredData.forEach(d => {
-      if (!grouped[d.toolMode]) grouped[d.toolMode] = [];
-      grouped[d.toolMode].push(d);
+      if (!grouped[d.dataset]) grouped[d.dataset] = [];
+      grouped[d.dataset].push(d);
     });
     return grouped;
   }, [filteredData]);
@@ -242,12 +242,12 @@ export function AgenticWorkflowSection() {
                 wrapperStyle={{ paddingBottom: '10px' }}
               />
               
-              {Object.entries(dataByToolMode).map(([toolMode, data]) => (
+              {Object.entries(dataByDataset).map(([dataset, data]) => (
                 <Scatter
-                  key={toolMode}
-                  name={toolMode}
+                  key={dataset}
+                  name={dataset}
                   data={data}
-                  fill={TOOL_MODE_COLORS[toolMode] || '#888'}
+                  fill={DATASET_COLORS[dataset] || '#888'}
                   shape="circle"
                 />
               ))}
@@ -259,18 +259,18 @@ export function AgenticWorkflowSection() {
       {/* Summary Stats */}
       <Card>
         <h3 className="text-sm font-semibold text-slate-300 mb-3">Summary Statistics</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
-          {Object.entries(dataByToolMode).map(([toolMode, data]) => {
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+          {Object.entries(dataByDataset).map(([dataset, data]) => {
             const avgAccuracy = data.reduce((s, d) => s + d.accuracy, 0) / data.length;
             const avgLatency = data.reduce((s, d) => s + d.meanTime, 0) / data.length;
             return (
-              <div key={toolMode} className="bg-slate-700/50 rounded p-3">
+              <div key={dataset} className="bg-slate-700/50 rounded p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <div 
                     className="w-3 h-3 rounded-full" 
-                    style={{ backgroundColor: TOOL_MODE_COLORS[toolMode] }}
+                    style={{ backgroundColor: DATASET_COLORS[dataset] }}
                   />
-                  <span className="font-medium text-white">{toolMode}</span>
+                  <span className="font-medium text-white text-xs">{dataset}</span>
                 </div>
                 <div className="text-slate-400 text-xs">
                   <div>Runs: {data.length}</div>

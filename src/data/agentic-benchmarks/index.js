@@ -2,7 +2,7 @@
 // Data from tirsc8_imoanswerbench_run_logs.csv
 
 export const AGENTIC_BENCHMARK_DATA = [
-  // imo_answerbench_full_nt (No Tool)
+  // imo_answerbench_full_nt dataset
   {
     date: '20260126',
     run: '01',
@@ -11,9 +11,8 @@ export const AGENTIC_BENCHMARK_DATA = [
     inferenceSystem: '8 parallel with python tool',
     model: 'unsloth/gpt-oss-120b',
     modelShort: 'GPT-OSS-120B',
-    task: 'imo_answerbench_full_nt',
-    dataset: 'IMO AnswerBench',
-    toolMode: 'No Tool',
+    dataset: 'imo_answerbench_full_nt',
+    toolMode: 'Tool Call',
     seq: 1,
     par: 8,
     majorityThreshold: 4,
@@ -37,9 +36,8 @@ export const AGENTIC_BENCHMARK_DATA = [
     inferenceSystem: '8 parallel with python tool',
     model: 'unsloth/gpt-oss-120b',
     modelShort: 'GPT-OSS-120B',
-    task: 'imo_answerbench_full_nt',
-    dataset: 'IMO AnswerBench',
-    toolMode: 'No Tool',
+    dataset: 'imo_answerbench_full_nt',
+    toolMode: 'Tool Call',
     seq: 1,
     par: 8,
     majorityThreshold: 4,
@@ -63,9 +61,8 @@ export const AGENTIC_BENCHMARK_DATA = [
     inferenceSystem: '8 parallel with python tool',
     model: 'unsloth/gpt-oss-120b',
     modelShort: 'GPT-OSS-120B',
-    task: 'imo_answerbench_full_nt',
-    dataset: 'IMO AnswerBench',
-    toolMode: 'No Tool',
+    dataset: 'imo_answerbench_full_nt',
+    toolMode: 'Tool Call',
     seq: 1,
     par: 8,
     majorityThreshold: 4,
@@ -81,7 +78,7 @@ export const AGENTIC_BENCHMARK_DATA = [
     meanTotalPrefill: 1669066.34,
     meanTotalDecode: 133491.06,
   },
-  // imo_answerbench_full_combi (Tool Call)
+  // imo_answerbench_full_combi dataset
   {
     date: '20260127',
     run: '01',
@@ -90,8 +87,7 @@ export const AGENTIC_BENCHMARK_DATA = [
     inferenceSystem: '8 parallel with python tool',
     model: 'unsloth/gpt-oss-120b',
     modelShort: 'GPT-OSS-120B',
-    task: 'imo_answerbench_full_combi',
-    dataset: 'IMO AnswerBench',
+    dataset: 'imo_answerbench_full_combi',
     toolMode: 'Tool Call',
     seq: 1,
     par: 8,
@@ -116,8 +112,7 @@ export const AGENTIC_BENCHMARK_DATA = [
     inferenceSystem: '8 parallel with python tool',
     model: 'unsloth/gpt-oss-120b',
     modelShort: 'GPT-OSS-120B',
-    task: 'imo_answerbench_full_combi',
-    dataset: 'IMO AnswerBench',
+    dataset: 'imo_answerbench_full_combi',
     toolMode: 'Tool Call',
     seq: 1,
     par: 8,
@@ -142,8 +137,7 @@ export const AGENTIC_BENCHMARK_DATA = [
     inferenceSystem: '8 parallel with python tool',
     model: 'unsloth/gpt-oss-120b',
     modelShort: 'GPT-OSS-120B',
-    task: 'imo_answerbench_full_combi',
-    dataset: 'IMO AnswerBench',
+    dataset: 'imo_answerbench_full_combi',
     toolMode: 'Tool Call',
     seq: 1,
     par: 8,
@@ -168,8 +162,7 @@ export const AGENTIC_BENCHMARK_DATA = [
     inferenceSystem: '8 parallel with python tool',
     model: 'unsloth/gpt-oss-120b',
     modelShort: 'GPT-OSS-120B',
-    task: 'imo_answerbench_full_combi',
-    dataset: 'IMO AnswerBench',
+    dataset: 'imo_answerbench_full_combi',
     toolMode: 'Tool Call',
     seq: 1,
     par: 8,
@@ -198,5 +191,5 @@ export const getUniqueModels = () => {
 };
 
 export const getUniqueToolModes = () => {
-  return [...new Set(AGENTIC_BENCHMARK_DATA.map(d => d.toolMode))];
+  return ['Tool Call', 'No Tool'];
 };

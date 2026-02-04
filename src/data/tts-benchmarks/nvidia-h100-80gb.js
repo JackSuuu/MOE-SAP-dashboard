@@ -1,5 +1,6 @@
 // --- benchmark rows (replace with your real data) ---
-export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
+export const NVIDIA_H100_80GB_SXM_MEASURED_ROWS = [
+// AIME25
   {
     model: "gpt-oss-20b-high",
     quant: "mxfp4",
@@ -9,13 +10,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 93.3333,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 10,
       parallel: 16,
       samples: 4,
       maxTokens: 16384,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -27,13 +29,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 90.0000,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 10,
       parallel: 16,
       samples: 4,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -45,13 +48,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 90.0000,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 10,
       parallel: 16,
       samples: 4,
       maxTokens: 16384,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -63,13 +67,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 86.6667,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 10,
       parallel: 16,
       samples: 4,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -81,13 +86,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 63.3333,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 10,
       parallel: 16,
       samples: 4,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -99,13 +105,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 60.0000,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 10,
       parallel: 16,
       samples: 4,
       maxTokens: 16384,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -117,13 +124,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 23.3333,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 160,
       parallel: 1,
       samples: 1,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -135,13 +143,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 30.0000,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 20,
       parallel: 8,
       samples: 8,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -153,13 +162,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 26.6667,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 16,
       parallel: 10,
       samples: 5,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -171,13 +181,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 26.6667,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 10,
       parallel: 16,
       samples: 4,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -189,13 +200,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 26.6667,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 40,
       parallel: 4,
       samples: 4,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -207,13 +219,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 33.3333,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 32,
       parallel: 5,
       samples: 5,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -225,13 +238,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 30.0000,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 16,
       parallel: 10,
       samples: 2,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -243,13 +257,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 16.6667,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 1,
       parallel: 160,
       samples: null,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -261,13 +276,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 66.6667,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 5,
       parallel: 32,
       samples: 8,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -279,13 +295,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 73.3333,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 20,
       parallel: 8,
       samples: 8,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -297,13 +314,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 33.3333,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 160,
       parallel: 1,
       samples: 1,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -315,13 +333,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 63.3333,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 10,
       parallel: 16,
       samples: 4,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -333,13 +352,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 53.3333,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 40,
       parallel: 4,
       samples: 4,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -351,13 +371,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 56.6667,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 32,
       parallel: 5,
       samples: 5,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -369,13 +390,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 50.0000,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 1,
       parallel: 160,
       samples: null,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -387,13 +409,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 50.0000,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 10,
       parallel: 16,
       samples: 2,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
 
@@ -406,13 +429,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 70.0000,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 5,
       parallel: 32,
       samples: 8,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
 
@@ -425,13 +449,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 63.3333,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 10,
       parallel: 16,
       samples: 4,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   
@@ -444,13 +469,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 70.0000,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 16,
       parallel: 10,
       samples: 5,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
 
@@ -463,13 +489,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 26.6667,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 160,
       parallel: 1,
       samples: 1,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -481,13 +508,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 66.6667,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 32,
       parallel: 5,
       samples: 5,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -499,13 +527,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 73.3333,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 20,
       parallel: 8,
       samples: 8,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -517,13 +546,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 63.3333,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 40,
       parallel: 4,
       samples: 4,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -535,13 +565,14 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 73.3333,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 16,
       parallel: 10,
       samples: 2,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
   {
@@ -553,13 +584,522 @@ export const NVIDIA_H100_80GB_BENCHMARK_ROWS = [
     accuracy: 30.0000,
     color: "#22c55e", // point color (green)
     meta: {
-      gpu: "NVIDIA H100 80GB",
+      gpu: "H100-SXM",
       gpuCount: 1,
       sequential: 1,
       parallel: 160,
       samples: null,
       maxTokens: 8192,
       tools: null,
+      source: "measured",
     },
   },
-];
+// GPQA Diamond
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 149.4709376,
+    accuracy: 63.6364,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 1,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 75.31701214,
+    accuracy: 66.1616,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 2,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 46.22575531,
+    accuracy: 67.1717,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 3,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 32.7325006,
+    accuracy: 68.1818,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 4,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 25.06931833,
+    accuracy: 66.6667,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 5,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 20.61397231,
+    accuracy: 68.1818,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 6,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 17.34821681,
+    accuracy: 68.1818,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 7,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 15.01905229,
+    accuracy: 66.6667,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 8,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 13.1791205,
+    accuracy: 68.1818,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 9,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 11.75234834,
+    accuracy: 68.1818,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 10,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 10.62384163,
+    accuracy: 69.1919,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 11,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 9.67082987,
+    accuracy: 67.1717,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 12,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 8.878176916,
+    accuracy: 65.6566,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 13,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 8.180262506,
+    accuracy: 68.1818,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 14,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 7.566400131,
+    accuracy: 68.6869,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 15,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 7.046623089,
+    accuracy: 66.6667,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 16,
+      parallel: 1,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 9.663881716,
+    accuracy: 73.2323,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 1,
+      parallel: 16,
+      samples: null,
+      maxTokens: 8192,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 106.1668076,
+    accuracy: 68.6869,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 1,
+      parallel: 1,
+      samples: null,
+      maxTokens: 16384,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 46.3099079,
+    accuracy: 69.1919,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 2,
+      parallel: 1,
+      samples: null,
+      maxTokens: 16384,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 26.71381971,
+    accuracy: 69.6970,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 3,
+      parallel: 1,
+      samples: null,
+      maxTokens: 16384,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 17.73118339,
+    accuracy: 69.1919,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 4,
+      parallel: 1,
+      samples: null,
+      maxTokens: 16384,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 13.08258783,
+    accuracy: 67.1717,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 5,
+      parallel: 1,
+      samples: null,
+      maxTokens: 16384,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 10.4316992,
+    accuracy: 67.1717,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 6,
+      parallel: 1,
+      samples: null,
+      maxTokens: 16384,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 8.623721359,
+    accuracy: 68.1818,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 7,
+      parallel: 1,
+      samples: null,
+      maxTokens: 16384,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 7.343260673,
+    accuracy: 67.6768,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 8,
+      parallel: 1,
+      samples: null,
+      maxTokens: 16384,
+      tools: null,
+      source: "measured",
+    },
+  },
+  {
+    model: "Qwen3-30B-A3B-Instruct-2507",
+    quant: "bf16",
+    dataset: "GPQA Diamond",
+    engine: "SGLang",
+    questionsPerHour: 6.483338878,
+    accuracy: 74.2424,
+    color: "#22c55e", // point color (green)
+    meta: {
+      gpu: "H100-SXM",
+      gpuCount: 1,
+      sequential: 1,
+      parallel: 16,
+      samples: null,
+      maxTokens: 16384,
+      tools: null,
+      source: "measured",
+    },
+  },
+]
+
+// .map((r) => ({
+//    ...r,
+//    meta: { ...r.meta, source: r.meta?.source ?? "measured" },
+//  }));
+
+
+const NVIDIA_H100_80GB_SXM_PROJECTED_ROWS = [
+
+]
+
+export const NVIDIA_H100_80GB_BENCHMARK_ROWS =
+  [...NVIDIA_H100_80GB_SXM_MEASURED_ROWS, ...NVIDIA_H100_80GB_SXM_PROJECTED_ROWS];

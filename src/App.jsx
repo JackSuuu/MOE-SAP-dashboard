@@ -1815,17 +1815,22 @@ export default function App() {
           {/* Justification / Explanation */}
           <div className="bg-slate-800/50 rounded-lg p-3 mb-4 text-xs text-slate-300 leading-relaxed">
             <p className="mb-2">
-              <span className="text-blue-400 font-semibold">X-axis (Power):</span> Power consumption directly correlates with operational cost and deployment constraints. 
-              It enables comparison across device classes—from edge devices (~10W) to datacenter systems (~10kW)—highlighting cost-efficiency trade-offs.
+              <span className="text-blue-400 font-semibold">X-axis (Power):</span> Power consumption reflects operational cost and enables comparison across device classes—from edge devices (~10W) to datacenter systems (~10kW).
             </p>
             <p className="mb-2">
-              <span className="text-blue-400 font-semibold">Y-axis Options:</span> <span className="text-cyan-400">Bandwidth</span> shows theoretical memory throughput requirements for MoE inference at target SLO. 
-              <span className="text-cyan-400"> TPOT</span> (Time Per Output Token) measures decode latency—critical for streaming responses. 
-              <span className="text-cyan-400"> TTFT</span> (Time To First Token) measures prefill latency—critical for perceived responsiveness.
+              <span className="text-blue-400 font-semibold">Y-axis Options:</span> <span className="text-cyan-400">Bandwidth</span> shows memory throughput requirements for MoE inference at target SLO. 
+              <span className="text-cyan-400"> TPOT</span> (Time Per Output Token) measures decode latency—bandwidth-bound since each decode step loads model weights plus the accumulated KV cache from all prior tokens. 
+              <span className="text-cyan-400"> TTFT</span> (Time To First Token) measures prefill latency—compute-bound for short contexts, but memory-bound for long contexts due to KV cache writes.
+            </p>
+            <p className="mb-2">
+              <span className="text-blue-400 font-semibold">Context Scenarios:</span> <span className="text-green-400">5K (4K+1K)</span> represents short-context tasks like GSM8K, where model weights dominate memory access. 
+              <span className="text-green-400"> 14K (13K+1K)</span> represents long-context tasks like LongBench-V2, where KV cache becomes the dominant factor in memory bandwidth.
             </p>
             <p>
-              <span className="text-blue-400 font-semibold">Context Scenarios:</span> <span className="text-green-400">5K (4K+1K)</span> represents short-context tasks like GSM8K math problems. 
-              <span className="text-green-400"> 14K (13K+1K)</span> represents long-context tasks like LongBench-V2 document QA, where KV cache dominates memory bandwidth.
+              <span className="text-blue-400 font-semibold">Batch Size:</span> <span className="text-yellow-400">1</span> for latency-critical single-user scenarios. 
+              <span className="text-yellow-400"> 32</span> is entry-level batching that amortizes weight loading overhead. 
+              <span className="text-yellow-400"> 64</span> balances throughput and memory for mid-range GPUs. 
+              <span className="text-yellow-400"> 128</span> approaches the limit for high-end GPUs (H100)—beyond this, KV cache memory pressure becomes the bottleneck.
             </p>
           </div>
           

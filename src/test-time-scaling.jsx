@@ -366,7 +366,7 @@ function HardwareLegend({ points }) {
 
     return out;
   }, [points]);
-
+ 
   // MANUAL manufacturer labels (no deduction helpers)
   // Since you explicitly don’t want name-based heuristics, we hardcode by color.
   const MANUFACTURER_LABEL_BY_COLOR = {

@@ -346,7 +346,7 @@ const TTS_MODEL_OPTIONS = [
   { value: "gpt-oss-20b-medium", label: "GPT-OSS-20B (MEDIUM)" },
   { value: "gpt-oss-20b-low", label: "GPT-OSS-20B (LOW)" },
   { value: "Qwen3-30B-A3B-Instruct-2507", label: "Qwen3-30B-A3B-Instruct-2507" },
-  { value: "qwen3-4b-instruct-2507", label: "Qwen3-4B-Instruct-2507" },
+  // { value: "qwen3-4b-instruct-2507", label: "Qwen3-4B-Instruct-2507" },
 ];
 
 const TTS_QUANT_OPTIONS = [

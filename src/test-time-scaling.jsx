@@ -432,16 +432,13 @@ function HardwareLegend({ points }) {
 }
 
 function RuntimeVsPowerChartCard({ points }) {
-
   // helper: add multiplicative padding for log scales
   const padLogDomain = (pad = 1.12) => ([dataMin, dataMax]) => {
     const min = Number(dataMin);
     const max = Number(dataMax);
 
-    // safety for weird / empty data
     if (!Number.isFinite(min) || !Number.isFinite(max)) return ["auto", "auto"];
 
-    // log scale requires > 0
     const safeMin = Math.max(min, 1e-9);
     const safeMax = Math.max(max, safeMin * 1.0000001);
 
@@ -449,49 +446,32 @@ function RuntimeVsPowerChartCard({ points }) {
   };
 
   const LABEL_OFFSETS = {
-    "H100-SXM":     { dx: 20, dy: -20,  anchor: "start"  },
-    "AMD MI300X":          { dx: 22, dy: 20,  anchor: "start"  },
-    "CS-3":                { dx: 22, dy: -18, anchor: "start"  },
-    "Apple M4 Max":        { dx: 15,  dy: 20, anchor: "middle" },
-    "Jetson Nano":  { dx: 22, dy: 20,  anchor: "middle" },
-    "Orin AGX":     { dx: 22, dy: -18,  anchor: "middle" },
-    "5090":     { dx: 22, dy: -8,  anchor: "start"  },
-    "DGX-H100":     { dx: 22, dy: -18, anchor: "start"  },
+    "H100-SXM": { dx: 20, dy: -20, anchor: "start" },
+    "AMD MI300X": { dx: 22, dy: 20, anchor: "start" },
+    "CS-3": { dx: 22, dy: -18, anchor: "start" },
+    "Apple M4 Max": { dx: 15, dy: 20, anchor: "middle" },
+    "Jetson Nano": { dx: 22, dy: 20, anchor: "middle" },
+    "Orin AGX": { dx: 22, dy: -18, anchor: "middle" },
+    "5090": { dx: 22, dy: -8, anchor: "start" },
+    "DGX-H100": { dx: 22, dy: -18, anchor: "start" }
   };
 
-const getLabelOffset = (gpuName) =>
-  LABEL_OFFSETS[gpuName] ?? { dx: 18, dy: -14, anchor: "start" };
- 
+  const getLabelOffset = (gpuName) =>
+    LABEL_OFFSETS[gpuName] ?? { dx: 18, dy: -14, anchor: "start" };
 
   const shouldLabel = (gpuName) => {
-  const key = simplifyName(gpuName);
-  // match with your existing simplifyName() helper
-  return (
-    key.includes("h100sxm") ||
-    key.includes("mi300x") ||
-    key.includes("cs3") ||
-    key.includes("applem4max") ||
-    key.includes("jetsonnano") ||
-    key.includes("orinagx") ||
-    key.includes("rtx5090") ||
-    key.includes("dgxh100")
-  );
-};
-
-  // optional: per-label offsets so they don't overlap
-  const labelOffsetFor = (gpuName) => {
-    const k = simplifyName(gpuName);
-    if (k.includes("dgxh100")) return { dx: 18, dy: -18, anchor: "start" };
-    if (k.includes("h100sxm")) return { dx: 18, dy: 14, anchor: "start" };
-    if (k.includes("mi300x")) return { dx: 18, dy: -6, anchor: "start" };
-    if (k.includes("cs3")) return { dx: 18, dy: -18, anchor: "start" };
-    if (k.includes("applem4max")) return { dx: 0, dy: -18, anchor: "middle" };
-    if (k.includes("orinagx")) return { dx: 0, dy: 16, anchor: "middle" };
-    if (k.includes("jetsonnano")) return { dx: 0, dy: 16, anchor: "middle" };
-    if (k.includes("rtx5090")) return { dx: 18, dy: -6, anchor: "start" };
-    return { dx: 14, dy: -14, anchor: "start" };
+    const key = simplifyName(gpuName);
+    return (
+      key.includes("h100sxm") ||
+      key.includes("mi300x") ||
+      key.includes("cs3") ||
+      key.includes("applem4max") ||
+      key.includes("jetsonnano") ||
+      key.includes("orinagx") ||
+      key.includes("rtx5090") ||
+      key.includes("dgxh100")
+    );
   };
-
 
   return (
     <Card className="mb-8">

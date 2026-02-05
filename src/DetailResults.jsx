@@ -357,7 +357,7 @@ const TTS_QUANT_OPTIONS = [
 
 const TTS_DATASET_OPTIONS = [
   { value: "aime25", label: "AIME 2025" },
-  { value: "amc25", label: "AMC 2025" },
+  { value: "GPQA Diamond", label: "GPQA Diamond" },
 ];
 
 const TTS_ENGINE_OPTIONS = [

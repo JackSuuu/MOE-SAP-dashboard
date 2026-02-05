@@ -461,7 +461,7 @@ function RuntimeVsPowerChartCard({ points }) {
 
 const getLabelOffset = (gpuName) =>
   LABEL_OFFSETS[gpuName] ?? { dx: 18, dy: -14, anchor: "start" };
-
+ 
 
   const shouldLabel = (gpuName) => {
   const key = simplifyName(gpuName);

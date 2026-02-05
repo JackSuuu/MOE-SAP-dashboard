@@ -472,7 +472,7 @@ function RuntimeVsPowerChartCard({ points }) {
       key.includes("dgxh100")
     );
   };
-
+ 
   return (
     <Card className="mb-8">
       <div className="flex justify-between items-start mb-3">

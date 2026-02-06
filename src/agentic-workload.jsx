@@ -74,7 +74,7 @@ const TradeoffTooltip = ({ active, payload }) => {
       <div className="text-slate-300">Tool Mode: {data.toolMode}</div>
       <div className="text-slate-300">Run: {data.date}/{data.run}</div>
       <div className="text-slate-300 mt-1">Accuracy: {data.accuracy.toFixed(2)}%</div>
-      <div className="text-slate-300">Time-to-Answer: {data.meanTime.toFixed(2)}s</div>
+      <div className="text-slate-300">Time to Answer: {data.meanTime.toFixed(2)}s</div>
       <div className="text-slate-300">Mean Prefill Tokens / Request: {data.meanTotalPrefill.toFixed(0)}</div>
       <div className="text-slate-300">Mean Decode Tokens / Request: {data.meanTotalDecode.toFixed(0)}</div>
       <div className="text-slate-300">Questions: {data.correctQuestions}/{data.totalQuestions}</div>
@@ -385,7 +385,7 @@ export function AgenticTradeoffSection() {
   };
 
   const yAxisLabel = yAxisMetric === 'latency' 
-    ? 'Time-to-Answer (s)' 
+    ? 'Time to Answer (s)' 
     : yAxisMetric === 'input'
     ? 'Mean Prefill Tokens / Request'
     : 'Mean Decode Tokens / Request';
@@ -465,7 +465,7 @@ export function AgenticTradeoffSection() {
             onChange={(e) => setYAxisMetric(e.target.value)}
             className="w-full bg-slate-700 border border-slate-600 rounded px-2 py-1.5 text-sm text-white"
           >
-            <option value="latency">Time-to-Answer (s)</option>
+            <option value="latency">Time to Answer (s)</option>
             <option value="input">Mean Prefill Tokens / Request</option>
             <option value="output">Mean Decode Tokens / Request</option>
           </select>

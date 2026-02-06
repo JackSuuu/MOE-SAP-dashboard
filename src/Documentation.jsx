@@ -43,18 +43,6 @@ export default function Documentation() {
           
           {/* Hardware Map Subsection */}
           <div className="mb-8">
-            <h3 className="text-xl font-semibold text-slate-200 mb-4 flex items-center gap-2">
-              <span className="w-2 h-2 bg-blue-400 rounded-full"></span>
-              Hardware Map
-            </h3>
-            
-            {/* Overview */}
-            <div className="bg-slate-900/50 rounded-lg p-4 mb-6 border border-slate-700">
-              <p className="text-slate-300 leading-relaxed">
-                Dotted lines represent the required bandwidth at a given batch size, context configuration, and SLO constraint for the selected MoE model. 
-                Dots represent hardware options; those above the line have sufficient bandwidth to meet the requirements.
-              </p>
-            </div>
 
             <div className="space-y-6 pl-4 border-l-2 border-slate-700">
               {/* Bandwidth Mode */}
@@ -69,16 +57,16 @@ export default function Documentation() {
               
               {/* TPOT Mode */}
               <div>
-                <h4 className="font-medium text-cyan-400 mb-2 text-lg">TPOT Mode</h4>
+                <h4 className="font-medium text-cyan-400 mb-2 text-lg">TPOT or TTFT Mode</h4>
                 <p className="leading-relaxed text-slate-400 mb-4">
-                  Displays the theoretical best Time Per Output Token (TPOT) achievable by each hardware platform.
+                  Displays the Time Per Output Token (TPOT) or Time To First Token (TTFT) for each hardware system.
                 </p>
                 <div className="bg-slate-900/50 rounded-lg p-4 space-y-3">
                   <div className="flex items-start gap-3">
                     <span className="text-blue-400 text-xl">●</span>
                     <div>
                       <span className="text-slate-200 font-medium">Round dots (Theoretical):</span>
-                      <span className="text-slate-400 ml-2">TPOT calculated from peak memory bandwidth — represents the theoretical best performance for single device, offloading, or multi-GPU configurations</span>
+                      <span className="text-slate-400 ml-2">TPOT/TTFT calculated from peak memory bandwidth — represents the theoretical best performance for single device, offloading, or multi-GPU configurations</span>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -237,21 +225,10 @@ export default function Documentation() {
           <div className="space-y-6 pl-4 border-l-2 border-slate-700">
             {/* Chart Description */}
             <div>
-              <h3 className="text-xl font-semibold text-slate-200 mb-2">Accuracy vs Time-to-Answer Trade-off</h3>
               <p className="leading-relaxed text-slate-400 mb-4">
-                The scatter plot visualizes the trade-off between accuracy and computational cost for agentic workflows.
+                The scatter plots visualizes the trade-offs of performance vs. power and performance vs. accuracy for agentic workflows.
                 Each point represents a benchmark run with a specific configuration.
               </p>
-              <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700 space-y-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-200 font-medium">X-Axis:</span>
-                  <span className="text-slate-400">Accuracy (%) — percentage of questions answered correctly</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-200 font-medium">Y-Axis:</span>
-                  <span className="text-slate-400">Time-to-Answer (s) or Mean Output Tokens per Question</span>
-                </div>
-              </div>
             </div>
 
             {/* Tool Modes */}
@@ -264,7 +241,7 @@ export default function Documentation() {
                     <span className="text-green-500 font-semibold">Tool Call</span>
                   </div>
                   <p className="text-slate-400 text-sm">
-                    Agent mode with tool access — the model can call external tools (e.g., Python interpreter, calculators) to assist in solving problems. This typically increases Time-to-Answer but may improve accuracy on certain tasks.
+                    Agent mode with tool access — the model can call external tools (e.g., Python interpreter, calculators) to assist in solving problems. This typically increases Time to Answer but may improve accuracy on certain tasks.
                   </p>
                 </div>
                 
@@ -299,12 +276,8 @@ export default function Documentation() {
               <h3 className="text-xl font-semibold text-slate-200 mb-3">Metrics</h3>
               <div className="space-y-3">
                 <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
-                  <span className="text-slate-200 font-medium">Time-to-Answer:</span>
+                  <span className="text-slate-200 font-medium">Time to Answer:</span>
                   <span className="text-slate-400 ml-2">Average end-to-end time (in seconds) to generate a complete response for each question, including all reasoning steps and tool calls.</span>
-                </div>
-                <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
-                  <span className="text-slate-200 font-medium">Mean Output Tokens per Question:</span>
-                  <span className="text-slate-400 ml-2">Average number of tokens generated per question. Higher values indicate more verbose reasoning or multiple tool call iterations.</span>
                 </div>
                 <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
                   <span className="text-slate-200 font-medium">Accuracy:</span>

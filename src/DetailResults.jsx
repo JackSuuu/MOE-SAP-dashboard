@@ -420,7 +420,7 @@ function BenchmarkTooltip({ active, payload }) {
     <div className="bg-slate-900 border border-slate-600 rounded-lg p-3 text-sm min-w-[240px]">
       <div className="text-white font-semibold mb-2">{p.label}</div>
       <div className="text-slate-300 text-xs">
-        Time to final answer: {p.timeToAnswerSeconds != null ? `${Number(p.timeToAnswerSeconds).toFixed(1)} s` : "N/A"}
+        Time to Answer: {p.timeToAnswerSeconds != null ? `${Number(p.timeToAnswerSeconds).toFixed(1)} s` : "N/A"}
       </div>
       <div className="text-slate-300 text-xs">Questions/hour: {p.questionsPerHour}</div>
       <div className="text-slate-300 text-xs">Accuracy: {p.accuracy}%</div>
@@ -583,11 +583,11 @@ function TTSTradeoffSection() {
               <YAxis
                 type="number"
                 dataKey="timeToAnswerSeconds"
-                name="Time to final answer"
+                name="Time to Answer"
                 stroke="#94a3b8"
                 tick={{ fill: '#94a3b8', fontSize: 11 }}
                 tickFormatter={(v) => `${Number(v).toFixed(0)} s`}
-                label={{ value: 'Time to final answer (s)', angle: -90, position: 'insideLeft', offset: -15, fill: '#94a3b8' }}
+                label={{ value: 'Time to Answer (s)', angle: -90, position: 'insideLeft', offset: -15, fill: '#94a3b8' }}
               />
               <Tooltip content={<BenchmarkTooltip />} />
               <Scatter data={chartData} name="Runs" isAnimationActive={false}>

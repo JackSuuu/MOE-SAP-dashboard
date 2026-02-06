@@ -135,10 +135,10 @@ export default function Documentation() {
                   <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
                     <div className="flex items-center gap-2 mb-2">
                       <span className="text-lime-400 text-2xl">●</span>
-                      <span className="text-lime-400 font-semibold">Lime (Multi-GPU - NVLink/PCIe)</span>
+                      <span className="text-lime-400 font-semibold">Lime (Multi-GPU - PCIe)</span>
                     </div>
                     <p className="text-slate-400 text-sm">
-                      DGX systems with offloading — NVLink or PCIe bandwidth between GPUs becomes the bottleneck.
+                      DGX systems with offloading — PCIe bandwidth between GPUs becomes the bottleneck.
                     </p>
                   </div>
                 </div>
@@ -237,7 +237,7 @@ export default function Documentation() {
           <div className="space-y-6 pl-4 border-l-2 border-slate-700">
             {/* Chart Description */}
             <div>
-              <h3 className="text-xl font-semibold text-slate-200 mb-2">Accuracy vs Latency/Output Chart</h3>
+              <h3 className="text-xl font-semibold text-slate-200 mb-2">Accuracy vs Time-to-Answer Trade-off</h3>
               <p className="leading-relaxed text-slate-400 mb-4">
                 The scatter plot visualizes the trade-off between accuracy and computational cost for agentic workflows.
                 Each point represents a benchmark run with a specific configuration.
@@ -249,7 +249,7 @@ export default function Documentation() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-slate-200 font-medium">Y-Axis:</span>
-                  <span className="text-slate-400">Mean Latency per Question (seconds) or Mean Output Tokens per Question</span>
+                  <span className="text-slate-400">Time-to-Answer (s) or Mean Output Tokens per Question</span>
                 </div>
               </div>
             </div>
@@ -261,20 +261,20 @@ export default function Documentation() {
                 <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
                   <div className="flex items-center gap-2 mb-2">
                     <span className="text-green-500 text-2xl">●</span>
-                    <span className="text-green-500 font-semibold">No Tool</span>
+                    <span className="text-green-500 font-semibold">Tool Call</span>
                   </div>
                   <p className="text-slate-400 text-sm">
-                    Pure reasoning mode — the model solves problems using only its internal knowledge and reasoning capabilities, without access to external tools or code execution.
+                    Agent mode with tool access — the model can call external tools (e.g., Python interpreter, calculators) to assist in solving problems. This typically increases Time-to-Answer but may improve accuracy on certain tasks.
                   </p>
                 </div>
                 
                 <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-blue-500 text-2xl">●</span>
-                    <span className="text-blue-500 font-semibold">Tool Call</span>
+                    <span className="text-red-500 text-2xl">●</span>
+                    <span className="text-red-500 font-semibold">No Tool</span>
                   </div>
                   <p className="text-slate-400 text-sm">
-                    Agent mode with tool access — the model can call external tools (e.g., Python interpreter, calculators) to assist in solving problems. This typically increases latency but may improve accuracy on certain tasks.
+                    Pure reasoning mode — the model solves problems using only its internal knowledge and reasoning capabilities, without access to external tools or code execution.
                   </p>
                 </div>
               </div>
@@ -299,7 +299,7 @@ export default function Documentation() {
               <h3 className="text-xl font-semibold text-slate-200 mb-3">Metrics</h3>
               <div className="space-y-3">
                 <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">
-                  <span className="text-slate-200 font-medium">Mean Latency per Question:</span>
+                  <span className="text-slate-200 font-medium">Time-to-Answer:</span>
                   <span className="text-slate-400 ml-2">Average end-to-end time (in seconds) to generate a complete response for each question, including all reasoning steps and tool calls.</span>
                 </div>
                 <div className="bg-slate-900/50 rounded-lg p-4 border border-slate-700">

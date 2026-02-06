@@ -42,16 +42,18 @@ const downloadCSV = (data, filename) => {
   URL.revokeObjectURL(url);
 };
 
-// Color mapping for datasets
-const DATASET_COLORS = {
-  'imo_answerbench_full_nt': '#22c55e',     // green
-  'imo_answerbench_full_combi': '#3b82f6',  // blue
+// Color mapping for tool modes
+const TOOL_MODE_COLORS = {
+  'Tool Call': '#22c55e',     // green - with tool
+  'No Tool': '#ef4444',       // red - without tool
 };
 
 // Dataset display names
 const DATASET_DISPLAY_NAMES = {
   'imo_answerbench_full_nt': 'IMO AnswerBench Number Theory',
   'imo_answerbench_full_combi': 'IMO AnswerBench Combinatorics',
+  // 'imo_answerbench_full_algebra': 'IMO AnswerBench Algebra',
+  // 'imo_answerbench_full_geometry': 'IMO AnswerBench Geometry',
 };
 
 // Hardware power constants
@@ -72,7 +74,7 @@ const TradeoffTooltip = ({ active, payload }) => {
       <div className="text-slate-300">Tool Mode: {data.toolMode}</div>
       <div className="text-slate-300">Run: {data.date}/{data.run}</div>
       <div className="text-slate-300 mt-1">Accuracy: {data.accuracy.toFixed(2)}%</div>
-      <div className="text-slate-300">Mean Latency: {data.meanTime.toFixed(2)}s</div>
+      <div className="text-slate-300">Time-to-Answer: {data.meanTime.toFixed(2)}s</div>
       <div className="text-slate-300">Mean Prefill Tokens / Request: {data.meanTotalPrefill.toFixed(0)}</div>
       <div className="text-slate-300">Mean Decode Tokens / Request: {data.meanTotalDecode.toFixed(0)}</div>
       <div className="text-slate-300">Questions: {data.correctQuestions}/{data.totalQuestions}</div>
@@ -129,16 +131,16 @@ export function AgenticHardwareMapSection() {
       ...d,
       x: TOTAL_POWER, // Power (W)
       y: d.meanTime, // Time to Answer (s)
-      color: DATASET_COLORS[d.dataset] || '#888',
+      color: TOOL_MODE_COLORS[d.toolMode] || '#888',
     }));
   }, [selectedDataset, selectedModel, selectedToolMode]);
 
-  // Group by dataset for legend
-  const dataByDataset = useMemo(() => {
+  // Group by tool mode for legend
+  const dataByToolMode = useMemo(() => {
     const grouped = {};
     filteredData.forEach(d => {
-      if (!grouped[d.dataset]) grouped[d.dataset] = [];
-      grouped[d.dataset].push(d);
+      if (!grouped[d.toolMode]) grouped[d.toolMode] = [];
+      grouped[d.toolMode].push(d);
     });
     return grouped;
   }, [filteredData]);
@@ -260,7 +262,7 @@ export function AgenticHardwareMapSection() {
                 type="number" 
                 dataKey="x" 
                 name="Power"
-                domain={[0, 1000]}
+                domain={[700, 775]}
                 tickFormatter={(v) => `${v}W`}
                 stroke="#94a3b8"
                 label={{ 
@@ -274,10 +276,13 @@ export function AgenticHardwareMapSection() {
                 type="number" 
                 dataKey="y" 
                 name="Time to Answer"
+                scale="log"
+                domain={[50, 1500]}
+                ticks={[50, 100, 200, 500, 1000, 1500]}
                 stroke="#94a3b8"
                 tickFormatter={(v) => `${v.toFixed(0)}s`}
                 label={{ 
-                  value: 'Time to Answer (s)', 
+                  value: 'Time to Answer (s) [log]', 
                   angle: -90, 
                   position: 'insideLeft',
                   offset: -45,
@@ -285,35 +290,35 @@ export function AgenticHardwareMapSection() {
                   style: { textAnchor: 'middle' }
                 }}
               />
-              <ZAxis range={[200, 200]} />
+              <ZAxis range={[80, 80]} />
               <Tooltip content={<HardwareMapTooltip />} />
               <Legend 
                 verticalAlign="top"
                 wrapperStyle={{ paddingBottom: '10px' }}
               />
               
-              {Object.entries(dataByDataset).map(([dataset, data], datasetIndex) => (
+              {Object.entries(dataByToolMode).map(([toolMode, data], toolModeIndex) => (
                 <Scatter
-                  key={dataset}
-                  name={DATASET_DISPLAY_NAMES[dataset] || dataset}
+                  key={toolMode}
+                  name={toolMode}
                   data={data}
-                  fill={DATASET_COLORS[dataset] || '#888'}
+                  fill={TOOL_MODE_COLORS[toolMode] || '#888'}
                   shape="circle"
                 >
                   <LabelList
                     content={(props) => {
                       const { x, y, index } = props;
-                      // Only show label on first point of first dataset
-                      if (datasetIndex !== 0 || index !== 0) return null;
+                      // Only show label on first point of first tool mode
+                      if (toolModeIndex !== 0 || index !== 0) return null;
                       return (
                         <text
                           x={x + 15}
                           y={y}
-                          fill={DATASET_COLORS[dataset] || '#888'}
+                          fill={TOOL_MODE_COLORS[toolMode] || '#888'}
                           fontSize={9}
                           fontWeight={500}
                         >
-                          H100 + {CPU_INFO}
+                          NVIDIA H100 + 4-core Xeon 8558
                         </text>
                       );
                     }}
@@ -363,17 +368,17 @@ export function AgenticTradeoffSection() {
         ...d,
         x: d.accuracy,
         y: yValue,
-        color: DATASET_COLORS[d.dataset] || '#888',
+        color: TOOL_MODE_COLORS[d.toolMode] || '#888',
       };
     });
   }, [selectedDataset, selectedModel, selectedToolMode, yAxisMetric]);
 
-  // Group by dataset for legend
-  const dataByDataset = useMemo(() => {
+  // Group by tool mode for legend
+  const dataByToolMode = useMemo(() => {
     const grouped = {};
     filteredData.forEach(d => {
-      if (!grouped[d.dataset]) grouped[d.dataset] = [];
-      grouped[d.dataset].push(d);
+      if (!grouped[d.toolMode]) grouped[d.toolMode] = [];
+      grouped[d.toolMode].push(d);
     });
     return grouped;
   }, [filteredData]);
@@ -399,7 +404,7 @@ export function AgenticTradeoffSection() {
   };
 
   const yAxisLabel = yAxisMetric === 'latency' 
-    ? 'Mean Latency per Question (s)' 
+    ? 'Time-to-Answer (s)' 
     : yAxisMetric === 'input'
     ? 'Mean Prefill Tokens / Request'
     : 'Mean Decode Tokens / Request';
@@ -409,7 +414,7 @@ export function AgenticTradeoffSection() {
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
         <div>
           <h3 className="text-lg font-semibold mb-2 pl-2 border-l-4 border-amber-500">
-            Accuracy–Latency Trade-off
+            Accuracy vs Time-to-Answer Trade-off
           </h3>
           <p className="text-xs text-slate-400 pl-2">
             Each datapoint represents a benchmark run with specific configuration.
@@ -479,7 +484,7 @@ export function AgenticTradeoffSection() {
             onChange={(e) => setYAxisMetric(e.target.value)}
             className="w-full bg-slate-700 border border-slate-600 rounded px-2 py-1.5 text-sm text-white"
           >
-            <option value="latency">Mean Latency (s)</option>
+            <option value="latency">Time-to-Answer (s)</option>
             <option value="input">Mean Prefill Tokens / Request</option>
             <option value="output">Mean Decode Tokens / Request</option>
           </select>
@@ -495,7 +500,7 @@ export function AgenticTradeoffSection() {
               type="number" 
               dataKey="x" 
               name="Accuracy"
-              domain={[60, 100]}
+              domain={[0, 100]}
               tickFormatter={(v) => `${v}%`}
               stroke="#94a3b8"
               label={{ 
@@ -519,19 +524,19 @@ export function AgenticTradeoffSection() {
                 style: { textAnchor: 'middle' }
               }}
             />
-            <ZAxis range={[100, 100]} />
+            <ZAxis range={[60, 60]} />
             <Tooltip content={<TradeoffTooltip />} />
             <Legend 
               verticalAlign="top"
               wrapperStyle={{ paddingBottom: '10px' }}
             />
             
-            {Object.entries(dataByDataset).map(([dataset, data]) => (
+            {Object.entries(dataByToolMode).map(([toolMode, data]) => (
               <Scatter
-                key={dataset}
-                name={DATASET_DISPLAY_NAMES[dataset] || dataset}
+                key={toolMode}
+                name={toolMode}
                 data={data}
-                fill={DATASET_COLORS[dataset] || '#888'}
+                fill={TOOL_MODE_COLORS[toolMode] || '#888'}
                 shape="circle"
               />
             ))}
@@ -543,27 +548,26 @@ export function AgenticTradeoffSection() {
       <div className="mt-4">
         <h4 className="text-sm font-semibold text-slate-300 mb-3">Summary Statistics</h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-          {Object.entries(dataByDataset).map(([dataset, data]) => {
+          {Object.entries(dataByToolMode).map(([toolMode, data]) => {
             const avgAccuracy = data.reduce((s, d) => s + d.accuracy, 0) / data.length;
             const avgLatency = data.reduce((s, d) => s + d.meanTime, 0) / data.length;
             const modelList = [...new Set(data.map(d => d.modelShort))].join(', ');
-            const toolModeList = [...new Set(data.map(d => d.toolMode))].join(', ');
-            const displayName = DATASET_DISPLAY_NAMES[dataset] || dataset;
+            const datasetList = [...new Set(data.map(d => DATASET_DISPLAY_NAMES[d.dataset] || d.dataset))].join(', ');
             return (
-              <div key={dataset} className="bg-slate-700/50 rounded p-3">
+              <div key={toolMode} className="bg-slate-700/50 rounded p-3">
                 <div className="flex items-center gap-2 mb-2">
                   <div 
                     className="w-3 h-3 rounded-full" 
-                    style={{ backgroundColor: DATASET_COLORS[dataset] }}
+                    style={{ backgroundColor: TOOL_MODE_COLORS[toolMode] }}
                   />
-                  <span className="font-medium text-white text-xs">{displayName}</span>
+                  <span className="font-medium text-white text-xs">{toolMode}</span>
                 </div>
                 <div className="text-slate-400 text-xs">
                   <div>Model: {modelList}</div>
-                  <div>Tool Mode: {toolModeList || 'N/A'}</div>
+                  <div>Datasets: {datasetList}</div>
                   <div>Runs: {data.length}</div>
                   <div>Avg Accuracy: {avgAccuracy.toFixed(1)}%</div>
-                  <div>Avg Latency: {avgLatency.toFixed(1)}s</div>
+                  <div>Avg Time-to-Answer: {avgLatency.toFixed(1)}s</div>
                 </div>
               </div>
             );

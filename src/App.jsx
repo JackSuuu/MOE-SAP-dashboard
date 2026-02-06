@@ -1314,6 +1314,254 @@ export default function App() {
         color: '#6366f1',
         showLabel: true,
       },
+      // NVIDIA A100 and H200 data points (SGLang)
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A100-80G-SXM4',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 400,
+        tpot: 30.57, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A100-80G-SXM4',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 400,
+        tpot: 25.96, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A100-80G-SXM4',
+        engine: 'SGLang v0.5.8',
+        batchSize: 32,
+        power: 400,
+        tpot: 30.56, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 700,
+        tpot: 3.5, // ms (faster than H100: 4.0ms)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 700,
+        tpot: 4.0, // ms (faster than H100: 4.6ms)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 32,
+        power: 700,
+        tpot: 13.5, // ms (faster than H100: 15.3ms)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 32,
+        power: 700,
+        tpot: 14.5, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 64,
+        power: 700,
+        tpot: 33.95, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 64,
+        power: 700,
+        tpot: 26.15, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 128,
+        power: 700,
+        tpot: 33.53, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A100-80G-SXM4',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 400,
+        tpot: 79.98, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A100-80G-SXM4',
+        engine: 'SGLang v0.5.8',
+        batchSize: 32,
+        power: 400,
+        tpot: 80.01, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 700,
+        tpot: 4.1, // ms (faster than H100: 4.7ms)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 700,
+        tpot: 4.3, // ms (faster than H100: 4.9ms)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 32,
+        power: 700,
+        tpot: 11.0, // ms (faster than H100: 12.5ms)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 32,
+        power: 700,
+        tpot: 41.32, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 64,
+        power: 700,
+        tpot: 59.38, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 64,
+        power: 700,
+        tpot: 41.75, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 128,
+        power: 700,
+        tpot: 58.85, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
     ],
     // TTFT real data points
     ttft: [
@@ -1340,7 +1588,7 @@ export default function App() {
         engine: 'SGLang v0.5.8',
         batchSize: 1,
         power: 700,
-        ttft: 40.4, // ms
+        ttft: 75.3, // ms
         color: '#ef4444', // red for real data
         showLabel: true,
       },
@@ -1353,7 +1601,7 @@ export default function App() {
         engine: 'SGLang v0.5.8',
         batchSize: 1,
         power: 700,
-        ttft: 41.1, // ms (156.0 / 3.8)
+        ttft: 70.8, // ms
         color: '#ef4444', // red for real data
         showLabel: true,
       },
@@ -1794,6 +2042,254 @@ export default function App() {
         color: '#6366f1',
         showLabel: true,
       },
+      // NVIDIA A100 and H200 TTFT data points (SGLang)
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A100-80G-SXM4',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 400,
+        ttft: 206.15, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A100-80G-SXM4',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 400,
+        ttft: 275.86, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A100-80G-SXM4',
+        engine: 'SGLang v0.5.8',
+        batchSize: 32,
+        power: 400,
+        ttft: 206.45, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 700,
+        ttft: 89.28, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 700,
+        ttft: 115.75, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 32,
+        power: 700,
+        ttft: 957.2, // ms (89.74 * 32/3)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 32,
+        power: 700,
+        ttft: 1254.2, // ms (117.58 * 32/3)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 64,
+        power: 700,
+        ttft: 1920.4, // ms (90.02 * 64/3)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 64,
+        power: 700,
+        ttft: 2489.2, // ms (116.68 * 64/3)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'Qwen1.5-MoE',
+        model: 'qwen1.5-moe',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 128,
+        power: 700,
+        ttft: 3801.4, // ms (89.11 * 128/3)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A100-80G-SXM4',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 400,
+        ttft: 784.12, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA A100-80G-SXM4',
+        engine: 'SGLang v0.5.8',
+        batchSize: 32,
+        power: 400,
+        ttft: 786.70, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 700,
+        ttft: 133.61, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 1,
+        power: 700,
+        ttft: 270.54, // ms
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 32,
+        power: 700,
+        ttft: 1433.5, // ms (134.39 * 32/3)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 32,
+        power: 700,
+        ttft: 2922.9, // ms (274.02 * 32/3)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 64,
+        power: 700,
+        ttft: 2884.1, // ms (135.19 * 64/3)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '13k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 64,
+        power: 700,
+        ttft: 5764.1, // ms (270.19 * 64/3)
+        color: '#ef4444',
+        showLabel: true,
+      },
+      {
+        name: 'DeepSeek-V2-Lite',
+        model: 'deepseek-v2-lite',
+        context: '4k-1k',
+        tp: 1,
+        gpu: 'NVIDIA H200-SXM',
+        engine: 'SGLang v0.5.8',
+        batchSize: 128,
+        power: 700,
+        ttft: 5717.3, // ms (134.0 * 128/3)
+        color: '#ef4444',
+        showLabel: true,
+      },
     ],
   };
 
@@ -1835,11 +2331,14 @@ export default function App() {
   // Hardware options
   const HARDWARE_PRESETS = [
     { name: 'NVIDIA A6000', bw: 768 },
+    { name: 'NVIDIA H200 (SXM)', bw: 4800 },
     { name: 'NVIDIA H100 (SXM)', bw: 3350 },
     { name: 'NVIDIA A100 (SXM4)', bw: 2039 },
     { name: 'NVIDIA H20', bw: 4000 },
     { name: 'NVIDIA L20', bw: 230 },
-    { name: 'Consumer RTX 4090', bw: 1008 }
+    { name: 'Consumer RTX 4090', bw: 1008 },
+    { name: 'NVIDIA DGX H200', bw: 38400 },
+    { name: 'NVIDIA DGX H100', bw: 26800 }
   ];
 
   // --- Handlers ---
@@ -2066,11 +2565,13 @@ export default function App() {
     // GFLOPS values from spreadsheet for TTFT calculation
     const peakDevices = [
       // Data Center Systems (Multi-GPU)
+      { name: 'NVIDIA DGX-H200', bandwidth: 38400, power: 10200, gflops: 7.92e6, category: 'datacenter-system', type: 'peak', showLabel: true },
       { name: 'NVIDIA DGX-H100', bandwidth: 26800, power: 10200, gflops: 7.92e6, category: 'datacenter-system', type: 'peak', showLabel: true },
       { name: 'NVIDIA DGX-A100', bandwidth: 16296, power: 6500, gflops: 2.50e6, category: 'datacenter-system', type: 'peak', showLabel: false },
       // Data Center Cards
       { name: 'AMD MI300X', bandwidth: 5300, power: 750, gflops: null, category: 'datacenter-card', type: 'peak', showLabel: true },
-      { name: 'NVIDIA H100-SXM', bandwidth: 3350, power: 700, gflops: 9.90e5, category: 'datacenter-card', type: 'peak', showLabel: true },
+      { name: 'NVIDIA H200-SXM', bandwidth: 4800, power: 700, gflops: 9.90e5, category: 'datacenter-card', type: 'peak', showLabel: true },
+      { name: 'NVIDIA H100-SXM', bandwidth: 3350, power: 700, gflops: 9.90e5, category: 'datacenter-card', type: 'peak', showLabel: false },
       { name: 'AWS Trainium 2', bandwidth: 2900, power: 480, gflops: null, category: 'datacenter-card', type: 'peak', showLabel: false },
       { name: 'NVIDIA A100-80G-SXM4', bandwidth: 2037, power: 400, gflops: 3.12e5, category: 'datacenter-card', type: 'peak', showLabel: false },
       { name: 'NVIDIA H100-PCIe', bandwidth: 2000, power: 350, gflops: 7.57e5, category: 'datacenter-card', type: 'peak', showLabel: false },
@@ -2099,11 +2600,13 @@ export default function App() {
     // Offloading Bandwidth = PCIe/ethernet bandwidth (orange squares)
     const offloadDevices = [
       // Data Center Systems (Multi-GPU with NVLink)
+      { name: 'NVIDIA DGX-H200', bandwidth: 1280, power: 10200, gflops: 7.92e6, category: 'datacenter-system', type: 'pcie', showLabel: false },
       { name: 'NVIDIA DGX-H100', bandwidth: 1280, power: 10200, gflops: 7.92e6, category: 'datacenter-system', type: 'pcie', showLabel: true },
       { name: 'NVIDIA DGX-A100', bandwidth: 512, power: 6500, gflops: 2.50e6, category: 'datacenter-system', type: 'pcie', showLabel: false },
       // Data Center Cards (PCIe)
       { name: 'AMD MI300X', bandwidth: 128, power: 750, gflops: null, category: 'datacenter-card', type: 'pcie', showLabel: false },
-      { name: 'NVIDIA H100-SXM', bandwidth: 128, power: 700, gflops: 9.90e5, category: 'datacenter-card', type: 'pcie', showLabel: true },
+      { name: 'NVIDIA H200-SXM', bandwidth: 128, power: 700, gflops: 9.90e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
+      { name: 'NVIDIA H100-SXM', bandwidth: 128, power: 700, gflops: 9.90e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
       { name: 'AWS Trainium 2', bandwidth: 128, power: 480, gflops: null, category: 'datacenter-card', type: 'pcie', showLabel: false },
       { name: 'NVIDIA H100-PCIe', bandwidth: 128, power: 350, gflops: 7.57e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
       { name: 'NVIDIA A100-80G-SXM4', bandwidth: 64, power: 400, gflops: 3.12e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
@@ -2111,7 +2614,7 @@ export default function App() {
       { name: 'NVIDIA A6000', bandwidth: 64, power: 300, gflops: 1.55e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
       { name: 'NVIDIA A5000', bandwidth: 64, power: 230, gflops: 1.10e5, category: 'datacenter-card', type: 'pcie', showLabel: false },
       // Personal (Consumer GPUs - PCIe)
-      { name: 'NVIDIA RTX 5090', bandwidth: 128, power: 575, gflops: 1.68e6, category: 'personal', type: 'pcie', showLabel: true },
+      { name: 'NVIDIA RTX 5090', bandwidth: 128, power: 575, gflops: 1.68e6, category: 'personal', type: 'pcie', showLabel: false },
       { name: 'NVIDIA RTX 5080', bandwidth: 128, power: 360, gflops: 9.00e5, category: 'personal', type: 'pcie', showLabel: false },
       { name: 'NVIDIA RTX 4090', bandwidth: 64, power: 450, gflops: 6.60e5, category: 'personal', type: 'pcie', showLabel: false },
       { name: 'NVIDIA RTX 4080', bandwidth: 64, power: 320, gflops: null, category: 'personal', type: 'pcie', showLabel: false },
@@ -2785,6 +3288,7 @@ export default function App() {
                     let dx = 0;
                     if (name.includes('DGX-H100')) dy = -20;
                     if (name.includes('MI300X')) { dy = -5; dx = 45; }
+                    if (name.includes('H200-SXM')) { dy = 20; dx = -35; }
                     if (name.includes('H100-SXM')) { dy = -5; dx = 20; }
                     if (name.includes('5090')) { dy = -7; dx = 30; }
                     if (name.includes('4090')) { dy = -15; dx = 30; }
@@ -2893,11 +3397,13 @@ export default function App() {
                     const device = chartData.dgxPeakDevices[index];
                     // Hide labels in TTFT mode
                     if (!device || !device.showLabel || yAxisType === 'ttft') return null;
-                    
-                    let dy = -20;
-                    let dx = 0;
                     const name = device.name;
-                    if (name.includes('DGX-A100')) { dy = -15; dx = 0; }
+                    
+                    let dy = 25;
+                    let dx = 0;
+                    if (name.includes('DGX-A100')) { dy = 25; dx = 0; }
+                    if (name.includes('DGX-H100')) { dy = 25; dx = -30; }
+                    if (name.includes('DGX-H200')) { dy = 25; dx = -60; }
                     
                     return (
                       <>
@@ -2939,12 +3445,15 @@ export default function App() {
                   content={(props) => {
                     const { x, y, index } = props;
                     const device = chartData.dgxOffloadDevices[index];
-                    // Hide labels in TTFT mode
+                    // Hide labels in TTFT mode or for DGX-H100
                     if (!device || !device.showLabel || yAxisType === 'ttft') return null;
                     
                     let dy = 25;
                     let dx = 0;
                     const name = device.name;
+                    
+                    // Skip DGX-H100 label
+                    if (name.includes('DGX-H100')) return null;
                     
                     return (
                       <>

@@ -9,6 +9,7 @@ export const HARDWARE_SPECS = [
   { name: "A5000", category: "Data Center Cards", peakBandwidth: 768, pciBandwidth: 64, memory: 24, peakGFLOPS: 1.11e5, peakPower: 230 },
   { name: "H100-SXM", category: "Data Center Cards", peakBandwidth: 3350, pciBandwidth: 128, memory: 80, peakGFLOPS: 9.90e5, peakPower: 700 },
   { name: "H100-PCIe", category: "Data Center Cards", peakBandwidth: 2000, pciBandwidth: 128, memory: 80, peakGFLOPS: 7.57e5, peakPower: 350 },
+  { name: "H200-SXM", category: "Data Center Cards", peakBandwidth: 4800, pciBandwidth: 128, memory: 141, peakGFLOPS: 9.90e5, peakPower: 700 },
   { name: "AMD MI300X", category: "Data Center Cards", peakBandwidth: 5300, pciBandwidth: 128, memory: 192, peakGFLOPS: null, peakPower: 750 },
   { name: "AWS Trainium 2", category: "Data Center Cards", peakBandwidth: 2900, pciBandwidth: 128, memory: 96, peakGFLOPS: null, peakPower: 1200 },
   { name: "CS-2", category: "Data Center Cards", peakBandwidth: 20000000, pciBandwidth: 12.5, memory: 40, peakGFLOPS: null, peakPower: 23000 },
@@ -36,6 +37,7 @@ export const HARDWARE_SPECS = [
 
   // Data Center Systems
   { name: "DGX-H100", category: "Data Center Systems", peakBandwidth: 26800, pciBandwidth: 1280, memory: 640, peakGFLOPS: 7.92e6, peakPower: 10200 },
+  { name: "DGX-H200", category: "Data Center Systems", peakBandwidth: 38400, pciBandwidth: 1280, memory: 1128, peakGFLOPS: 7.92e6, peakPower: 10200 },
   { name: "DGX-A100", category: "Data Center Systems", peakBandwidth: 16296, pciBandwidth: 512, memory: 640, peakGFLOPS: 2.50e6, peakPower: 6500 },
 ];
 

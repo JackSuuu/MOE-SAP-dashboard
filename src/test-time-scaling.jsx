@@ -180,7 +180,7 @@ function TriangleDot(props) {
   const { cx, cy, fill, stroke } = props;
   if (cx == null || cy == null) return null;
 
-  const size = 7; // tweak
+  const size = 5; // tweak
   // Triangle path around (cx, cy)
   const d = `
     M ${cx} ${cy - size}
@@ -204,7 +204,7 @@ function CircleDot(props) {
   const { cx, cy, fill, stroke } = props;
   if (cx == null || cy == null) return null;
 
-  const r = 6;
+  const r = 4;
   return (
     <circle
       cx={cx}
@@ -285,6 +285,7 @@ export const GPU_COLOR_MAP = {
   // ======================
   // NVIDIA (all NVIDIA = same color)
   // ======================
+  "H200-SXM":      "#22c55e",
   "H100-SXM":      "#22c55e",
   "H100-PCIe":     "#22c55e",
   "A100-80G-SXM4": "#22c55e",
@@ -301,6 +302,7 @@ export const GPU_COLOR_MAP = {
   "Xavier AGX":    "#22c55e",
   "Orin NX":       "#22c55e",
   "Jetson Nano":   "#22c55e",
+  "DGX-H200":      "#22c55e",
   "DGX-H100":      "#22c55e",
   "DGX-A100":      "#22c55e",
 
@@ -474,18 +476,8 @@ function RuntimeVsPowerChartCard({ points }) {
   };
 
   return (
-    <Card className="mb-8">
-      <div className="flex justify-between items-start mb-3">
-        <h2 className="text-lg font-semibold pl-2 border-l-4 border-cyan-500">
-          Test-time Scaling - Hardware Map Chart
-          <br />
-          <span className="font-normal text-slate-400 text-sm">
-            X-axis: peak power (W). Y-axis: Time to Answer (s).
-          </span>
-        </h2>
-      </div>
-
-      <div className="mb-4">
+    <>
+      <div className="mt-6">
         <HardwareLegend points={points} />
       </div>
 
@@ -592,7 +584,7 @@ function RuntimeVsPowerChartCard({ points }) {
           </ScatterChart>
         </ResponsiveContainer>
       </div>
-    </Card>
+    </>
   );
 }
 
@@ -851,10 +843,10 @@ export function RuntimeVsRoundsSection() {
   const quantOptions = useMemo(() => buildRvrQuantOptionsForModel(model), [model]);
 
   return (
-    <>
-      <div className="bg-slate-800/50 border border-slate-700 rounded-lg p-4 sm:p-6 md:p-8 mb-6">
+    <Card className="mb-8">
+      <div>
         <h2 className="text-lg font-semibold pl-2 border-l-4 border-cyan-500 mb-4">
-          Test Time Scaling - Hardware Map Configuration
+          Test Time Scaling - Hardware Map
         </h2>
 
 
@@ -928,7 +920,7 @@ export function RuntimeVsRoundsSection() {
       </div>
 
       <RuntimeVsPowerChartCard points={hardwarePoints} />
-    </>
+    </Card>
   );
 }
 

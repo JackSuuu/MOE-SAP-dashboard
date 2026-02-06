@@ -89,6 +89,8 @@ const HardwareMapTooltip = ({ active, payload }) => {
   const displayName = DATASET_DISPLAY_NAMES[data.dataset] || data.dataset;
   // Format date: 20260126 -> 2026-01-26
   const dateStr = data.date ? `${data.date.slice(0,4)}-${data.date.slice(4,6)}-${data.date.slice(6,8)}` : 'N/A';
+  const totalPower = data.power || TOTAL_POWER;
+  const cpuInfo = data.cpu || CPU_INFO;
   return (
     <div className="bg-slate-900 border border-slate-600 rounded-lg p-3 text-sm">
       <div className="font-bold text-white mb-2">{displayName}</div>
@@ -96,10 +98,8 @@ const HardwareMapTooltip = ({ active, payload }) => {
       <div className="text-slate-300">Tool Mode: {data.toolMode}</div>
       <div className="text-slate-300">Date: {dateStr}</div>
       <div className="text-slate-300 mt-2 pt-2 border-t border-slate-700">GPU: {data.gpu}</div>
-      <div className="text-slate-300">GPU Power: {GPU_POWER_H100}W</div>
-      <div className="text-slate-300">CPU: {CPU_INFO}</div>
-      <div className="text-slate-300">CPU Power: {CPU_POWER}W</div>
-      <div className="text-slate-300">Total Power: {TOTAL_POWER}W</div>
+      <div className="text-slate-300">CPU: {cpuInfo}</div>
+      <div className="text-slate-300">Total Power: {totalPower}W</div>
       <div className="text-slate-300 mt-2 pt-2 border-t border-slate-700">Accuracy: {data.accuracy.toFixed(2)}%</div>
       <div className="text-slate-300">Time to Answer: {data.meanTime.toFixed(2)}s</div>
     </div>
@@ -129,7 +129,7 @@ export function AgenticHardwareMapSection() {
       return true;
     }).map(d => ({
       ...d,
-      x: TOTAL_POWER, // Power (W)
+      x: d.power || TOTAL_POWER, // Power (W) - use custom power if available
       y: d.meanTime, // Time to Answer (s)
       color: TOOL_MODE_COLORS[d.toolMode] || '#888',
     }));
@@ -304,26 +304,7 @@ export function AgenticHardwareMapSection() {
                   data={data}
                   fill={TOOL_MODE_COLORS[toolMode] || '#888'}
                   shape="circle"
-                >
-                  <LabelList
-                    content={(props) => {
-                      const { x, y, index } = props;
-                      // Only show label on first point of first tool mode
-                      if (toolModeIndex !== 0 || index !== 0) return null;
-                      return (
-                        <text
-                          x={x + 15}
-                          y={y}
-                          fill={TOOL_MODE_COLORS[toolMode] || '#888'}
-                          fontSize={9}
-                          fontWeight={500}
-                        >
-                          NVIDIA H100 + 4-core Xeon 8558
-                        </text>
-                      );
-                    }}
-                  />
-                </Scatter>
+                />
               ))}
             </ScatterChart>
           </ResponsiveContainer>

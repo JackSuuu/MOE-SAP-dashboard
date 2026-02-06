@@ -419,6 +419,9 @@ function BenchmarkTooltip({ active, payload }) {
   return (
     <div className="bg-slate-900 border border-slate-600 rounded-lg p-3 text-sm min-w-[240px]">
       <div className="text-white font-semibold mb-2">{p.label}</div>
+      <div className="text-slate-300 text-xs">
+        Time to final answer: {p.timeToAnswerSeconds != null ? `${Number(p.timeToAnswerSeconds).toFixed(1)} s` : "N/A"}
+      </div>
       <div className="text-slate-300 text-xs">Questions/hour: {p.questionsPerHour}</div>
       <div className="text-slate-300 text-xs">Accuracy: {p.accuracy}%</div>
       {Object.keys(meta).length > 0 && (
@@ -462,21 +465,26 @@ function TTSTradeoffSection() {
   const chartData = useMemo(() => {
     if (!selectedRows?.length) return [];
 
+    const timeToAnswer = (r) =>
+      r.questionsPerHour > 0 ? 3600 / r.questionsPerHour : null;
+
     const paretoIdx = new Set(
       selectedRows
-        .map((r, i) => ({ r, i }))
-        .filter(({ r }, i) => {
-          return !selectedRows.some((other, j) => {
-            if (j === i) return false;
-            const noWorse = other.questionsPerHour >= r.questionsPerHour && other.accuracy >= r.accuracy;
-            const strictlyBetter = other.questionsPerHour > r.questionsPerHour || other.accuracy > r.accuracy;
+        .map((r, i) => ({ r, i, t: timeToAnswer(r) }))
+        .filter(({ r, i, t }, _idx, arr) => {
+          if (t == null) return false;
+          return !arr.some(({ r: other, t: otherT }) => {
+            if (other === r || otherT == null) return false;
+            const noWorse = otherT <= t && other.accuracy >= r.accuracy;
+            const strictlyBetter = otherT < t || other.accuracy > r.accuracy;
             return noWorse && strictlyBetter;
           });
         })
         .map((x) => x.i)
     );
 
-    const maxQph = Math.max(...selectedRows.map((r) => r.questionsPerHour));
+    const times = selectedRows.map(timeToAnswer).filter((t) => t != null);
+    const minTime = times.length ? Math.min(...times) : null;
     const maxAcc = Math.max(...selectedRows.map((r) => r.accuracy));
 
     return selectedRows.map((row, idx) => {
@@ -485,14 +493,16 @@ function TTSTradeoffSection() {
       const n = row?.meta?.samples;
       const labelText = `S${s ?? "-"} P${p ?? "-"} N${n ?? "-"}`;
       const showLabel = paretoIdx.has(idx);
+      const t = timeToAnswer(row);
 
       let labelDx = 12;
       let labelDy = -14;
-      if (row.questionsPerHour === maxQph) labelDx = -90;
+      if (minTime != null && t === minTime) labelDx = -90;
       if (row.accuracy === maxAcc) labelDy = 18;
 
       return {
         questionsPerHour: row.questionsPerHour,
+        timeToAnswerSeconds: t,
         accuracy: row.accuracy,
         meta: row.meta,
         color: row.color,
@@ -517,6 +527,7 @@ function TTSTradeoffSection() {
       hardware: row.meta?.gpu || "N/A",
       gpu_count: row.meta?.gpuCount || "N/A",
       questions_per_hour: row.questionsPerHour,
+      time_to_answer_seconds: row.questionsPerHour > 0 ? 3600 / row.questionsPerHour : "N/A",
       accuracy_percent: row.accuracy ?? "N/A",
       sequential_steps: row.meta?.sequential || "N/A",
       parallel_branches: row.meta?.parallel || "N/A",
@@ -531,7 +542,7 @@ function TTSTradeoffSection() {
       <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-4">
         <div>
           <h3 className="text-lg font-semibold mb-2 pl-2 border-l-4 border-cyan-500">
-            Accuracy - Performance Trade-off
+            Accuracy–Performance Trade-off
           </h3>
           <p className="text-xs text-slate-400 pl-2">
             Each datapoint represents a specific combination of sequential scaling (S), parallel scaling (P), and samples (N).
@@ -561,21 +572,22 @@ function TTSTradeoffSection() {
               <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
               <XAxis
                 type="number"
-                dataKey="questionsPerHour"
-                name="Questions/Hour"
-                stroke="#94a3b8"
-                tick={{ fill: '#94a3b8', fontSize: 11 }}
-                label={{ value: 'Questions / Hour', position: 'bottom', offset: 20, fill: '#94a3b8' }}
-              />
-              <YAxis
-                type="number"
                 dataKey="accuracy"
                 name="Accuracy"
                 stroke="#94a3b8"
                 tick={{ fill: '#94a3b8', fontSize: 11 }}
                 domain={['auto', 'auto']}
                 tickFormatter={(v) => `${v}%`}
-                label={{ value: 'Accuracy (%)', angle: -90, position: 'insideLeft', offset: -15, fill: '#94a3b8' }}
+                label={{ value: 'Accuracy (%)', position: 'bottom', offset: 20, fill: '#94a3b8' }}
+              />
+              <YAxis
+                type="number"
+                dataKey="timeToAnswerSeconds"
+                name="Time to final answer"
+                stroke="#94a3b8"
+                tick={{ fill: '#94a3b8', fontSize: 11 }}
+                tickFormatter={(v) => `${Number(v).toFixed(0)} s`}
+                label={{ value: 'Time to final answer (s)', angle: -90, position: 'insideLeft', offset: -15, fill: '#94a3b8' }}
               />
               <Tooltip content={<BenchmarkTooltip />} />
               <Scatter data={chartData} name="Runs" isAnimationActive={false}>
